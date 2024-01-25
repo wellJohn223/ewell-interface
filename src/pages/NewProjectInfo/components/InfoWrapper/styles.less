@@ -1,8 +1,10 @@
 .project-info-wrapper {
+  flex: 1 1 60%;
   gap: 24px;
+  overflow: hidden;
   .info-wrapper {
     gap: 24px;
-    max-width: 765px;
+    overflow: hidden;
   }
   .info-header {
     gap: 8px;
@@ -12,5 +14,12 @@
       line-height: 22px;
       color: #070a26;
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .project-info-wrapper {
+    flex-direction: column;
+    gap: 12px;
   }
 }

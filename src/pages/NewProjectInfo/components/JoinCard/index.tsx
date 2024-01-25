@@ -5,6 +5,7 @@ import BigNumber from 'bignumber.js';
 import { InputNumber, Flex, Form } from 'antd';
 import { Typography, FontWeightEnum, Progress } from 'aelf-design';
 import CommonCard from 'components/CommonCard';
+import CommonWrapText, { CommonWrapTextAlignType } from 'components/CommonWrapText';
 import NewBaseCountdown from 'components/NewBaseCountdown';
 import PurchaseButton from '../OperationComponents/PurchaseButton';
 import RevokeInvestmentButton from '../OperationComponents/RevokeInvestmentButton';
@@ -242,41 +243,53 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
           strokeColor={projectInfo?.status === ProjectStatus.PARTICIPATORY ? '#131631' : '#C1C2C9'}
           trailColor="#F5F5F6"
         />
-        <div className="flex-between-center">
+        <Flex gap={16} align="center" justify="space-between">
           <Title fontWeight={FontWeightEnum.Medium}>{progressPercent.toFixed(0)}%</Title>
           <Title fontWeight={FontWeightEnum.Medium}>
             {divDecimalsStr(projectInfo?.currentRaisedAmount ?? 0, projectInfo?.toRaiseToken?.decimals, '0')}/
             {divDecimalsStr(projectInfo?.toRaisedAmount, projectInfo?.toRaiseToken?.decimals)}{' '}
             {projectInfo?.toRaiseToken?.symbol || '--'}
           </Title>
-        </div>
+        </Flex>
       </Flex>
       <div className="divider" />
       <Flex vertical gap={12}>
-        <div className="flex-between-center">{renderRemainder()}</div>
-        <div className="flex-between-center">
+        <Flex gap={16} align="center" justify="space-between">
+          {renderRemainder()}
+        </Flex>
+        <Flex gap={16} align="center" justify="space-between">
           <Text>Sale Price</Text>
-          <Text fontWeight={FontWeightEnum.Medium}>
-            {projectInfo?.preSalePrice
-              ? `1 ${projectInfo?.toRaiseToken?.symbol ?? '--'} = ${
-                  divDecimals(
-                    projectInfo?.preSalePrice ?? 0,
-                    getPriceDecimal(projectInfo?.crowdFundingIssueToken, projectInfo?.toRaiseToken),
-                  ).toFixed() ?? '--'
-                } ${projectInfo?.crowdFundingIssueToken?.symbol ?? '--'}`
-              : '--'}
-          </Text>
-        </div>
-        <div className="flex-between-center">
+          <CommonWrapText
+            align={CommonWrapTextAlignType.RIGHT}
+            textProps={{ fontWeight: FontWeightEnum.Medium }}
+            rowTextList={
+              projectInfo?.preSalePrice
+                ? [
+                    `1 ${projectInfo?.toRaiseToken?.symbol ?? '--'} =`,
+                    `${divDecimalsStr(
+                      projectInfo?.preSalePrice ?? 0,
+                      getPriceDecimal(projectInfo?.crowdFundingIssueToken, projectInfo?.toRaiseToken),
+                    )} ${projectInfo?.crowdFundingIssueToken?.symbol ?? '--'}`,
+                  ]
+                : ['--']
+            }
+          />
+        </Flex>
+        <Flex gap={16} align="center" justify="space-between">
           <Text>Purchase Quantity</Text>
-          <Text fontWeight={FontWeightEnum.Medium}>{`${divDecimalsStr(
-            projectInfo?.minSubscription,
-            projectInfo?.toRaiseToken?.decimals ?? 8,
-          )} ${projectInfo?.toRaiseToken?.symbol ?? '--'} - ${divDecimalsStr(
-            projectInfo?.maxSubscription,
-            projectInfo?.toRaiseToken?.decimals ?? 8,
-          )} ${projectInfo?.toRaiseToken?.symbol ?? '--'}`}</Text>
-        </div>
+          <CommonWrapText
+            align={CommonWrapTextAlignType.RIGHT}
+            textProps={{ fontWeight: FontWeightEnum.Medium }}
+            rowTextList={[
+              `${divDecimalsStr(projectInfo?.minSubscription, projectInfo?.toRaiseToken?.decimals ?? 8)} ${
+                projectInfo?.toRaiseToken?.symbol ?? '--'
+              } -`,
+              `${divDecimalsStr(projectInfo?.maxSubscription, projectInfo?.toRaiseToken?.decimals ?? 8)} ${
+                projectInfo?.toRaiseToken?.symbol ?? '--'
+              }`,
+            ]}
+          />
+        </Flex>
       </Flex>
       {(showViewWhitelistTasks || showWhitelistJoined || showOperationArea) && <div className="divider" />}
       <Flex vertical gap={12}>
@@ -299,26 +312,26 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
           </>
         )}
         {showWhitelistJoined && (
-          <div className="flex-between-center">
+          <Flex gap={16} align="center" justify="space-between">
             <Text>Whitelist</Text>
             <Text className="purple-text" fontWeight={FontWeightEnum.Medium}>
               Joined
             </Text>
-          </div>
+          </Flex>
         )}
         {canOperate && (
           <>
             {showMyAmount && (
-              <div className="flex-between-center">
+              <Flex gap={16} align="center" justify="space-between">
                 <Text>My Allocation</Text>
                 <Text fontWeight={FontWeightEnum.Medium}>
                   {divDecimalsStr(projectInfo?.investAmount, projectInfo?.toRaiseToken?.decimals ?? 8, '0')}{' '}
                   {projectInfo?.toRaiseToken?.symbol ?? '--'}
                 </Text>
-              </div>
+              </Flex>
             )}
             {showMyAmount && (
-              <div className="flex-between-center">
+              <Flex gap={16} align="center" justify="space-between">
                 <Text>
                   {projectInfo?.status === ProjectStatus.ENDED && projectInfo?.isWithdraw ? 'Receive' : 'To Receive'}
                 </Text>
@@ -326,7 +339,7 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
                   {divDecimalsStr(projectInfo?.toClaimAmount, projectInfo?.crowdFundingIssueToken?.decimals, '0')}{' '}
                   {projectInfo?.crowdFundingIssueToken?.symbol ?? '--'}
                 </Text>
-              </div>
+              </Flex>
             )}
             {showPurchaseButton && (
               <>
