@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import TradingPairList, { ITrandingParCard } from '../components/TradingPairList';
+import TradingPairList, { ITradingParCard } from '../components/TradingPairList';
 import './styles.less';
 import { Button, message as adMessage } from 'antd';
 import { CreateStepProps } from '../types';
@@ -15,8 +15,8 @@ import { emitLoading } from 'utils/events';
 
 const ConfirmTradingPair: React.FC<CreateStepProps> = ({ onNext }) => {
   const [tradingPair, setTradingPair] = useLocalStorage(storages.ConfirmTradingPair);
-  const [select, setSelect] = useState<ITrandingParCard>(tradingPair as ITrandingParCard);
-  const [tokenList, setTokenList] = useState<ITrandingParCard[]>([]);
+  const [select, setSelect] = useState<ITradingParCard>(tradingPair as ITradingParCard);
+  const [tokenList, setTokenList] = useState<ITradingParCard[]>([]);
   const [disabledBtn, setDisabledBtn] = useState<boolean>(true);
   const { loginState } = useWallet();
   const isBtnDisabled = useMemo(
@@ -24,7 +24,7 @@ const ConfirmTradingPair: React.FC<CreateStepProps> = ({ onNext }) => {
     [disabledBtn, loginState, select],
   );
 
-  const onSelect = useCallback((value: ITrandingParCard) => {
+  const onSelect = useCallback((value: ITradingParCard) => {
     setDisabledBtn(false);
     setSelect({ ...value });
   }, []);

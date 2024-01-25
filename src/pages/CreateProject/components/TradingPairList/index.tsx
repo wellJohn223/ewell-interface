@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import './styles.less';
 import { divDecimals } from 'utils/calculate';
 
-export interface ITrandingParCard {
+export interface ITradingParCard {
   chainId: string;
   symbol: string;
   tokenName: string;
@@ -12,15 +12,15 @@ export interface ITrandingParCard {
   balance: string;
 }
 
-interface TrandingParCardProps {
-  list: ITrandingParCard[];
-  current?: ITrandingParCard;
-  onChange?: (value: ITrandingParCard) => void;
+interface TradingParCardProps {
+  list: ITradingParCard[];
+  current?: ITradingParCard;
+  onChange?: (value: ITradingParCard) => void;
 }
 
-const TradingPairList: React.FC<TrandingParCardProps> = ({ list = [], current, onChange }) => {
+const TradingPairList: React.FC<TradingParCardProps> = ({ list = [], current, onChange }) => {
   const onClick = useCallback(
-    (item: ITrandingParCard) => {
+    (item: ITradingParCard) => {
       onChange?.(item);
     },
     [onChange],

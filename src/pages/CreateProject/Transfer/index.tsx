@@ -4,7 +4,7 @@ import storages from '../storages';
 import ButtonGroup from '../components/ButtonGroup';
 import { CreateStepProps } from '../types';
 import { ConfirmModal, SuccessModal } from './components/Modal';
-import { ITrandingParCard } from '../components/TradingPairList';
+import { ITradingParCard } from '../components/TradingPairList';
 import { useTransfer } from './useTransfer';
 import { emitLoading } from 'utils/events';
 import { message, Flex } from 'antd';
@@ -26,7 +26,7 @@ interface SuccessInfo {
 const { Title } = Typography;
 
 const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
-  const [tradingPair] = useLocalStorage<ITrandingParCard>(storages.ConfirmTradingPair);
+  const [tradingPair] = useLocalStorage<ITradingParCard>(storages.ConfirmTradingPair);
   const [additional] = useLocalStorage(storages.AdditionalInformation);
   const [idoInfo] = useLocalStorage<any>(storages.IDOInfo);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);

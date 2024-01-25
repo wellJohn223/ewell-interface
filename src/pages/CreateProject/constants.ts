@@ -59,7 +59,7 @@ export const ProjectInfoFromJson: FormItemProps[] = [
   },
   {
     type: 'fileUpload',
-    label: 'LogoUrl:',
+    label: 'Logo:',
     name: 'logoUrl',
     required: true,
     valuePropName: 'fileList',
