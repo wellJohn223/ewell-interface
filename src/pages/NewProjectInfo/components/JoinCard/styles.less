@@ -1,0 +1,47 @@
+.join-card-wrapper {
+  padding: 24px;
+
+  .swap-progress-wrapper {
+    .status {
+      padding: 0 8px;
+      border-radius: 200px;
+      background-color: #c1c2c9;
+      &.purple-status {
+        background-color: #863dff;
+        .@{app-prefix}-typography {
+          color: #fff;
+        }
+      }
+    }
+  }
+  .countdown-wrapper {
+    .@{app-prefix}-statistic-content {
+      font-size: 14px;
+      line-height: 22px;
+    }
+  }
+  .purchase-input-number-wrapper {
+    margin: 0;
+  }
+  .purchase-input-number {
+    width: 100%;
+    .@{app-prefix}-input-number {
+      border-right: none;
+    }
+    .@{app-prefix}-input-number-group-addon {
+      padding-left: 0;
+    }
+    .max-operation-wrapper {
+      padding-left: 12px;
+      border-left: 1px solid #070a26;
+      .max-operation {
+        &:hover {
+          color: #9b5eff;
+        }
+        &:active {
+          color: #5e2bb3;
+        }
+      }
+    }
+  }
+}
