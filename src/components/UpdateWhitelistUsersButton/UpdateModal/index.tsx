@@ -25,8 +25,6 @@ enum UpdateWay {
 
 export type UpdateModalInterface = {
   reset: () => void;
-  lockInput: () => void;
-  unLockInput: () => void;
 };
 
 const UpdateModal = forwardRef(function (

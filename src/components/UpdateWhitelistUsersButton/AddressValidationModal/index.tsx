@@ -31,7 +31,7 @@ const columns: ColumnsType<any> = [
     key: 'address',
     width: 236,
     render: (address) => (
-      <HashAddress preLen={8} endLen={9} hasCopy={false} chain={DEFAULT_CHAIN_ID} address={address} />
+      <HashAddress ignorePrefixSuffix={true} preLen={8} endLen={9} hasCopy={false} address={address} />
     ),
   },
   {
