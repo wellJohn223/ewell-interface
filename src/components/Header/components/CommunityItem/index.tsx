@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import './styles.less';
 
 export interface ICommunityItem {
@@ -9,10 +10,16 @@ export interface ICommunityItem {
 
 export interface ICommunityItemProps {
   data: ICommunityItem;
+  onClick?: () => void;
 }
-export const CommunityItem = ({ data: { name, icon, content, onClick } }: ICommunityItemProps) => {
+export const CommunityItem = ({ data: { name, icon, content, onClick: itemClick }, onClick }: ICommunityItemProps) => {
+  const onItemClick = useCallback(() => {
+    itemClick?.();
+    onClick?.();
+  }, [itemClick, onClick]);
+
   return (
-    <div className="menu-community-item-wrap" onClick={onClick}>
+    <div className="menu-community-item-wrap" onClick={onItemClick}>
       <div className="menu-community-item-icon-wrap">
         <img className="menu-community-item-icon" src={icon} alt="" />
       </div>

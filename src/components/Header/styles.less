@@ -17,8 +17,10 @@
     height: 24px;
   }
   .btn-row {
+    display: flex;
+
     .btn-item-box {
-      padding: 0 24px;
+      padding: 0 16px;
       height: 40px;
       > span {
         color: @font-1;
@@ -68,88 +70,6 @@
         .drawer-wrap {
           display: block;
         }
-      }
-    }
-
-    .login-btn {
-      display: inline-flex;
-    }
-  }
-
-  .my-wrap {
-    display: inline-flex;
-    height: 40px;
-    margin-left: 24px;
-    position: relative;
-
-    .my-btn {
-      padding: 0 20px;
-      border: 1px solid @border-1;
-      border-radius: 6px;
-      align-items: center;
-      display: flex;
-    }
-
-    .my-icon {
-      height: 16px;
-      margin-right: 8px;
-    }
-    .my-label {
-      font-size: 14px;
-      font-weight: 500;
-      line-height: 22px;
-      color: @font-1;
-    }
-
-    .wallet-drawer {
-      width: 280px;
-      padding-top: 16px;
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      transform: translate3d(0, 100%, 0);
-      z-index: 999;
-      display: none;
-
-      .wallet-drawer-box {
-        border-radius: 6px;
-        overflow: hidden;
-        box-shadow: 0 4px 16px 0 rgb(7 10 38 / 16%);
-        display: flex;
-        flex-direction: column;
-      }
-
-      .wallet-item-wrap {
-        display: flex;
-        width: 100%;
-        background-color: #fff;
-        padding: 16px;
-        cursor: pointer;
-
-        img {
-          height: 20px;
-          width: 20px;
-          margin-right: 8px;
-          flex-shrink: 0;
-          margin-top: 1px;
-        }
-        .wallet-item-body {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          .wallet-item-title {
-            font-weight: 500;
-            font-size: 14px;
-            line-height: 22px;
-            color: @font-1;
-          }
-        }
-      }
-    }
-
-    &:hover {
-      .wallet-drawer {
-        display: block;
       }
     }
   }

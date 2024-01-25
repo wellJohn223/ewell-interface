@@ -1,6 +1,6 @@
-@import '../../../../assets/theme/color.less';
+@import '../../assets/theme/color.less';
 
-.mobile-menu-drawer {
+.mobile-menu-item-wrap {
   .mobile-menu-item {
     height: 56px;
     display: flex;
@@ -8,6 +8,9 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 16px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
 
     .mobile-menu-item-arrow {
       width: 16px;
@@ -27,11 +30,12 @@
       background-color: @bg-10;
     }
   }
+}
 
-  .mobile-menu-children-wrap {
-    height: 0;
-    overflow: hidden;
-  }
+.mobile-menu-children-wrap {
+  height: 0;
+  overflow: hidden;
+
   .mobile-menu-children {
     margin: 0 16px;
     border-radius: 6px;
@@ -40,10 +44,11 @@
     transition: transform 0.5s ease;
     border: 1px solid @border-1;
   }
-  .mobile-menu-children-wrap-active {
-    height: auto;
-    .mobile-menu-children {
-      transform: translate3d(0, 0, 0);
-    }
+}
+
+.mobile-menu-children-wrap-active {
+  height: auto;
+  .mobile-menu-children {
+    transform: translate3d(0, 0, 0);
   }
 }
