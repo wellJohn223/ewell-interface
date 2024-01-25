@@ -164,6 +164,21 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
     });
   }, [isPreview, isPurchaseInputting, purchaseInputErrorMessage, purchaseInputValue]);
 
+  const handleValidatePurchaseInput = (value?: string) => {
+    const bigValue = new BigNumber(value ?? 0);
+    if (bigValue.gt(divDecimals(maxCanInvestAmount, projectInfo?.toRaiseToken?.decimals))) {
+      setPurchaseInputErrorMessage(
+        `Max Amount ${divDecimalsStr(maxCanInvestAmount, projectInfo?.toRaiseToken?.decimals)}`,
+      );
+    } else if (bigValue.lt(divDecimals(minCanInvestAmount, projectInfo?.toRaiseToken?.decimals))) {
+      setPurchaseInputErrorMessage(
+        `Min Amount ${divDecimalsStr(minCanInvestAmount, projectInfo?.toRaiseToken?.decimals)}`,
+      );
+    } else {
+      setPurchaseInputErrorMessage('');
+    }
+  };
+
   const renderRemainder = () => {
     if (isPreview) {
       return (
@@ -368,9 +383,12 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
                           className="max-operation purple-text cursor-pointer"
                           fontWeight={FontWeightEnum.Medium}
                           onClick={() => {
-                            setPurchaseInputValue(
-                              divDecimals(maxCanInvestAmount, projectInfo?.toRaiseToken?.decimals).toString(),
-                            );
+                            const maxValue = divDecimals(
+                              maxCanInvestAmount,
+                              projectInfo?.toRaiseToken?.decimals,
+                            ).toString();
+                            setPurchaseInputValue(maxValue);
+                            handleValidatePurchaseInput(maxValue);
                           }}
                           disabled={isPreview || notEnoughTokens}>
                           MAX
@@ -386,19 +404,8 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
                     onFocus={() => {
                       setIsPurchaseInputting(true);
                     }}
-                    onBlur={() => {
-                      const value = new BigNumber(purchaseInputValue);
-                      if (value.gt(divDecimals(maxCanInvestAmount, projectInfo?.toRaiseToken?.decimals))) {
-                        setPurchaseInputErrorMessage(
-                          `Max Amount ${divDecimalsStr(maxCanInvestAmount, projectInfo?.toRaiseToken?.decimals)}`,
-                        );
-                      } else if (value.lt(divDecimals(minCanInvestAmount, projectInfo?.toRaiseToken?.decimals))) {
-                        setPurchaseInputErrorMessage(
-                          `Min Amount ${divDecimalsStr(minCanInvestAmount, projectInfo?.toRaiseToken?.decimals)}`,
-                        );
-                      } else {
-                        setPurchaseInputErrorMessage('');
-                      }
+                    onBlur={(e) => {
+                      handleValidatePurchaseInput(e.target.value);
                       setIsPurchaseInputting(false);
                     }}
                   />
