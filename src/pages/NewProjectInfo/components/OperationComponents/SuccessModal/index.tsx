@@ -26,7 +26,7 @@ export default function SuccessModal({ modalProps, data: { amountList, descripti
   return (
     <Modal
       {...modalProps}
-      wrapClassName={clsx('project-info-success-modal-wrapper', modalProps.wrapClassName)}
+      className={clsx('project-info-success-modal-wrapper', 'common-modal', modalProps.className)}
       footer={null}
       centered>
       <Flex vertical gap={24}>
@@ -46,7 +46,7 @@ export default function SuccessModal({ modalProps, data: { amountList, descripti
             {description}
           </Text>
         </Flex>
-        <Flex className="modal-box-data-wrapper" justify="space-between">
+        <Flex className="modal-box-data-wrapper mobile-flex-vertical-gap-0" justify="space-between">
           <Text>{boxData.label}</Text>
           {/* TODO: jump */}
           <HashAddress

@@ -67,6 +67,7 @@ export default function RevokeFineButton({ projectInfo }: IClaimTokenButtonProps
         Revoke Token
       </Button>
       <Modal
+        className="common-modal"
         title="Revoke Token"
         footer={null}
         centered
@@ -79,7 +80,7 @@ export default function RevokeFineButton({ projectInfo }: IClaimTokenButtonProps
             Are you sure you want to cancel your investment? Withdrawal of investment will be charged 10% of your ELF as
             liquidated damages and the remaining ELF will be refunded after deduction of Gas.
           </Text>
-          <Flex gap={16}>
+          <Flex className="mobile-flex-vertical-reverse" gap={16}>
             <Button className="flex-1" onClick={() => setIsConfirmModalOpen(false)}>
               Back
             </Button>
@@ -96,6 +97,7 @@ export default function RevokeFineButton({ projectInfo }: IClaimTokenButtonProps
         </Flex>
       </Modal>
       <Modal
+        className="common-modal"
         title="Revoke Token"
         footer={null}
         centered
@@ -123,8 +125,11 @@ export default function RevokeFineButton({ projectInfo }: IClaimTokenButtonProps
           </Flex>
           <Flex vertical gap={8}>
             <Flex justify="space-between">
-              <Text>Estimated Transaction Fee</Text>
-              <Flex gap={8} align="baseline">
+              <Flex className="mobile-flex-vertical-gap-0" gap={3}>
+                <Text>Estimated</Text>
+                <Text>Transaction Fee</Text>
+              </Flex>
+              <Flex className="mobile-flex-vertical-end-gap-2" gap={8} align="baseline">
                 <Text>
                   {txFee} {projectInfo?.toRaiseToken?.symbol ?? '--'}
                 </Text>

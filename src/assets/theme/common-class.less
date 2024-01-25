@@ -144,6 +144,35 @@ body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, /* structural elements */
   margin: auto;
 }
 
+/* modal */
+.common-modal {
+  width: 438px !important;
+}
+@media (max-width: 640px) {
+  .common-modal {
+    width: 343px !important;
+  }
+}
+
+/* flex */
+@media (max-width: 640px) {
+  .mobile-flex-vertical-gap-0 {
+    flex-direction: column;
+    gap: 0 !important;
+  }
+  .mobile-flex-vertical-end-gap-2 {
+    flex-direction: column;
+    gap: 2px !important;
+    align-items: flex-end;
+  }
+  .mobile-flex-vertical-reverse {
+    flex-direction: column-reverse;
+    & > * {
+      flex: none;
+    }
+  }
+}
+
 /* font-size */
 .font-size-1 {
   font-size: 12px;

@@ -92,6 +92,7 @@ export default function ClaimTokenButton({ projectInfo }: IClaimTokenButtonProps
         Claim Token
       </Button>
       <Modal
+        className="common-modal"
         title="Claim Token"
         footer={null}
         centered
@@ -118,8 +119,11 @@ export default function ClaimTokenButton({ projectInfo }: IClaimTokenButtonProps
             />
           </Flex>
           <Flex justify="space-between">
-            <Text>Estimated Transaction Fee</Text>
-            <Flex gap={8} align="baseline">
+            <Flex className="mobile-flex-vertical-gap-0" gap={3}>
+              <Text>Estimated</Text>
+              <Text>Transaction Fee</Text>
+            </Flex>
+            <Flex className="mobile-flex-vertical-end-gap-2" gap={8} align="baseline">
               <Text>
                 {txFee} {projectInfo?.toRaiseToken?.symbol ?? '--'}
               </Text>
