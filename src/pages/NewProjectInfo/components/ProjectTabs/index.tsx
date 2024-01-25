@@ -1,7 +1,9 @@
+import React from 'react';
 import dayjs from 'dayjs';
 import { Tabs, TabsProps, Flex } from 'antd';
 import { Typography, FontWeightEnum } from 'aelf-design';
 import CommonCard from 'components/CommonCard';
+import CommonWrapText, { CommonWrapTextAlignType } from 'components/CommonWrapText';
 import { IProjectInfo } from 'types/project';
 import { getPriceDecimal } from 'utils';
 import { divDecimalsStr } from 'utils/calculate';
@@ -18,14 +20,54 @@ interface IProjectTabsProps {
   projectInfo?: IProjectInfo;
 }
 
+interface IIdoInformationDataItem {
+  key: string;
+  label: string | React.ReactNode;
+  value: string | React.ReactNode;
+}
+
 type TIdoInformationData = {
   title: string;
-  data: {
-    label: string;
-    value: string;
-    isTime?: boolean;
-  }[];
+  data: IIdoInformationDataItem[];
 }[];
+
+const renderCardRowTimeWrapText = (time?: string) => {
+  if (!time) {
+    return '--';
+  } else {
+    const value = dayjs(time).format('DD-MM-YYYY\nH:mm [UTC] Z');
+    const rowTextList = value.split('\n');
+    return (
+      <CommonWrapText
+        align={CommonWrapTextAlignType.RIGHT}
+        textProps={{ fontWeight: FontWeightEnum.Medium }}
+        rowTextList={rowTextList}
+      />
+    );
+  }
+};
+
+const renderCardRow = ({ key, label, value }: IIdoInformationDataItem) => {
+  let labelElement = label;
+  if (typeof label === 'string') {
+    labelElement = <Text>{labelElement}</Text>;
+  }
+
+  let valueElement = value;
+  if (typeof value === 'string') {
+    valueElement = (
+      <Text className="text-right" fontWeight={FontWeightEnum.Medium}>
+        {valueElement}
+      </Text>
+    );
+  }
+  return (
+    <Flex key={key} className="card-row" justify="space-between" align="self-start" gap={16}>
+      {labelElement}
+      {valueElement}
+    </Flex>
+  );
+};
 
 export default function ProjectTabs({ projectInfo }: IProjectTabsProps) {
   const idoInformationData: TIdoInformationData = [
@@ -33,17 +75,26 @@ export default function ProjectTabs({ projectInfo }: IProjectTabsProps) {
       title: 'Information',
       data: [
         {
+          key: 'Sale Price',
           label: 'Sale Price',
-          value: projectInfo?.preSalePrice
-            ? `1 ${projectInfo?.toRaiseToken?.symbol ?? '--'} = ${
-                divDecimalsStr(
+          value: projectInfo?.preSalePrice ? (
+            <CommonWrapText
+              align={CommonWrapTextAlignType.RIGHT}
+              textProps={{ fontWeight: FontWeightEnum.Medium }}
+              rowTextList={[
+                `1 ${projectInfo?.toRaiseToken?.symbol ?? '--'} =`,
+                `${divDecimalsStr(
                   projectInfo?.preSalePrice ?? 0,
                   getPriceDecimal(projectInfo?.crowdFundingIssueToken, projectInfo?.toRaiseToken),
-                ) ?? '--'
-              } ${projectInfo?.crowdFundingIssueToken?.symbol ?? '--'}`
-            : '--',
+                )} ${projectInfo?.crowdFundingIssueToken?.symbol ?? '--'}`,
+              ]}
+            />
+          ) : (
+            '--'
+          ),
         },
         {
+          key: 'Supply',
           label: 'Supply',
           value: `${divDecimalsStr(
             projectInfo?.crowdFundingIssueAmount,
@@ -51,12 +102,14 @@ export default function ProjectTabs({ projectInfo }: IProjectTabsProps) {
           )} ${projectInfo?.crowdFundingIssueToken?.symbol ?? '--'}`,
         },
         {
+          key: 'Goal',
           label: 'Goal',
           value: `${divDecimalsStr(projectInfo?.toRaisedAmount, projectInfo?.toRaiseToken?.decimals)} ${
             projectInfo?.toRaiseToken?.symbol || '--'
           }`,
         },
         {
+          key: 'Token Unsold',
           label: 'Token Unsold',
           value: projectInfo ? (projectInfo?.isBurnRestToken ? 'Burn' : 'Return') : '--',
         },
@@ -66,42 +119,23 @@ export default function ProjectTabs({ projectInfo }: IProjectTabsProps) {
       title: 'Schedule',
       data: [
         {
-          label: 'IDO Starts At',
-          value: projectInfo?.startTime || '--',
-          isTime: true,
+          key: 'IDO Starts At',
+          label: <CommonWrapText rowTextList={['IDO', 'Starts At']} />,
+          value: renderCardRowTimeWrapText(projectInfo?.startTime),
         },
         {
-          label: 'IDO Ends At',
-          value: projectInfo?.endTime || '--',
-          isTime: true,
+          key: 'IDO Ends At',
+          label: <CommonWrapText rowTextList={['IDO', 'Ends At']} />,
+          value: renderCardRowTimeWrapText(projectInfo?.endTime),
         },
         {
-          label: 'Token Distribution Time',
-          value: projectInfo?.tokenReleaseTime || '--',
-          isTime: true,
+          key: 'Token Distribution Time',
+          label: <CommonWrapText rowTextList={['Token', 'Distribution Time']} />,
+          value: renderCardRowTimeWrapText(projectInfo?.tokenReleaseTime),
         },
       ],
     },
   ];
-
-  const renderCardRow = ({
-    key,
-    label,
-    value,
-    isTime = false,
-  }: {
-    key: string | number;
-    label: string;
-    value: string;
-    isTime?: boolean;
-  }) => (
-    <Flex key={key} className="card-row" justify="space-between" align="self-start" gap={16}>
-      <Text>{label}</Text>
-      <Text className="text-right white-space-pre-wrap" fontWeight={FontWeightEnum.Medium}>
-        {isTime ? dayjs(value).format('DD-MM-YYYY\nH:mm [UTC] Z') : value}
-      </Text>
-    </Flex>
-  );
 
   const items: TabsProps['items'] = [
     {
@@ -116,16 +150,7 @@ export default function ProjectTabs({ projectInfo }: IProjectTabsProps) {
         <div className="tabs-ido-information-wrapper flex">
           {idoInformationData.map(({ title, data }, index) => (
             <CommonCard className="flex-1" key={index} title={title}>
-              <div className="ido-information-card-content-wrapper">
-                {data.map(({ label, value, isTime }, index) =>
-                  renderCardRow({
-                    key: index,
-                    label,
-                    value,
-                    isTime,
-                  }),
-                )}
-              </div>
+              <div className="ido-information-card-content-wrapper">{data.map((item) => renderCardRow(item))}</div>
             </CommonCard>
           ))}
         </div>
