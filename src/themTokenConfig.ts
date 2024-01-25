@@ -23,6 +23,7 @@ export const AELFD_THEME_CONFIG: IAelfdThemeProviderProps['theme'] = {
       headerSplitColor: '#ffffff',
       headerColor: '#070A26',
       borderColor: '#070A26',
+      cellPaddingBlock: 21,
     },
     Input: {
       activeBorderColor: '#863DFF',
