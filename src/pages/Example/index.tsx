@@ -18,7 +18,7 @@ import { stringify } from 'query-string';
 import { useLocation } from 'react-router-dom';
 
 export default function Example() {
-  const { login, logout, wallet, checkManagerSyncState } = useWallet();
+  const { wallet, checkManagerSyncState } = useWallet();
 
   const { getTokenContract, getEwellContract, getWhitelistContract, checkIsNeedApprove } = useViewContract();
   const [projectId, setProjectId] = useState('15d556a57222ef06ea9a46a6fb9db416bffb98b8de60ccef6bcded8ca851f407');
@@ -36,10 +36,6 @@ export default function Example() {
   }, [tokenPrice]);
 
   const { pathname } = useLocation();
-  useEffect(() => {
-    const _pathname = `${pathname}/`;
-    console.log('pathname', pathname);
-  }, [pathname]);
 
   const transfer = useCallback(async () => {
     try {
@@ -373,7 +369,7 @@ export default function Example() {
   }, [checkIsNeedApprove, wallet]);
 
   return (
-    <div>
+    <div className="common-page page-body">
       <Web3Button
         onClick={() => {
           console.log('jump');
@@ -429,21 +425,6 @@ export default function Example() {
         <Button onClick={addWhitelist}>addWhitelist</Button>
         <Button onClick={getWhitelistDetail}>getWhitelistDetail</Button>
       </div>
-
-      <Button
-        type="primary"
-        onClick={() => {
-          login();
-        }}>
-        login
-      </Button>
-      <Button
-        type="primary"
-        onClick={() => {
-          logout();
-        }}>
-        logout
-      </Button>
     </div>
   );
 }

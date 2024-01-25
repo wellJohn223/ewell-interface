@@ -109,6 +109,12 @@ export default function ProjectInfo({ previewData, style }: IProjectInfoProps) {
 
   const showInfo = useMemo(() => !!Object.keys(info).length, [info]);
 
+  const isLogin = useMemo(() => !!wallet, [wallet]);
+
+  const canEdit = useMemo(() => {
+    return isLogin && !!projectInfo?.isCreator && !isPreview;
+  }, [isLogin, isPreview, projectInfo?.isCreator]);
+
   const breadList = useMemo(
     () => [
       {
@@ -135,8 +141,22 @@ export default function ProjectInfo({ previewData, style }: IProjectInfoProps) {
         {!isPreview && <Breadcrumb className="bread-wrap" items={breadList} />}
         {showInfo && (
           <div className="flex project-info-content">
-            <InfoWrapper projectInfo={info} isPreview={isPreview} handleRefresh={getProjectInfo} />
-            {!isMobileMd && <ActionCard projectInfo={info} isPreview={isPreview} handleRefresh={getProjectInfo} />}
+            <InfoWrapper
+              projectInfo={info}
+              isPreview={isPreview}
+              isLogin={isLogin}
+              canEdit={canEdit}
+              handleRefresh={getProjectInfo}
+            />
+            {!isMobileMd && (
+              <ActionCard
+                projectInfo={info}
+                isPreview={isPreview}
+                isLogin={isLogin}
+                canEdit={canEdit}
+                handleRefresh={getProjectInfo}
+              />
+            )}
           </div>
         )}
       </div>

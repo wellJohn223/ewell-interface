@@ -5,8 +5,17 @@ import multipleArrowImg from './images/multiple-arrow.svg';
 import { Button } from 'aelf-design';
 import Web3Button from 'components/Web3Button';
 import { useNavigate } from 'react-router-dom';
+import { useCallback } from 'react';
 export default function Home() {
   const navigate = useNavigate();
+
+  const onProjectsClick = useCallback(() => {
+    navigate('/projects/all');
+  }, [navigate]);
+
+  const onLaunchClick = useCallback(() => {
+    navigate('/create-project');
+  }, [navigate]);
 
   return (
     <div className="home">
@@ -33,15 +42,10 @@ export default function Home() {
                 Exceptional Blockchain Ventures.
               </div>
               <div className="btn-area">
-                <Button className="btn-wrap" type="primary" block>
-                  Upcoming
+                <Button className="btn-wrap" type="primary" block onClick={onProjectsClick}>
+                  Projects
                 </Button>
-                <Web3Button
-                  className="btn-wrap"
-                  block
-                  onClick={() => {
-                    navigate('/create-project');
-                  }}>
+                <Web3Button className="btn-wrap" block onClick={onLaunchClick}>
                   Launch with EWELL
                 </Web3Button>
               </div>

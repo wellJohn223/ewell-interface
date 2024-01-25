@@ -10,33 +10,27 @@ import ActionCard from '../ActionCard';
 import { IProjectInfo } from 'types/project';
 import { pick } from 'utils';
 import { useMobileMd } from 'contexts/useStore/hooks';
-import { useWallet } from 'contexts/useWallet/hooks';
 import './styles.less';
 
 const { Title, Text } = Typography;
 
 interface IInfoWrapperProps {
   projectInfo: IProjectInfo;
-  isPreview?: boolean;
-  handleRefresh?: () => void;
+  isPreview: boolean;
+  isLogin: boolean;
+  canEdit: boolean;
+  handleRefresh: () => void;
 }
 
 const MAX_THUMBS_SLIDES_PER_VIEW = 5;
 const THUMBS_ITEM_WIDTH = 72;
 const THUMBS_ITEM_GAP = 16;
 
-export default function InfoWrapper({ projectInfo, isPreview, handleRefresh }: IInfoWrapperProps) {
+export default function InfoWrapper({ projectInfo, isPreview, isLogin, canEdit, handleRefresh }: IInfoWrapperProps) {
   const isMobileMd = useMobileMd();
   const { projectId } = useParams();
-  const { wallet } = useWallet();
 
   const { additionalInfo } = projectInfo;
-
-  const isLogin = useMemo(() => !!wallet, [wallet]);
-
-  const canEdit = useMemo(() => {
-    return !!isLogin && projectInfo?.isCreator && !isPreview;
-  }, [isLogin, isPreview, projectInfo?.isCreator]);
 
   const projectImgs = useMemo(() => {
     return (additionalInfo?.projectImgs?.split(',') || []).map((item, index) => ({
@@ -60,7 +54,7 @@ export default function InfoWrapper({ projectInfo, isPreview, handleRefresh }: I
     <div className="project-info-wrapper flex">
       <Flex justify="space-between" align="flex-start">
         <ProjectLogo src={additionalInfo?.logoUrl} alt="logo" />
-        {canEdit && !isMobileMd && (
+        {canEdit && isMobileMd && (
           <EditButton size="small" projectId={projectId}>
             Edit Project
           </EditButton>

@@ -19,6 +19,7 @@ const useStyle = createStyles(() => ({
 export interface ICommonDrawerProps {
   children?: ReactNode;
   className?: string;
+  contentClassName?: string;
   onClose?: () => void;
 }
 
@@ -27,51 +28,55 @@ export interface ICommonDrawerInterface {
   hide: () => void;
 }
 
-export const CommonDrawer = forwardRef(({ children, className, onClose }: ICommonDrawerProps, ref) => {
-  const { styles } = useStyle();
-  const [isOpen, setIsOpen] = useState(false);
+export const CommonDrawer = forwardRef(
+  ({ children, className, onClose, contentClassName }: ICommonDrawerProps, ref) => {
+    const { styles } = useStyle();
+    const [isOpen, setIsOpen] = useState(false);
 
-  const drawerClassNames: DrawerClassNames = useMemo(
-    () => ({
-      header: styles['common-drawer-header'],
-      body: styles['common-drawer-body'],
-    }),
-    [styles],
-  );
+    const drawerClassNames: DrawerClassNames = useMemo(
+      () => ({
+        header: styles['common-drawer-header'],
+        body: styles['common-drawer-body'],
+      }),
+      [styles],
+    );
 
-  const show = useCallback(() => {
-    setIsOpen(true);
-  }, []);
+    const show = useCallback(() => {
+      setIsOpen(true);
+    }, []);
 
-  const hide = useCallback(() => {
-    setIsOpen(false);
-  }, []);
+    const hide = useCallback(() => {
+      setIsOpen(false);
+    }, []);
 
-  useImperativeHandle(ref, () => ({
-    show,
-    hide,
-  }));
+    useImperativeHandle(ref, () => ({
+      show,
+      hide,
+    }));
 
-  return (
-    <Drawer
-      rootClassName={clsx(['common-menu-drawer', className])}
-      classNames={drawerClassNames}
-      onClose={onClose}
-      open={isOpen}
-      width={'100%'}
-      placement="right"
-      mask={false}>
-      <div className="common-drawer-header">
-        <img className="common-drawer-header-logo" src={logo} alt="logo" />
-        <img
-          className="common-drawer-close-btn"
-          src={closeBtnSvg}
-          onClick={() => {
-            setIsOpen(false);
-          }}
-        />
-      </div>
-      {children}
-    </Drawer>
-  );
-});
+    return (
+      <Drawer
+        rootClassName={clsx(['common-menu-drawer', className])}
+        classNames={drawerClassNames}
+        onClose={onClose}
+        open={isOpen}
+        width={'100%'}
+        placement="right"
+        mask={false}>
+        <div className="common-drawer-area">
+          <div className="common-drawer-header">
+            <img className="common-drawer-header-logo" src={logo} alt="logo" />
+            <img
+              className="common-drawer-close-btn"
+              src={closeBtnSvg}
+              onClick={() => {
+                setIsOpen(false);
+              }}
+            />
+          </div>
+          <div className={clsx(['common-drawer-content', contentClassName])}>{children}</div>
+        </div>
+      </Drawer>
+    );
+  },
+);

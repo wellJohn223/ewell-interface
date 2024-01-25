@@ -22,9 +22,10 @@ export default function CommonWrapText({
 }: ICommonWrapTextProps) {
   return (
     <Flex wrap="wrap" justify={align === CommonWrapTextAlignType.LEFT ? 'flex-start' : 'flex-end'} gap={3}>
-      {rowTextList.map((text) => (
+      {rowTextList.map((text, index) => (
         <Text
           {...textProps}
+          key={index}
           className={clsx(textProps?.className, { ['text-right']: align === CommonWrapTextAlignType.RIGHT })}>
           {text}
         </Text>
