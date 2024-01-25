@@ -165,7 +165,7 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
   }, [isPreview, isPurchaseInputting, purchaseInputErrorMessage, purchaseInputValue]);
 
   const handleValidatePurchaseInput = (value?: string) => {
-    const bigValue = new BigNumber(value ?? 0);
+    const bigValue = new BigNumber(value || 0);
     if (bigValue.gt(divDecimals(maxCanInvestAmount, projectInfo?.toRaiseToken?.decimals))) {
       setPurchaseInputErrorMessage(
         `Max Amount ${divDecimalsStr(maxCanInvestAmount, projectInfo?.toRaiseToken?.decimals)}`,
