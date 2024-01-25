@@ -1,0 +1,149 @@
+/* button */
+.@{app-prefix}-btn-dangerous.@{app-prefix}-btn-link span {
+  text-decoration: underline;
+}
+
+/* modal */
+.@{app-prefix}-modal-content {
+  .@{app-prefix}-modal-close:hover svg path {
+    fill: #070a26 !important;
+  }
+  .@{app-prefix}-modal-header {
+    margin-bottom: 24px !important;
+    .@{app-prefix}-modal-title {
+      padding-left: 16px;
+      text-align: center;
+    }
+  }
+  .modal-box-data-wrapper {
+    padding: 16px;
+    border: 1px solid #070a26;
+    border-radius: 6px;
+  }
+  .modal-single-button {
+    width: 206px;
+  }
+}
+
+/* tooltip */
+.@{app-prefix}-tooltip .@{app-prefix}-tooltip-inner {
+  min-width: auto;
+  min-height: auto;
+}
+
+/** table **/
+// To increase the weight of the css selector
+.@{app-prefix}-table-wrapper .@{app-prefix}-spin-container .@{app-prefix}-table {
+  border: 1px solid;
+  border-radius: 6px;
+  .@{app-prefix}-table-container {
+    &::after {
+      display: none;
+    }
+    table {
+      .@{app-prefix}-table-thead tr .@{app-prefix}-table-cell {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+      .@{app-prefix}-table-tbody tr .@{app-prefix}-table-cell {
+        border-bottom: none;
+        border-bottom-left-radius: 6px;
+        border-bottom-right-radius: 6px;
+      }
+    }
+  }
+}
+
+/** tabs **/
+.@{app-prefix}-tabs-nav {
+  &::before {
+    border: none !important;
+  }
+  .@{app-prefix}-tabs-tab-btn {
+    font-weight: 500;
+  }
+}
+
+/** inputNumber **/
+.@{app-prefix}-input-number-wrapper {
+  &:hover {
+    .@{app-prefix}-input-number,
+    .@{app-prefix}-input-number-group-addon {
+      border-color: #9b5eff;
+    }
+  }
+  .@{app-prefix}-input-number {
+    caret-color: #863dff;
+  }
+  .@{app-prefix}-input-number-focused {
+    border-color: #863dff;
+    & + .@{app-prefix}-input-number-group-addon {
+      border-color: #863dff;
+    }
+    &.@{app-prefix}-input-number-status-error {
+      border-color: #f53f3f;
+      & + .@{app-prefix}-input-number-group-addon {
+        border-color: #f53f3f;
+      }
+    }
+  }
+}
+
+/** switch **/
+.@{app-prefix}-switch-small {
+  width: 28px;
+}
+
+/** hashAddress **/
+.@{app-prefix}-hash-address {
+  &.hash-address-small {
+    div:nth-child(2) {
+      margin-left: 4px;
+    }
+  }
+}
+
+/** loading **/
+.@{app-prefix}-loading {
+  width: auto !important;
+}
+
+/** upload **/
+.@{app-prefix}-upload {
+  .@{app-prefix}-upload-button {
+    min-height: 240px;
+  }
+}
+
+.@{app-prefix}-form-item .@{app-prefix}-form-item-label > label .@{app-prefix}-form-item-tooltip {
+  order: 2;
+  color: #070a26;
+}
+.@{app-prefix}-form-vertical .@{app-prefix}-form-item-label > label::after {
+  display: none;
+}
+
+/** pagination **/
+// To increase the weight of the css selector
+button.@{app-prefix}-pagination-button,
+div.@{app-prefix}-pageNumber-container {
+  padding: 0 16px;
+  border-radius: 6px;
+}
+button.@{app-prefix}-pagination-button {
+  &[disabled] {
+    color: #c1c2c9;
+    background-color: #ebebee;
+    border: none;
+  }
+}
+div.@{app-prefix}-pageNumber-container {
+  background-color: #f5f5f6;
+}
+
+/** breadcrumb **/
+.@{app-prefix}-breadcrumb {
+  a:hover {
+    background-color: transparent;
+  }
+}

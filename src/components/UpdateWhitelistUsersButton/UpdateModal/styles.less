@@ -1,0 +1,36 @@
+.update-whitelist-users-modal {
+  .download-template {
+    margin-left: 4px;
+  }
+  .update-way-radio-wrapper {
+    height: 40px;
+    padding: 1px;
+    border: 1px solid #070a26;
+    border-radius: 8px;
+    .radio-item {
+      flex: 1;
+      &:first-child {
+        border-radius: 6px 0 0 6px;
+      }
+      &:last-child {
+        border-radius: 0 6px 6px 0;
+      }
+      &.radio-item-active {
+        background-color: #070a26;
+        .@{app-prefix}-typography {
+          color: #fff;
+        }
+      }
+    }
+  }
+  .address-upload,
+  .paste-address-textarea {
+    height: 240px;
+  }
+  .paste-address-textarea {
+    resize: none;
+  }
+  .modal-footer-button {
+    width: 206px;
+  }
+}

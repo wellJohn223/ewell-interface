@@ -1,0 +1,12 @@
+import union from './union.svg';
+import arrow from './arrow.svg';
+import success from './success.svg';
+import tableEmpty from './tableEmpty.svg';
+import sandGlass from './sandGlass.svg';
+import edit from './edit.svg';
+import login from './login.svg';
+import wallet from './wallet.svg';
+import download from './download.svg';
+import add from './add.svg';
+import remove from './remove.svg';
+export { union, arrow, success, tableEmpty, sandGlass, edit, login, wallet, download, add, remove };
