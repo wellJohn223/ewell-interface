@@ -7,7 +7,7 @@ import { Typography } from 'aelf-design';
 import { WebLoginEvents, useWebLoginEvent } from 'aelf-web-login';
 import ActionCard from './components/ActionCard';
 import InfoWrapper from './components/InfoWrapper';
-import { useMobile } from 'contexts/useStore/hooks';
+import { useMobileMd } from 'contexts/useStore/hooks';
 import { useWallet } from 'contexts/useWallet/hooks';
 import { useViewContract } from 'contexts/useViewContract/hooks';
 import { DEFAULT_CHAIN_ID } from 'constants/network';
@@ -24,7 +24,7 @@ interface IProjectInfoProps {
 const { Text } = Typography;
 
 export default function ProjectInfo({ previewData, style }: IProjectInfoProps) {
-  const isMobile = useMobile();
+  const isMobileMd = useMobileMd();
   const { wallet } = useWallet();
   const { projectId } = useParams();
   const location = useLocation();
@@ -131,12 +131,12 @@ export default function ProjectInfo({ previewData, style }: IProjectInfoProps) {
   return (
     <>
       {contextHolder}
-      <div className="common-page page-body project-info-wrapper" style={style}>
+      <div className="common-page page-body project-info-container" style={style}>
         {!isPreview && <Breadcrumb className="bread-wrap" items={breadList} />}
         {showInfo && (
           <div className="flex project-info-content">
-            <InfoWrapper projectInfo={info} />
-            {!isMobile && <ActionCard projectInfo={info} isPreview={isPreview} handleRefresh={getProjectInfo} />}
+            <InfoWrapper projectInfo={info} isPreview={isPreview} handleRefresh={getProjectInfo} />
+            {!isMobileMd && <ActionCard projectInfo={info} isPreview={isPreview} handleRefresh={getProjectInfo} />}
           </div>
         )}
       </div>

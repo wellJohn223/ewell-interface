@@ -25,8 +25,6 @@ enum UpdateWay {
 
 export type UpdateModalInterface = {
   reset: () => void;
-  lockInput: () => void;
-  unLockInput: () => void;
 };
 
 const UpdateModal = forwardRef(function (
@@ -37,9 +35,8 @@ const UpdateModal = forwardRef(function (
   const [file, setFile] = useState<RcFile>();
   const [addressInput, setAddressInput] = useState<string>('');
 
-  const handleUpload = useCallback((file: RcFile) => {
-    console.log('file: ', file);
-    setFile(file);
+  const handleUpload = useCallback(({ fileList }) => {
+    setFile(fileList?.[0]);
   }, []);
 
   const onSubmit = useCallback(async () => {
@@ -112,7 +109,14 @@ const UpdateModal = forwardRef(function (
           </Flex>
         </Flex>
         {currentUpdateWay === UpdateWay.UPLOAD && (
-          <Upload className="address-upload" tips="Browse your file here" beforeUpload={handleUpload} />
+          <Upload
+            className="address-upload"
+            tips="Browse your file here"
+            showUploadButton={!file}
+            accept=".csv, .xlsx, .xls"
+            fileList={file ? [file] : []}
+            onChange={handleUpload}
+          />
         )}
         {currentUpdateWay === UpdateWay.PASTE && (
           <TextArea

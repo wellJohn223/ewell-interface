@@ -21,13 +21,13 @@ interface ICommonCommunityLogoListProps {
 
 export const COMMUNITY_LOGO_LIST = [
   CommunityLogoType.WEBSITE,
-  CommunityLogoType.FACEBOOK,
-  CommunityLogoType.TELEGRAM,
   CommunityLogoType.X,
+  CommunityLogoType.TELEGRAM,
+  CommunityLogoType.MEDIUM,
+  CommunityLogoType.FACEBOOK,
   CommunityLogoType.GITHUB,
   CommunityLogoType.DISCORD,
   CommunityLogoType.REDDIT,
-  CommunityLogoType.MEDIUM,
 ];
 
 export default function CommonCommunityLogoList({

@@ -153,7 +153,7 @@ export default function PurchaseButton({ buttonDisabled, projectInfo, purchaseAm
         Purchase with ELF
       </Button>
       <Modal
-        wrapClassName="purchase-submit-modal-wrapper"
+        className="purchase-submit-modal-wrapper common-modal"
         title="Confirm Payment"
         footer={null}
         centered
@@ -212,7 +212,7 @@ export default function PurchaseButton({ buttonDisabled, projectInfo, purchaseAm
           <Flex vertical gap={8}>
             <Flex justify="space-between">
               <Text>Allocation</Text>
-              <Flex gap={8} align="baseline">
+              <Flex className="mobile-flex-vertical-end-gap-2" gap={8} align="baseline">
                 <Text>
                   {divDecimalsStr(purchaseAmount, 0)} {projectInfo?.toRaiseToken?.symbol ?? '--'}
                 </Text>
@@ -227,8 +227,11 @@ export default function PurchaseButton({ buttonDisabled, projectInfo, purchaseAm
               </Flex>
             </Flex>
             <Flex justify="space-between">
-              <Text>Estimated Transaction Fee</Text>
-              <Flex gap={8} align="baseline">
+              <Flex className="mobile-flex-vertical-gap-0" gap={3}>
+                <Text>Estimated</Text>
+                <Text>Transaction Fee</Text>
+              </Flex>
+              <Flex className="mobile-flex-vertical-end-gap-2" gap={8} align="baseline">
                 <Text>
                   {totalTxFee.toFixed()} {projectInfo?.toRaiseToken?.symbol ?? '--'}
                 </Text>
@@ -244,7 +247,7 @@ export default function PurchaseButton({ buttonDisabled, projectInfo, purchaseAm
             </Flex>
             <Flex justify="space-between">
               <Text>Total</Text>
-              <Flex gap={8} align="baseline">
+              <Flex className="mobile-flex-vertical-end-gap-2" gap={8} align="baseline">
                 <Text fontWeight={FontWeightEnum.Medium}>
                   {totalAmount.toFormat()} {projectInfo?.toRaiseToken?.symbol ?? '--'}
                 </Text>

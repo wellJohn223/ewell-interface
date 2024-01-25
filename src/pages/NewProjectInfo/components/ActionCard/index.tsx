@@ -1,40 +1,34 @@
+import { useParams } from 'react-router-dom';
 import { Flex } from 'antd';
 import { Button } from 'aelf-design';
+import EditButton from '../OperationComponents/EditButton';
 import JoinCard from '../JoinCard';
 import ProjectManagementCard from '../ProjectManagementCard';
-import { edit, login as loginIcon } from 'assets/images';
+import { login as loginIcon } from 'assets/images';
 import { useWallet } from 'contexts/useWallet/hooks';
 import { IProjectInfo } from 'types/project';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useMemo } from 'react';
+import { useMobileMd } from 'contexts/useStore/hooks';
 import './styles.less';
 
 interface IActionCardProps {
   projectInfo: IProjectInfo;
   isPreview?: boolean;
+  isLogin?: boolean;
+  canEdit?: boolean;
   handleRefresh?: () => void;
 }
 
-export default function ActionCard({ projectInfo, isPreview, handleRefresh }: IActionCardProps) {
-  const { login, wallet } = useWallet();
+export default function ActionCard({ projectInfo, isPreview, isLogin, canEdit, handleRefresh }: IActionCardProps) {
+  const isMobileMd = useMobileMd();
+  const { login } = useWallet();
   const { projectId } = useParams();
-  const navigate = useNavigate();
-  const isLogin = useMemo(() => !!wallet, [wallet]);
-  const canEdit = useMemo(() => {
-    return !!isLogin && projectInfo?.isCreator && !isPreview;
-  }, [isLogin, isPreview, projectInfo?.isCreator]);
 
   return (
-    <Flex className="action-card-wrapper flex-1" vertical gap={24}>
-      {canEdit && (
-        <Button
-          className="edit-button"
-          icon={<img src={edit} alt="edit" />}
-          onClick={() => {
-            navigate(`/edit-information/${projectId}`);
-          }}>
+    <Flex className="action-card-wrapper" vertical gap={24}>
+      {canEdit && !isMobileMd && (
+        <EditButton className="edit-button" projectId={projectId}>
           Edit Project Information
-        </Button>
+        </EditButton>
       )}
       <JoinCard projectInfo={projectInfo} isPreview={isPreview} handleRefresh={handleRefresh} />
       {!isLogin && (

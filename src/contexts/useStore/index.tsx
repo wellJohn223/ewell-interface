@@ -10,7 +10,8 @@ const body = window.document.getElementsByTagName('body')[0];
 body.className = 'pc-site';
 
 const mobileWidth = ZERO.plus(640);
-declare type StoreState = { mobile?: boolean };
+const mobileWidthMd = ZERO.plus(768);
+declare type StoreState = { mobile?: boolean; mobileMd?: boolean };
 export function useStore(): [StoreState] {
   return useContext(StoreContext);
 }
@@ -26,6 +27,7 @@ function reducer(state: any, { type, payload }: any) {
 export default function Provider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
   const [mobile, setMobile] = useState<boolean>();
+  const [mobileMd, setMobileMd] = useState<boolean>();
 
   // isMobile
   useEffectOnce(() => {
@@ -38,6 +40,7 @@ export default function Provider({ children }: { children: ReactNode }) {
           isM.apple.tablet ||
           isM.android.tablet,
       );
+      setMobileMd(mobileWidthMd.gt(window.innerWidth));
     };
     resize();
     window.addEventListener('resize', resize);
@@ -57,7 +60,8 @@ export default function Provider({ children }: { children: ReactNode }) {
   }, [mobile]);
 
   return (
-    <StoreContext.Provider value={useMemo(() => [{ ...state, mobile }, { dispatch }], [state, mobile])}>
+    <StoreContext.Provider
+      value={useMemo(() => [{ ...state, mobile, mobileMd }, { dispatch }], [state, mobile, mobileMd])}>
       {children}
     </StoreContext.Provider>
   );

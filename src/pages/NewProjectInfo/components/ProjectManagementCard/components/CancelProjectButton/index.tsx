@@ -66,6 +66,7 @@ export default function CancelProjectButton({ projectInfo }: ICancelProjectButto
         Closure Of Project
       </Button>
       <Modal
+        className="common-modal"
         title="Closure of Project"
         footer={null}
         centered
@@ -77,7 +78,7 @@ export default function CancelProjectButton({ projectInfo }: ICancelProjectButto
             <Text fontWeight={FontWeightEnum.Medium}>“{projectInfo?.additionalInfo?.projectName}”</Text>. After the
             project is closed, you will not receive the funds raised, but only the full amount of Token.
           </Text>
-          <Flex gap={16}>
+          <Flex className="mobile-flex-vertical-reverse" gap={16}>
             <Button className="flex-1" onClick={() => setIsConfirmModalOpen(false)}>
               Back
             </Button>
@@ -95,6 +96,7 @@ export default function CancelProjectButton({ projectInfo }: ICancelProjectButto
         </Flex>
       </Modal>
       <Modal
+        className="common-modal"
         title="Claim Token"
         footer={null}
         centered
@@ -111,9 +113,9 @@ export default function CancelProjectButton({ projectInfo }: ICancelProjectButto
             <Title fontWeight={FontWeightEnum.Medium}>{projectInfo?.crowdFundingIssueToken?.symbol || '--'}</Title>
           </Flex>
           <Flex className="modal-box-data-wrapper" justify="space-between" align="center">
-            <Text className="half-width">Address</Text>
+            <Text>Address</Text>
             <HashAddress
-              className="half-width hash-address-small"
+              className="hash-address-small"
               preLen={8}
               endLen={9}
               chain={DEFAULT_CHAIN_ID}
@@ -121,8 +123,11 @@ export default function CancelProjectButton({ projectInfo }: ICancelProjectButto
             />
           </Flex>
           <Flex justify="space-between" align="center">
-            <Text>Estimated Transaction Fee</Text>
-            <Flex gap={8} justify="flex-end" align="baseline">
+            <Flex className="mobile-flex-vertical-gap-0" gap={3}>
+              <Text>Estimated</Text>
+              <Text>Transaction Fee</Text>
+            </Flex>
+            <Flex className="mobile-flex-vertical-end-gap-2" gap={8} justify="flex-end" align="baseline">
               <Text>
                 {txFee} {projectInfo?.toRaiseToken?.symbol ?? '--'}
               </Text>
