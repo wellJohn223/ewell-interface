@@ -16,6 +16,7 @@ import { Typography, FontWeightEnum } from 'aelf-design';
 import BigNumber from 'bignumber.js';
 import { ProjectStatus } from 'types/project';
 import { resetCreateProjectInfo } from '../utils';
+import { timesDecimals } from 'utils/calculate';
 
 interface SuccessInfo {
   supply?: number;
@@ -47,7 +48,10 @@ const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
       endTime,
       tokenReleaseTime,
       unlockTime: tokenReleaseTime,
-      toRaisedAmount: new BigNumber(data.crowdFundingIssueAmount).div(data.preSalePrice).toString(),
+      toRaisedAmount: timesDecimals(
+        new BigNumber(data.crowdFundingIssueAmount).div(data.preSalePrice),
+        AELF_TOKEN_INFO.decimals,
+      ).toString(),
       status: ProjectStatus.UPCOMING,
       whitelistInfo: {
         url: whitelistUrl,

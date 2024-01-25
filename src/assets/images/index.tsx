@@ -9,4 +9,5 @@ import wallet from './wallet.svg';
 import download from './download.svg';
 import add from './add.svg';
 import remove from './remove.svg';
-export { union, arrow, success, tableEmpty, sandGlass, edit, login, wallet, download, add, remove };
+import logo from './logo.svg';
+export { union, arrow, success, tableEmpty, sandGlass, edit, login, wallet, download, add, remove, logo };

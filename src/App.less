@@ -20,6 +20,12 @@
   min-height: calc(100vh - @footer-height - @header-height);
 }
 
+@supports (-webkit-touch-callout: none) {
+  .ewell-ui-root {
+    height: fill-available;
+  }
+}
+
 .mobile-site {
   .page-body {
     min-height: calc(100vh - @mobile-footer-height - @header-height);

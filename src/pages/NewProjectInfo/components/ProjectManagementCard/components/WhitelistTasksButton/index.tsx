@@ -90,6 +90,7 @@ export default function WhitelistTasksButton({ whitelistId, whitelistTasksUrl, d
         </Flex>
       </Modal>
       <Modal
+        className="common-modal"
         title={`${isEdit ? 'Edited' : 'Opened'} Successfully`}
         footer={null}
         centered

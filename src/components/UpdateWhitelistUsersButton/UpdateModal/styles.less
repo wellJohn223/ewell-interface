@@ -24,8 +24,16 @@
     }
   }
   .address-upload,
+  .address-upload .@{app-prefix}-upload-list-picture-card,
   .paste-address-textarea {
     height: 240px;
+  }
+  .address-upload {
+    .@{app-prefix}-upload-list-picture-card {
+      .@{app-prefix}-upload-list-item-container > div {
+        margin-bottom: 0;
+      }
+    }
   }
   .paste-address-textarea {
     resize: none;
