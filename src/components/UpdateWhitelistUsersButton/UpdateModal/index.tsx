@@ -115,6 +115,7 @@ const UpdateModal = forwardRef(function (
             className="address-upload"
             tips="Browse your file here"
             showUploadButton={!file}
+            accept=".csv, .xlsx, .xls"
             fileList={file ? [file] : []}
             onChange={handleUpload}
           />
