@@ -66,7 +66,7 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
   ]);
 
   const minCanInvestAmount = useMemo(() => {
-    return new BigNumber(projectInfo?.minSubscription || '');
+    return new BigNumber(projectInfo?.minSubscription ?? 0);
   }, [projectInfo?.minSubscription]);
 
   const notEnoughTokens = useMemo(() => {
@@ -105,20 +105,20 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
   }, [projectInfo?.status]);
 
   const showRevokeInvestmentButton = useMemo(() => {
-    return projectInfo?.status === ProjectStatus.PARTICIPATORY && new BigNumber(projectInfo?.investAmount || '').gt(0);
+    return projectInfo?.status === ProjectStatus.PARTICIPATORY && new BigNumber(projectInfo?.investAmount ?? 0).gt(0);
   }, [projectInfo?.investAmount, projectInfo?.status]);
 
   const showUnlockTips = useMemo(() => {
-    return projectInfo?.status === ProjectStatus.UNLOCKED && new BigNumber(projectInfo?.investAmount || '').gt(0);
+    return projectInfo?.status === ProjectStatus.UNLOCKED && new BigNumber(projectInfo?.investAmount ?? 0).gt(0);
   }, [projectInfo?.investAmount, projectInfo?.status]);
 
   const showClaimTokenButton = useMemo(() => {
     return (
       projectInfo?.status === ProjectStatus.ENDED &&
-      new BigNumber(projectInfo?.investAmount || '').gt(0) &&
-      !projectInfo?.isWithdraw
+      new BigNumber(projectInfo?.investAmount ?? 0).gt(0) &&
+      new BigNumber(projectInfo?.toClaimAmount ?? 0).gt(0)
     );
-  }, [projectInfo?.investAmount, projectInfo?.isWithdraw, projectInfo?.status]);
+  }, [projectInfo?.investAmount, projectInfo?.status, projectInfo?.toClaimAmount]);
 
   const showRevokeFineButton = useMemo(() => {
     return projectInfo?.status === ProjectStatus.CANCELED && !projectInfo?.claimedLiquidatedDamage;
@@ -143,6 +143,14 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
     showRevokeInvestmentButton,
     showUnlockTips,
   ]);
+
+  const hasClaimedToken = useMemo(() => {
+    return (
+      projectInfo?.status === ProjectStatus.ENDED &&
+      new BigNumber(projectInfo?.investAmount ?? 0).gt(0) &&
+      new BigNumber(projectInfo?.toClaimAmount ?? 0).eq(0)
+    );
+  }, [projectInfo?.investAmount, projectInfo?.status, projectInfo?.toClaimAmount]);
 
   useEffect(() => {
     setIsPurchaseButtonDisabled((pre) => {
@@ -332,11 +340,13 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
             )}
             {showMyAmount && (
               <Flex gap={16} align="center" justify="space-between">
-                <Text>
-                  {projectInfo?.status === ProjectStatus.ENDED && projectInfo?.isWithdraw ? 'Receive' : 'To Receive'}
-                </Text>
+                <Text>{hasClaimedToken ? 'Receive' : 'To Receive'}</Text>
                 <Text fontWeight={FontWeightEnum.Medium}>
-                  {divDecimalsStr(projectInfo?.toClaimAmount, projectInfo?.crowdFundingIssueToken?.decimals, '0')}{' '}
+                  {divDecimalsStr(
+                    hasClaimedToken ? projectInfo?.actualClaimAmount : projectInfo?.toClaimAmount,
+                    projectInfo?.crowdFundingIssueToken?.decimals,
+                    '0',
+                  )}{' '}
                   {projectInfo?.crowdFundingIssueToken?.symbol ?? '--'}
                 </Text>
               </Flex>
