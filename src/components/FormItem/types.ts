@@ -15,7 +15,7 @@ import type { IInputProps, InputTextAreaProps, InputPasswordProps, IRadioProps }
 import type { FormTreeProps } from './components/FormTree';
 import type { CommonSelectItem } from 'components/CommonSelect';
 import { FormItemProps } from './index';
-import { IFUploadProps } from '../Upload';
+import { IFUploadProps } from '../AWSUpload';
 import { ReactHTML, ReactHTMLElement } from 'react';
 
 export type inputProps = {

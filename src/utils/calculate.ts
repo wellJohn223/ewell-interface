@@ -23,6 +23,20 @@ export function divDecimalsStr(a?: BigNumber.Value, decimals: string | number = 
 export function bigNumberToWeb3Input(input: BigNumber): string {
   return BigNumber.isBigNumber(input) ? input.toFixed(0) : new BigNumber(input).toFixed(0);
 }
+
 export function valueToPercentage(input?: BigNumber.Value) {
   return BigNumber.isBigNumber(input) ? input.times(100) : timesDecimals(input, 2);
 }
+
+export const formatInputNumberString = (value: string | BigNumber, decimalPlaces: number = 0) => {
+  const n = ZERO.plus(value);
+  if (n.isNaN()) return '';
+  const fixedNumber = n.toFixed(decimalPlaces, BigNumber.ROUND_DOWN);
+  return ZERO.plus(fixedNumber).toFormat();
+};
+
+export const numberLteZERO = (value?: string | BigNumber) => {
+  if (!value) return false;
+  const n = ZERO.plus(value);
+  return !n.isNaN() && n.lte(0);
+};

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import TradingPairList, { ITrandingParCard } from '../components/TradingPairList';
+import TradingPairList, { ITradingParCard } from '../components/TradingPairList';
 import './styles.less';
 import { Button, message as adMessage } from 'antd';
 import { CreateStepProps } from '../types';
@@ -12,11 +12,12 @@ import { useWallet } from 'contexts/useWallet/hooks';
 import { WebLoginState } from 'aelf-web-login';
 import myEvents from 'utils/myEvent';
 import { emitLoading } from 'utils/events';
+import { mockTokenList } from './mock';
 
 const ConfirmTradingPair: React.FC<CreateStepProps> = ({ onNext }) => {
   const [tradingPair, setTradingPair] = useLocalStorage(storages.ConfirmTradingPair);
-  const [select, setSelect] = useState<ITrandingParCard>(tradingPair as ITrandingParCard);
-  const [tokenList, setTokenList] = useState<ITrandingParCard[]>([]);
+  const [select, setSelect] = useState<ITradingParCard>(tradingPair as ITradingParCard);
+  const [tokenList, setTokenList] = useState<ITradingParCard[]>([]);
   const [disabledBtn, setDisabledBtn] = useState<boolean>(true);
   const { loginState } = useWallet();
   const isBtnDisabled = useMemo(
@@ -24,14 +25,14 @@ const ConfirmTradingPair: React.FC<CreateStepProps> = ({ onNext }) => {
     [disabledBtn, loginState, select],
   );
 
-  const onSelect = useCallback((value: ITrandingParCard) => {
+  const onSelect = useCallback((value: ITradingParCard) => {
     setDisabledBtn(false);
     setSelect({ ...value });
   }, []);
 
   const onClick = useCallback(() => {
     setTradingPair(select);
-    console.log('click-next');
+    console.log('click-next', select);
     onNext?.();
   }, [setTradingPair, select, onNext]);
 

@@ -3,12 +3,17 @@ import { NamePath } from 'antd/lib/form/interface';
 import { ZERO } from 'constants/misc';
 import dayjs from 'dayjs';
 import { isUrl } from 'utils/reg';
-import { integerGtZEROValidator, integerValidator, numberGtZEROValidator } from 'utils/validate';
+import {
+  integerGtZEROValidator,
+  integerValidator,
+  numberGtZEROValidator,
+  numberGteZEROValidator,
+} from 'utils/validate';
 import { timesDecimals } from 'utils/calculate';
 import { getLocalStorage } from 'utils/localstorage';
 import { ltTip } from './utils';
 import storages from './storages';
-import { ITrandingParCard } from './components/TradingPairList';
+import { ITradingParCard } from './components/TradingPairList';
 
 type ValidatorFun = (form: FormInstance<any>, v: any) => any;
 
@@ -33,8 +38,8 @@ export const circulationValidator = async (_: any, v: any) => {
 
 export const minSubscriptionValidator: ValidatorFun = async (form, v) => {
   const bigV = ZERO.plus(v);
-  const validator = await integerGtZEROValidator('', v);
-  if (validator) return Promise.reject('the number must greater than 0');
+  // const validator = await integerGtZEROValidator('', v);
+  // if (validator) return Promise.reject('the number must greater than or equal 0');
   const maxSubscription = form.getFieldValue('maxSubscription');
   console.log('maxSubscription', maxSubscription);
 
@@ -184,7 +189,8 @@ export const preSalePriceValidator = async (rule: any, v: any) => {
   const validator = await numberGtZEROValidator('', v);
   console.log('validated-result', validator);
   if (validator) return Promise.reject('the number must greater than 0');
-  const { decimals, balance }: ITrandingParCard = getLocalStorage(storages.ConfirmTradingPair);
+  // TODO: get balance
+  const { decimals, balance }: ITradingParCard = getLocalStorage(storages.ConfirmTradingPair);
   if (!decimals && decimals !== 0 && !balance) {
     return Promise.reject('please go to select trading pair');
   }
@@ -202,7 +208,7 @@ export const crowdFundingIssueAmountValidator: ValidatorFun = async (form: any, 
   const bigV = ZERO.plus(v);
   const validator = await numberGtZEROValidator('', v);
   if (validator) return Promise.reject('the number must greater than 0');
-  const projectToken: ITrandingParCard = getLocalStorage(storages.ConfirmTradingPair);
+  const projectToken: ITradingParCard = getLocalStorage(storages.ConfirmTradingPair);
   if (timesDecimals(bigV, projectToken.decimals).gt(projectToken.balance))
     return Promise.reject('the maximum value does not exceed the total amount of Token in the wallet');
 
