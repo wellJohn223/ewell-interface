@@ -3,7 +3,6 @@ import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useParams, useLocation, NavLink } from 'react-router-dom';
 import { request } from 'api';
 import { Breadcrumb, message } from 'antd';
-import { Typography } from 'aelf-design';
 import { WebLoginEvents, useWebLoginEvent } from 'aelf-web-login';
 import ActionCard from './components/ActionCard';
 import InfoWrapper from './components/InfoWrapper';
@@ -20,8 +19,6 @@ interface IProjectInfoProps {
   previewData?: IProjectInfo;
   style?: React.CSSProperties;
 }
-
-const { Text } = Typography;
 
 export default function ProjectInfo({ previewData, style }: IProjectInfoProps) {
   const isMobileMd = useMobileMd();

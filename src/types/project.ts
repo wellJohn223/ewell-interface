@@ -89,6 +89,7 @@ export interface IProjectInfo {
   claimedLiquidatedDamage?: boolean;
   isWithdraw?: boolean;
   tokenReleaseTime?: string;
+  actualClaimAmount?: string;
 }
 
 export interface ProjectItem {
