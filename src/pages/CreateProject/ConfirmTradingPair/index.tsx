@@ -12,6 +12,7 @@ import { useWallet } from 'contexts/useWallet/hooks';
 import { WebLoginState } from 'aelf-web-login';
 import myEvents from 'utils/myEvent';
 import { emitLoading } from 'utils/events';
+import { mockTokenList } from './mock';
 
 const ConfirmTradingPair: React.FC<CreateStepProps> = ({ onNext }) => {
   const [tradingPair, setTradingPair] = useLocalStorage(storages.ConfirmTradingPair);
@@ -31,7 +32,7 @@ const ConfirmTradingPair: React.FC<CreateStepProps> = ({ onNext }) => {
 
   const onClick = useCallback(() => {
     setTradingPair(select);
-    console.log('click-next');
+    console.log('click-next', select);
     onNext?.();
   }, [setTradingPair, select, onNext]);
 

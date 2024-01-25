@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import clsx from 'clsx';
 import './styles.less';
-import { divDecimals } from 'utils/calculate';
+import { divDecimalsStr } from 'utils/calculate';
 
 export interface ITradingParCard {
   chainId: string;
@@ -41,7 +41,7 @@ const TradingPairList: React.FC<TradingParCardProps> = ({ list = [], current, on
             </div>
           </div>
           <div className="card-right">
-            <div className="token-quantity">{divDecimals(item.balance, item.decimals).toFixed(0)}</div>
+            <div className="token-quantity">{divDecimalsStr(item.balance, item.decimals)}</div>
           </div>
         </div>
       ))}

@@ -40,8 +40,7 @@ const ProjectInfo: React.FC<CreateStepProps> = ({ onNext, onPre }) => {
         initialValues={additional}
         requiredMark={CustomMark}
         scrollToFirstError
-        onFinish={onFinish}
-        validateTrigger="onSubmit">
+        onFinish={onFinish}>
         {FormFields(ProjectInfoFromJson)}
         <Form.Item>
           <ButtonGroup onPre={onPre} htmlType="submit" />

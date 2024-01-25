@@ -15,7 +15,7 @@ import { useEffectOnce } from 'react-use';
 import { useWallet } from 'contexts/useWallet/hooks';
 
 const CreateProject: React.FC = () => {
-  const [currentStep, setCurrentStep] = useState<TSteps>(TSteps.ONE);
+  const [currentStep, setCurrentStep] = useState<TSteps>(TSteps.THREE);
 
   const breadTitles = useMemo(() => {
     return [
