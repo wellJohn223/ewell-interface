@@ -3,7 +3,7 @@ import { Input, DatePickerForPC } from 'aelf-design';
 import { memo } from 'react';
 import FormGroup from './components/FormGroup';
 import FormTree from './components/FormTree';
-import Upload from '../Upload';
+import Upload from '../AWSUpload';
 
 import {
   datePickerProps,

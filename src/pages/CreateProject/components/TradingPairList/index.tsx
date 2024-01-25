@@ -1,9 +1,9 @@
 import React, { useCallback, useState } from 'react';
 import clsx from 'clsx';
 import './styles.less';
-import { divDecimals } from 'utils/calculate';
+import { divDecimalsStr } from 'utils/calculate';
 
-export interface ITrandingParCard {
+export interface ITradingParCard {
   chainId: string;
   symbol: string;
   tokenName: string;
@@ -12,15 +12,15 @@ export interface ITrandingParCard {
   balance: string;
 }
 
-interface TrandingParCardProps {
-  list: ITrandingParCard[];
-  current?: ITrandingParCard;
-  onChange?: (value: ITrandingParCard) => void;
+interface TradingParCardProps {
+  list: ITradingParCard[];
+  current?: ITradingParCard;
+  onChange?: (value: ITradingParCard) => void;
 }
 
-const TradingPairList: React.FC<TrandingParCardProps> = ({ list = [], current, onChange }) => {
+const TradingPairList: React.FC<TradingParCardProps> = ({ list = [], current, onChange }) => {
   const onClick = useCallback(
-    (item: ITrandingParCard) => {
+    (item: ITradingParCard) => {
       onChange?.(item);
     },
     [onChange],
@@ -41,7 +41,7 @@ const TradingPairList: React.FC<TrandingParCardProps> = ({ list = [], current, o
             </div>
           </div>
           <div className="card-right">
-            <div className="token-quantity">{divDecimals(item.balance, item.decimals).toFixed(0)}</div>
+            <div className="token-quantity">{divDecimalsStr(item.balance, item.decimals)}</div>
           </div>
         </div>
       ))}

@@ -41,13 +41,17 @@ const FUpload: React.FC<IFUploadProps> = ({ fileList, maxFileCount, fileLimit = 
   }, [fileList]);
 
   const onFileChange: IFUploadProps['onChange'] = (info) => {
-    const { fileList } = info;
+    const { file, fileList } = info;
+
+    if (!file?.status) return;
+
     const newFileList = fileList.map((file) => {
       if (file.response) {
         file.url = file.response.url;
       }
       return file;
     });
+
     console.log('onFileChange', newFileList);
     onChange?.({ ...info, fileList: newFileList });
     setFileList(newFileList);

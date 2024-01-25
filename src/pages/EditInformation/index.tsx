@@ -11,7 +11,6 @@ import { IAdditionalInfo, IProjectInfo } from 'pages/ProjectList/components/Card
 import { urlString2FileList } from 'utils/format';
 import { useUpdateAddition } from './useApi';
 import { parseAdditionalInfo } from 'utils/project';
-import Upload from 'components/Upload';
 import './styles.less';
 
 const { Title, Text } = Typography;
