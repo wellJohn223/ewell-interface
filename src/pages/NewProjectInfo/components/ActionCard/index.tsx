@@ -12,9 +12,9 @@ import './styles.less';
 
 interface IActionCardProps {
   projectInfo: IProjectInfo;
-  isPreview?: boolean;
-  isLogin?: boolean;
-  canEdit?: boolean;
+  isPreview: boolean;
+  isLogin: boolean;
+  canEdit: boolean;
   handleRefresh?: () => void;
 }
 
