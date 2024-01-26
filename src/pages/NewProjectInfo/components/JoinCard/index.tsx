@@ -73,6 +73,10 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
     return canPurchaseAmount.lt(minCanInvestAmount);
   }, [canPurchaseAmount, minCanInvestAmount]);
 
+  const isMaxDisabled = useMemo(() => {
+    return isPreview || notEnoughTokens;
+  }, [isPreview, notEnoughTokens]);
+
   const progressPercent = useMemo(() => {
     const percent = ZERO.plus(projectInfo?.currentRaisedAmount ?? 0)
       .div(projectInfo?.toRaisedAmount ?? 0)
@@ -166,7 +170,9 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
 
   const handleValidatePurchaseInput = (value?: string) => {
     const bigValue = new BigNumber(value || 0);
-    if (bigValue.gt(divDecimals(maxCanInvestAmount, projectInfo?.toRaiseToken?.decimals))) {
+    if (!value) {
+      setPurchaseInputErrorMessage('');
+    } else if (bigValue.gt(divDecimals(maxCanInvestAmount, projectInfo?.toRaiseToken?.decimals))) {
       setPurchaseInputErrorMessage(
         `Max Amount ${divDecimalsStr(maxCanInvestAmount, projectInfo?.toRaiseToken?.decimals)}`,
       );
@@ -385,6 +391,9 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
                           className="max-operation purple-text cursor-pointer"
                           fontWeight={FontWeightEnum.Medium}
                           onClick={() => {
+                            if (isMaxDisabled) {
+                              return;
+                            }
                             const maxValue = divDecimals(
                               maxCanInvestAmount,
                               projectInfo?.toRaiseToken?.decimals,
@@ -392,7 +401,7 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
                             setPurchaseInputValue(maxValue);
                             handleValidatePurchaseInput(maxValue);
                           }}
-                          disabled={isPreview || notEnoughTokens}>
+                          disabled={isMaxDisabled}>
                           MAX
                         </Title>
                       </div>
