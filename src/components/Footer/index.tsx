@@ -5,7 +5,7 @@ import { COMMUNITY_LIST, TCommunityItem } from 'constants/community';
 
 export default function Footer() {
   const communityJump = useCallback((item: TCommunityItem) => {
-    //
+    window.open(item.link, '_blank');
   }, []);
 
   return (
@@ -29,7 +29,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="copyright-wrap">© 2023 Ewell IDO, Inc. All rights reserved</div>
+          <div className="copyright-wrap">© 2024 Ewell IDO, Inc. All rights reserved</div>
         </div>
       </div>
     </footer>

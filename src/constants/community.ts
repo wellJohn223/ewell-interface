@@ -13,18 +13,18 @@ export const COMMUNITY_LIST: TCommunityItem[] = [
     name: 'Medium',
     icon: mediumSvg,
     content: 'Join this open space for discussion news, and announcements.',
-    link: '',
+    link: 'https://medium.com/@ewell.web3',
   },
   {
     name: 'X',
     icon: xSvg,
     content: `Stay up-to-date with Ewell's new features and projects.`,
-    link: '',
+    link: 'https://twitter.com/eWell_Web3',
   },
   {
     name: 'Telegram',
     icon: telegramSvg,
     content: 'Meet the community and get live support.',
-    link: '',
+    link: 'https://t.me/+QsRDXw_dYBA3MWVl',
   },
 ];

@@ -55,12 +55,9 @@ export default function Header() {
         children: COMMUNITY_LIST.map((item) => ({
           ...item,
           onClick: () => {
-            //
+            window.open(item.link, '_blank');
           },
         })),
-        onClick: () => {
-          //
-        },
       },
       {
         name: 'Launch with EWELL',
