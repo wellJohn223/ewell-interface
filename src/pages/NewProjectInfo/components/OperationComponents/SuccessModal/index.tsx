@@ -51,9 +51,9 @@ export default function SuccessModal({ modalProps, data: { amountList, descripti
           {/* TODO: jump */}
           <HashAddress
             className="hash-address-small"
+            ignorePrefixSuffix
             preLen={8}
             endLen={9}
-            chain={DEFAULT_CHAIN_ID}
             address={boxData.value}
           />
         </Flex>
