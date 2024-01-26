@@ -1,12 +1,13 @@
 import { forwardRef, useCallback, useImperativeHandle, useMemo, useState } from 'react';
 import clsx from 'clsx';
 import { Flex, Space } from 'antd';
-import { Button, Modal, Upload, Input, Typography, FontWeightEnum } from 'aelf-design';
+import { Button, Upload, Input, Typography, FontWeightEnum } from 'aelf-design';
 import { download } from 'assets/images';
 import { UpdateType } from '../types';
 import './styles.less';
 import type { RcFile } from 'antd/es/upload';
 import { parseWhitelistFile, parseWhitelistInput } from 'utils/parseWhiteList';
+import CommonModalSwitchDrawer from 'components/CommonModalSwitchDrawer';
 
 const { TextArea } = Input;
 const { Text } = Typography;
@@ -71,15 +72,15 @@ const UpdateModal = forwardRef(function (
   useImperativeHandle(ref, () => ({ reset }));
 
   return (
-    <Modal
-      className="update-whitelist-users-modal"
-      width={668}
+    <CommonModalSwitchDrawer
+      className="update-whitelist-users"
+      drawerClassName="update-whitelist-users-drawer"
+      modalWidth={668}
+      drawerHeight="100vh"
       title={`${updateType === UpdateType.ADD ? 'Add Allowlist' : 'Remove Whitelisted'} Users`}
-      footer={null}
-      centered
       open={modalOpen}
       onCancel={onModalCancel}>
-      <Flex vertical gap={24}>
+      <Flex className="content-wrapper" vertical gap={24}>
         <Text>
           Please enter the user's address, support batch user input separate addressed with special characters. If your
           list exists CSV or EXCEL, please click the corresponding button in the upper right corner to upload the file.
@@ -126,16 +127,19 @@ const UpdateModal = forwardRef(function (
             onChange={handleAddressInputChange}
           />
         )}
-        <Flex gap={16} justify="center">
+        <Flex
+          className={clsx('footer-wrapper', { ['flex-1']: currentUpdateWay === UpdateWay.UPLOAD })}
+          gap={16}
+          justify="center">
           <Button className="modal-footer-button" onClick={onModalCancel}>
             Cancel
           </Button>
-          <Button disabled={isSubmitDisabled} className="modal-footer-button" type="primary" onClick={onSubmit}>
+          <Button className="modal-footer-button" type="primary" disabled={isSubmitDisabled} onClick={onSubmit}>
             Submit
           </Button>
         </Flex>
       </Flex>
-    </Modal>
+    </CommonModalSwitchDrawer>
   );
 });
 

@@ -10,4 +10,5 @@ import download from './download.svg';
 import add from './add.svg';
 import remove from './remove.svg';
 import logo from './logo.svg';
-export { union, arrow, success, tableEmpty, sandGlass, edit, login, wallet, download, add, remove, logo };
+import close from './close.svg';
+export { union, arrow, success, tableEmpty, sandGlass, edit, login, wallet, download, add, remove, logo, close };
