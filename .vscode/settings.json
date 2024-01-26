@@ -15,7 +15,18 @@
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "cSpell.words": ["stylelint", "antd", "Cascader", "clsx", "fundpools", "Httpclient", "rehype", "Sider", "ewell"],
+  "cSpell.words": [
+    "antd",
+    "Cascader",
+    "clsx",
+    "ewell",
+    "fieldsvalue",
+    "fundpools",
+    "Httpclient",
+    "rehype",
+    "Sider",
+    "stylelint"
+  ],
   "cSpell.enableFiletypes": ["typescriptreact"],
 
   "px-to-rem.px-per-rem": 14
