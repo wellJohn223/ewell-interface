@@ -1,4 +1,5 @@
 import { ZERO } from 'constants/misc';
+import { SCREEN_SIZE_POINT, ScreenSize } from 'constants/theme';
 import { createContext, ReactNode, useContext, useEffect, useMemo, useReducer, useState } from 'react';
 import { useEffectOnce } from 'react-use';
 import isMobile from 'utils/isMobile';
@@ -9,9 +10,14 @@ const StoreContext = createContext<any>(INITIAL_STATE);
 const body = window.document.getElementsByTagName('body')[0];
 body.className = 'pc-site';
 
-const mobileWidth = ZERO.plus(640);
-const mobileWidthMd = ZERO.plus(768);
-declare type StoreState = { mobile?: boolean; mobileMd?: boolean };
+const miniScreenPoint = ZERO.plus(SCREEN_SIZE_POINT[ScreenSize.MINI]);
+const smallScreenPoint = ZERO.plus(SCREEN_SIZE_POINT[ScreenSize.SMALL]);
+const mediumScreenPoint = ZERO.plus(SCREEN_SIZE_POINT[ScreenSize.MEDIUM]);
+const largeScreenPoint = ZERO.plus(SCREEN_SIZE_POINT[ScreenSize.LARGE]);
+declare type StoreState = {
+  mobile?: boolean;
+  screenSize: ScreenSize;
+};
 export function useStore(): [StoreState] {
   return useContext(StoreContext);
 }
@@ -27,20 +33,30 @@ function reducer(state: any, { type, payload }: any) {
 export default function Provider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
   const [mobile, setMobile] = useState<boolean>();
-  const [mobileMd, setMobileMd] = useState<boolean>();
+  const [screenSize, setScreenSize] = useState<ScreenSize>(ScreenSize.ULTRA);
 
   // isMobile
   useEffectOnce(() => {
     const resize = () => {
       const isM = isMobile();
       setMobile(
-        mobileWidth.gt(window.innerWidth) ||
+        miniScreenPoint.gt(window.innerWidth) ||
           isM.apple.phone ||
           isM.android.phone ||
           isM.apple.tablet ||
           isM.android.tablet,
       );
-      setMobileMd(mobileWidthMd.gt(window.innerWidth));
+      if (miniScreenPoint.gt(window.innerWidth)) {
+        setScreenSize(ScreenSize.MINI);
+      } else if (smallScreenPoint.gt(window.innerWidth)) {
+        setScreenSize(ScreenSize.SMALL);
+      } else if (mediumScreenPoint.gt(window.innerWidth)) {
+        setScreenSize(ScreenSize.MEDIUM);
+      } else if (largeScreenPoint.gt(window.innerWidth)) {
+        setScreenSize(ScreenSize.LARGE);
+      } else {
+        setScreenSize(ScreenSize.ULTRA);
+      }
     };
     resize();
     window.addEventListener('resize', resize);
@@ -61,7 +77,7 @@ export default function Provider({ children }: { children: ReactNode }) {
 
   return (
     <StoreContext.Provider
-      value={useMemo(() => [{ ...state, mobile, mobileMd }, { dispatch }], [state, mobile, mobileMd])}>
+      value={useMemo(() => [{ ...state, mobile, screenSize }, { dispatch }], [state, mobile, screenSize])}>
       {children}
     </StoreContext.Provider>
   );

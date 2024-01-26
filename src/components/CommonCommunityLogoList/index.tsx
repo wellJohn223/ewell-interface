@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { Flex, FlexProps } from 'antd';
 import communityLogo from 'assets/images/communityLogo';
+import { getHref } from 'utils';
 
 enum CommunityLogoType {
   WEBSITE = 'website',
@@ -52,7 +53,9 @@ export default function CommonCommunityLogoList({
               src={item.logo}
               alt="community"
               onClick={() => {
-                window.open(item.link, '_blank');
+                if (item.link) {
+                  window.open(getHref(item.link), '_blank');
+                }
               }}
             />
           );

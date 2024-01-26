@@ -1,7 +1,7 @@
-.whitelist-users-address-validation-modal {
+.whitelist-users-address-validation {
   .info-wrapper {
     .info-row {
-      height: 30px;
+      padding: 4px 0;
     }
   }
   .@{app-prefix}-table-body {
@@ -10,9 +10,32 @@
   .@{app-prefix}-hash-address span {
     color: #070a26;
   }
+  .order-column {
+    min-width: 66px;
+  }
+  .address-column {
+    min-width: 236px;
+  }
+  .result-column {
+    min-width: 151px;
+  }
+  .reason-column {
+    min-width: 167px;
+  }
   .footer-wrapper {
     button {
       width: 206px;
+    }
+  }
+}
+
+.whitelist-users-address-validation-drawer {
+  .content-wrapper {
+    height: 100%;
+  }
+  .footer-wrapper {
+    button {
+      flex: 1;
     }
   }
 }

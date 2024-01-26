@@ -13,27 +13,11 @@ import { useViewContract } from 'contexts/useViewContract/hooks';
 import { DEFAULT_CHAIN_ID } from 'constants/network';
 import dayjs from 'dayjs';
 import { useQuery } from 'hooks/useQuery';
+import { useScreenSize } from 'contexts/useStore/hooks';
+import { ScreenSize } from 'constants/theme';
+import clsx from 'clsx';
 
 const { Title, Text } = Typography;
-
-const columns: ColumnsType<any> = [
-  {
-    title: 'No.',
-    dataIndex: 'order',
-    key: 'order',
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
-    render: (address) => <HashAddress address={address} chain={DEFAULT_CHAIN_ID} />,
-  },
-  {
-    title: 'Add Time',
-    dataIndex: 'time',
-    key: 'time',
-  },
-];
 
 const DEFAULT_PAGE_SIZE = 10;
 type TAddressItem = {
@@ -43,6 +27,13 @@ type TAddressItem = {
   time: string;
 };
 export default function WhitelistUsers() {
+  const screenSize = useScreenSize();
+  const isScreenLteSmall = useMemo(
+    () => screenSize === ScreenSize.MINI || screenSize === ScreenSize.SMALL,
+    [screenSize],
+  );
+  const isScreenLteMini = useMemo(() => screenSize === ScreenSize.MINI, [screenSize]);
+
   const [isTableLoading, setIsTableLoading] = useState(true);
   const { whitelistId = '' } = useParams();
   const { projectName = 'Project', projectId } = useQuery();
@@ -119,6 +110,41 @@ export default function WhitelistUsers() {
     [projectName, projectId],
   );
 
+  const columns: ColumnsType<any> = useMemo(
+    () => [
+      {
+        title: 'No.',
+        dataIndex: 'order',
+        key: 'order',
+        className: 'order-column',
+        width: '8%',
+      },
+      {
+        title: 'Address',
+        dataIndex: 'address',
+        key: 'address',
+        className: 'address-column',
+        width: '58%',
+        render: (address) => (
+          <HashAddress
+            preLen={isScreenLteSmall ? 8 : 0}
+            endLen={isScreenLteSmall ? 9 : 0}
+            address={address}
+            chain={DEFAULT_CHAIN_ID}
+          />
+        ),
+      },
+      {
+        title: 'Add Time',
+        dataIndex: 'time',
+        key: 'time',
+        className: 'time-column',
+        width: '34%',
+      },
+    ],
+    [isScreenLteSmall],
+  );
+
   return (
     <div className="common-page page-body whitelist-users-wrapper">
       <Breadcrumb className="bread-wrap" items={breadList} />
@@ -126,11 +152,15 @@ export default function WhitelistUsers() {
         <Title level={5} fontWeight={FontWeightEnum.Medium}>
           Whitelist Users
         </Title>
-        <Flex justify="space-between" align="center">
+        <Flex
+          justify="space-between"
+          align={isScreenLteMini ? 'stretch' : 'center'}
+          gap={isScreenLteMini ? 24 : 16}
+          vertical={isScreenLteMini}>
           <Flex gap={16}>
             <UpdateWhitelistUsersButton
               buttonProps={{
-                className: 'update-button',
+                className: clsx('update-button', { ['flex-1']: isScreenLteMini }),
                 icon: <img src={add} alt="add" />,
                 children: 'Add',
               }}
@@ -140,7 +170,7 @@ export default function WhitelistUsers() {
             />
             <UpdateWhitelistUsersButton
               buttonProps={{
-                className: 'update-button',
+                className: clsx('update-button', { ['flex-1']: isScreenLteMini }),
                 icon: <img src={remove} alt="remove" />,
                 children: 'Remove',
               }}
@@ -149,13 +179,22 @@ export default function WhitelistUsers() {
               onSuccess={getWhitelistInfo}
             />
           </Flex>
-          <Search inputClassName="address-search" placeholder="Address" onBlur={onSearch} onClear={onClear} />
+          <Search
+            className={clsx({ ['flex-1']: isScreenLteSmall })}
+            inputClassName={clsx('address-search', { ['full-width']: isScreenLteSmall })}
+            placeholder="Address"
+            onBlur={onSearch}
+            onClear={onClear}
+          />
         </Flex>
-
         <Flex vertical gap={16}>
           <CommonTable loading={isTableLoading} columns={columns} dataSource={curAddressList} />
           {!!pager.total && (
-            <Flex justify="space-between" align="center">
+            <Flex
+              justify="space-between"
+              align={isScreenLteMini ? 'stretch' : 'center'}
+              gap={16}
+              vertical={isScreenLteMini}>
               <Text size="small">
                 Number of Participants Users:{' '}
                 <Text size="small" fontWeight={FontWeightEnum.Medium}>

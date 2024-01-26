@@ -78,12 +78,20 @@
   color: #f53f3f;
 }
 
+.full-width {
+  width: 100% !important;
+}
+
 .half-width {
   width: 50%;
 }
 
 .display-none {
   display: none !important;
+}
+
+.margin-right-8 {
+  margin-right: 8px;
 }
 
 /* set list-style */
@@ -148,6 +156,17 @@ body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, /* structural elements */
 @media (max-width: 640px) {
   .common-modal {
     width: 343px !important;
+  }
+}
+
+/* pagination */
+@media (max-width: 768px) {
+  .@{app-prefix}-page-container {
+    width: 100%;
+    margin-top: 0 !important;
+    .@{app-prefix}-pageNumber-container {
+      flex: 1;
+    }
   }
 }
 
