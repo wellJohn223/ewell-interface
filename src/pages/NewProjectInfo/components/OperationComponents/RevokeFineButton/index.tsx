@@ -1,4 +1,4 @@
-// TODO: check whether the operation is automatic
+// the operation is automatic
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Flex, message } from 'antd';

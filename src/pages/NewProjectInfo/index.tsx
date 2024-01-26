@@ -14,6 +14,7 @@ import { ScreenSize } from 'constants/theme';
 import { IProjectInfo, ProjectListType } from 'types/project';
 import myEvents from 'utils/myEvent';
 import { emitLoading } from 'utils/events';
+import { mockDetail } from './mock';
 import './styles.less';
 
 interface IProjectInfoProps {
@@ -76,6 +77,14 @@ export default function ProjectInfo({ previewData, style }: IProjectInfoProps) {
           isInWhitelist: whitelistAddressList.includes(addressRef.current),
         };
       }
+      // newProjectInfo = {
+      //   ...mockDetail,
+      //   additionalInfo: mockDetail?.additionalInfo ? JSON.parse(mockDetail.additionalInfo) : {},
+      //   listMarketInfo: mockDetail?.listMarketInfo ? JSON.parse(mockDetail.listMarketInfo) : [],
+      //   whitelistInfo,
+      //   isCreator: true,
+      //   isInWhitelist: true,
+      // };
       console.log('newProjectInfo: ', newProjectInfo);
       setProjectInfo(newProjectInfo);
     } catch (error: any) {

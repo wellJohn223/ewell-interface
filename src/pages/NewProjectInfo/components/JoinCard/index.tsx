@@ -10,7 +10,8 @@ import NewBaseCountdown from 'components/NewBaseCountdown';
 import PurchaseButton from '../OperationComponents/PurchaseButton';
 import RevokeInvestmentButton from '../OperationComponents/RevokeInvestmentButton';
 import ClaimTokenButton from '../OperationComponents/ClaimTokenButton';
-import RevokeFineButton from '../OperationComponents/RevokeFineButton';
+// the operation is automatic
+// import RevokeFineButton from '../OperationComponents/RevokeFineButton';
 import { IProjectInfo, ProjectStatus } from 'types/project';
 import { PROJECT_STATUS_TEXT_MAP } from 'constants/project';
 import { useWallet } from 'contexts/useWallet/hooks';
@@ -120,28 +121,25 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
     );
   }, [projectInfo?.investAmount, projectInfo?.status, projectInfo?.toClaimAmount]);
 
-  const showRevokeFineButton = useMemo(() => {
-    return projectInfo?.status === ProjectStatus.CANCELED && !projectInfo?.claimedLiquidatedDamage;
-  }, [projectInfo?.claimedLiquidatedDamage, projectInfo?.status]);
+  // the operation is automatic
+  // const showRevokeFineButton = useMemo(() => {
+  //   return projectInfo?.status === ProjectStatus.CANCELED && !projectInfo?.claimedLiquidatedDamage;
+  // }, [projectInfo?.claimedLiquidatedDamage, projectInfo?.status]);
 
   const showOperationArea = useMemo(() => {
     return (
       canOperate &&
-      (showMyAmount ||
-        showPurchaseButton ||
-        showRevokeInvestmentButton ||
-        showUnlockTips ||
-        showClaimTokenButton ||
-        showRevokeFineButton)
+      (showMyAmount || showPurchaseButton || showRevokeInvestmentButton || showUnlockTips || showClaimTokenButton)
+      // showRevokeFineButton)
     );
   }, [
     canOperate,
     showClaimTokenButton,
     showMyAmount,
     showPurchaseButton,
-    showRevokeFineButton,
     showRevokeInvestmentButton,
     showUnlockTips,
+    // showRevokeFineButton,
   ]);
 
   const hasClaimedToken = useMemo(() => {
@@ -424,7 +422,8 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
               </Text>
             )}
             {showClaimTokenButton && <ClaimTokenButton projectInfo={projectInfo} />}
-            {showRevokeFineButton && <RevokeFineButton projectInfo={projectInfo} />}
+            {/* the operation is automatic */}
+            {/* {showRevokeFineButton && <RevokeFineButton projectInfo={projectInfo} />} */}
           </>
         )}
       </Flex>
