@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Flex, message } from 'antd';
 import { Button, Modal, Typography, Input } from 'aelf-design';
+import CommonModalSwitchDrawer from 'components/CommonModalSwitchDrawer';
 import { success } from 'assets/images';
 import { useWallet } from 'contexts/useWallet/hooks';
 import { emitLoading, emitSyncTipsModal } from 'utils/events';
@@ -66,10 +67,8 @@ export default function WhitelistTasksButton({ whitelistId, whitelistTasksUrl, d
     <>
       {contextHolder}
       <Button onClick={() => setIsWhitelistTasksModalOpen(true)}>Whitelist Tasks</Button>
-      <Modal
+      <CommonModalSwitchDrawer
         title={`${isEdit ? 'Edit' : 'Open'} Whitelist Tasks`}
-        footer={null}
-        centered
         open={isWhitelistTasksModalOpen}
         onCancel={() => setIsWhitelistTasksModalOpen(false)}>
         <Flex vertical gap={24}>
@@ -88,7 +87,7 @@ export default function WhitelistTasksButton({ whitelistId, whitelistTasksUrl, d
             </Button>
           </Flex>
         </Flex>
-      </Modal>
+      </CommonModalSwitchDrawer>
       <Modal
         className="common-modal"
         title={`${isEdit ? 'Edited' : 'Opened'} Successfully`}
