@@ -3,14 +3,14 @@ import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useParams, useLocation, NavLink } from 'react-router-dom';
 import { request } from 'api';
 import { Breadcrumb, message } from 'antd';
-import { Typography } from 'aelf-design';
 import { WebLoginEvents, useWebLoginEvent } from 'aelf-web-login';
 import ActionCard from './components/ActionCard';
 import InfoWrapper from './components/InfoWrapper';
-import { useMobileMd } from 'contexts/useStore/hooks';
+import { useScreenSize } from 'contexts/useStore/hooks';
 import { useWallet } from 'contexts/useWallet/hooks';
 import { useViewContract } from 'contexts/useViewContract/hooks';
 import { DEFAULT_CHAIN_ID } from 'constants/network';
+import { ScreenSize } from 'constants/theme';
 import { IProjectInfo, ProjectListType } from 'types/project';
 import myEvents from 'utils/myEvent';
 import { emitLoading } from 'utils/events';
@@ -21,10 +21,8 @@ interface IProjectInfoProps {
   style?: React.CSSProperties;
 }
 
-const { Text } = Typography;
-
 export default function ProjectInfo({ previewData, style }: IProjectInfoProps) {
-  const isMobileMd = useMobileMd();
+  const screenSize = useScreenSize();
   const { wallet } = useWallet();
   const { projectId } = useParams();
   const location = useLocation();
@@ -115,6 +113,8 @@ export default function ProjectInfo({ previewData, style }: IProjectInfoProps) {
     return isLogin && !!projectInfo?.isCreator && !isPreview;
   }, [isLogin, isPreview, projectInfo?.isCreator]);
 
+  const isMobileStyle = useMemo(() => screenSize === ScreenSize.MINI || screenSize === ScreenSize.SMALL, [screenSize]);
+
   const breadList = useMemo(
     () => [
       {
@@ -146,14 +146,16 @@ export default function ProjectInfo({ previewData, style }: IProjectInfoProps) {
               isPreview={isPreview}
               isLogin={isLogin}
               canEdit={canEdit}
+              isMobileStyle={isMobileStyle}
               handleRefresh={getProjectInfo}
             />
-            {!isMobileMd && (
+            {!isMobileStyle && (
               <ActionCard
                 projectInfo={info}
                 isPreview={isPreview}
                 isLogin={isLogin}
                 canEdit={canEdit}
+                isMobileStyle={isMobileStyle}
                 handleRefresh={getProjectInfo}
               />
             )}

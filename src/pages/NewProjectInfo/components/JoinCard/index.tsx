@@ -16,7 +16,7 @@ import { PROJECT_STATUS_TEXT_MAP } from 'constants/project';
 import { useWallet } from 'contexts/useWallet/hooks';
 import { ZERO } from 'constants/misc';
 import { divDecimals, divDecimalsStr, timesDecimals } from 'utils/calculate';
-import { getPriceDecimal } from 'utils';
+import { getHref, getPriceDecimal } from 'utils';
 import { parseInputNumberChange } from 'utils/input';
 import { useBalance } from 'hooks/useBalance';
 import { useTxFee } from 'contexts/useAssets/hooks';
@@ -66,7 +66,7 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
   ]);
 
   const minCanInvestAmount = useMemo(() => {
-    return new BigNumber(projectInfo?.minSubscription || '');
+    return new BigNumber(projectInfo?.minSubscription ?? 0);
   }, [projectInfo?.minSubscription]);
 
   const notEnoughTokens = useMemo(() => {
@@ -105,20 +105,20 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
   }, [projectInfo?.status]);
 
   const showRevokeInvestmentButton = useMemo(() => {
-    return projectInfo?.status === ProjectStatus.PARTICIPATORY && new BigNumber(projectInfo?.investAmount || '').gt(0);
+    return projectInfo?.status === ProjectStatus.PARTICIPATORY && new BigNumber(projectInfo?.investAmount ?? 0).gt(0);
   }, [projectInfo?.investAmount, projectInfo?.status]);
 
   const showUnlockTips = useMemo(() => {
-    return projectInfo?.status === ProjectStatus.UNLOCKED && new BigNumber(projectInfo?.investAmount || '').gt(0);
+    return projectInfo?.status === ProjectStatus.UNLOCKED && new BigNumber(projectInfo?.investAmount ?? 0).gt(0);
   }, [projectInfo?.investAmount, projectInfo?.status]);
 
   const showClaimTokenButton = useMemo(() => {
     return (
       projectInfo?.status === ProjectStatus.ENDED &&
-      new BigNumber(projectInfo?.investAmount || '').gt(0) &&
-      !projectInfo?.isWithdraw
+      new BigNumber(projectInfo?.investAmount ?? 0).gt(0) &&
+      new BigNumber(projectInfo?.toClaimAmount ?? 0).gt(0)
     );
-  }, [projectInfo?.investAmount, projectInfo?.isWithdraw, projectInfo?.status]);
+  }, [projectInfo?.investAmount, projectInfo?.status, projectInfo?.toClaimAmount]);
 
   const showRevokeFineButton = useMemo(() => {
     return projectInfo?.status === ProjectStatus.CANCELED && !projectInfo?.claimedLiquidatedDamage;
@@ -144,6 +144,14 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
     showUnlockTips,
   ]);
 
+  const hasClaimedToken = useMemo(() => {
+    return (
+      projectInfo?.status === ProjectStatus.ENDED &&
+      new BigNumber(projectInfo?.investAmount ?? 0).gt(0) &&
+      new BigNumber(projectInfo?.toClaimAmount ?? 0).eq(0)
+    );
+  }, [projectInfo?.investAmount, projectInfo?.status, projectInfo?.toClaimAmount]);
+
   useEffect(() => {
     setIsPurchaseButtonDisabled((pre) => {
       if (isPreview) {
@@ -155,6 +163,21 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
       }
     });
   }, [isPreview, isPurchaseInputting, purchaseInputErrorMessage, purchaseInputValue]);
+
+  const handleValidatePurchaseInput = (value?: string) => {
+    const bigValue = new BigNumber(value || 0);
+    if (bigValue.gt(divDecimals(maxCanInvestAmount, projectInfo?.toRaiseToken?.decimals))) {
+      setPurchaseInputErrorMessage(
+        `Max Amount ${divDecimalsStr(maxCanInvestAmount, projectInfo?.toRaiseToken?.decimals)}`,
+      );
+    } else if (bigValue.lt(divDecimals(minCanInvestAmount, projectInfo?.toRaiseToken?.decimals))) {
+      setPurchaseInputErrorMessage(
+        `Min Amount ${divDecimalsStr(minCanInvestAmount, projectInfo?.toRaiseToken?.decimals)}`,
+      );
+    } else {
+      setPurchaseInputErrorMessage('');
+    }
+  };
 
   const renderRemainder = () => {
     if (isPreview) {
@@ -304,7 +327,9 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
                 className="purple-text cursor-pointer"
                 fontWeight={FontWeightEnum.Medium}
                 onClick={() => {
-                  window.open(projectInfo?.whitelistInfo?.url, '_blank');
+                  if (projectInfo?.whitelistInfo?.url) {
+                    window.open(getHref(projectInfo.whitelistInfo.url), '_blank');
+                  }
                 }}>
                 View Whitelist Tasks
               </Text>
@@ -332,11 +357,13 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
             )}
             {showMyAmount && (
               <Flex gap={16} align="center" justify="space-between">
-                <Text>
-                  {projectInfo?.status === ProjectStatus.ENDED && projectInfo?.isWithdraw ? 'Receive' : 'To Receive'}
-                </Text>
+                <Text>{hasClaimedToken ? 'Receive' : 'To Receive'}</Text>
                 <Text fontWeight={FontWeightEnum.Medium}>
-                  {divDecimalsStr(projectInfo?.toClaimAmount, projectInfo?.crowdFundingIssueToken?.decimals, '0')}{' '}
+                  {divDecimalsStr(
+                    hasClaimedToken ? projectInfo?.actualClaimAmount : projectInfo?.toClaimAmount,
+                    projectInfo?.crowdFundingIssueToken?.decimals,
+                    '0',
+                  )}{' '}
                   {projectInfo?.crowdFundingIssueToken?.symbol ?? '--'}
                 </Text>
               </Flex>
@@ -358,9 +385,12 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
                           className="max-operation purple-text cursor-pointer"
                           fontWeight={FontWeightEnum.Medium}
                           onClick={() => {
-                            setPurchaseInputValue(
-                              divDecimals(maxCanInvestAmount, projectInfo?.toRaiseToken?.decimals).toString(),
-                            );
+                            const maxValue = divDecimals(
+                              maxCanInvestAmount,
+                              projectInfo?.toRaiseToken?.decimals,
+                            ).toString();
+                            setPurchaseInputValue(maxValue);
+                            handleValidatePurchaseInput(maxValue);
                           }}
                           disabled={isPreview || notEnoughTokens}>
                           MAX
@@ -376,19 +406,8 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
                     onFocus={() => {
                       setIsPurchaseInputting(true);
                     }}
-                    onBlur={() => {
-                      const value = new BigNumber(purchaseInputValue);
-                      if (value.gt(divDecimals(maxCanInvestAmount, projectInfo?.toRaiseToken?.decimals))) {
-                        setPurchaseInputErrorMessage(
-                          `Max Amount ${divDecimalsStr(maxCanInvestAmount, projectInfo?.toRaiseToken?.decimals)}`,
-                        );
-                      } else if (value.lt(divDecimals(minCanInvestAmount, projectInfo?.toRaiseToken?.decimals))) {
-                        setPurchaseInputErrorMessage(
-                          `Min Amount ${divDecimalsStr(minCanInvestAmount, projectInfo?.toRaiseToken?.decimals)}`,
-                        );
-                      } else {
-                        setPurchaseInputErrorMessage('');
-                      }
+                    onBlur={(e) => {
+                      handleValidatePurchaseInput(e.target.value);
                       setIsPurchaseInputting(false);
                     }}
                   />

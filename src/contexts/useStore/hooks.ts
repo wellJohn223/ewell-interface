@@ -6,7 +6,7 @@ export function useMobile() {
   return useMemo(() => !!mobile, [mobile]);
 }
 
-export function useMobileMd() {
-  const [{ mobileMd }] = useStore();
-  return useMemo(() => !!mobileMd, [mobileMd]);
+export function useScreenSize() {
+  const [{ screenSize }] = useStore();
+  return useMemo(() => screenSize, [screenSize]);
 }

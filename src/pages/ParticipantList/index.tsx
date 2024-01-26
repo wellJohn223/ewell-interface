@@ -12,32 +12,11 @@ import { divDecimalsStr } from 'utils/calculate';
 import dayjs from 'dayjs';
 import { useQuery } from 'hooks/useQuery';
 import { stringifyUrl } from 'query-string';
+import { useScreenSize } from 'contexts/useStore/hooks';
+import { ScreenSize } from 'constants/theme';
+import clsx from 'clsx';
 
 const { Title, Text } = Typography;
-
-const columns: ColumnsType<any> = [
-  {
-    title: 'No.',
-    dataIndex: 'order',
-    key: 'order',
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
-    render: (address) => <HashAddress ignorePrefixSuffix={true} address={address} />,
-  },
-  {
-    title: 'ELF',
-    dataIndex: 'elfCount',
-    key: 'elfCount',
-  },
-  {
-    title: 'Time',
-    dataIndex: 'time',
-    key: 'time',
-  },
-];
 
 type TParticipantItem = {
   key: string;
@@ -49,6 +28,21 @@ type TParticipantItem = {
 
 const DEFAULT_PAGE_SIZE = 10;
 export default function ParticipantList() {
+  const screenSize = useScreenSize();
+  const isScreenLteLarge = useMemo(
+    () =>
+      screenSize === ScreenSize.MINI ||
+      screenSize === ScreenSize.SMALL ||
+      screenSize === ScreenSize.MEDIUM ||
+      screenSize === ScreenSize.LARGE,
+    [screenSize],
+  );
+  const isScreenLteSmall = useMemo(
+    () => screenSize === ScreenSize.MINI || screenSize === ScreenSize.SMALL,
+    [screenSize],
+  );
+  const isScreenLteMini = useMemo(() => screenSize === ScreenSize.MINI, [screenSize]);
+
   const [isTableLoading, setIsTableLoading] = useState(false);
   const { projectId = '' } = useParams();
   const [pager, setPager] = useState({
@@ -60,6 +54,7 @@ export default function ParticipantList() {
   const [totalUserCount, setTotalUserCount] = useState<number>(0);
   const isSearchRef = useRef<boolean>(false);
   const [isSearch, setIsSearch] = useState(false);
+  const [virtualAddress, setVirtualAddress] = useState<string>('');
 
   const { projectName = 'Project' } = useQuery();
 
@@ -83,6 +78,7 @@ export default function ParticipantList() {
         if (fetchTime < fetchTimeRef.current) return;
         console.log('data', data);
         isSearchRef.current = !!address;
+        setVirtualAddress(data?.virtualAddress || '');
         setIsSearch(!!address);
         const _list = data?.users?.map((item, idx) => ({
           key: `${skipCount + idx + 1}`,
@@ -160,23 +156,90 @@ export default function ParticipantList() {
     [projectId, projectName],
   );
 
+  const columns: ColumnsType<any> = useMemo(
+    () => [
+      {
+        title: 'No.',
+        dataIndex: 'order',
+        key: 'order',
+        className: 'order-column',
+        width: '8%',
+      },
+      {
+        title: 'Address',
+        dataIndex: 'address',
+        key: 'address',
+        className: 'address-column',
+        width: '44%',
+        render: (address) => (
+          <HashAddress
+            ignorePrefixSuffix={true}
+            preLen={isScreenLteLarge ? 8 : 0}
+            endLen={isScreenLteLarge ? 9 : 0}
+            address={address}
+          />
+        ),
+      },
+      {
+        title: 'ELF',
+        dataIndex: 'elfCount',
+        key: 'elfCount',
+        className: 'elf-count-column',
+        width: '24%',
+      },
+      {
+        title: 'Time',
+        dataIndex: 'time',
+        key: 'time',
+        className: 'time-column',
+        width: '24%',
+      },
+    ],
+    [isScreenLteLarge],
+  );
+
   return (
     <div className="common-page page-body participant-list-wrapper">
       <Breadcrumb className="bread-wrap" items={breadList}></Breadcrumb>
-      <Flex className="participant-header" justify="space-between" align="flex-end">
+      <Flex
+        className="participant-header"
+        justify="space-between"
+        align={isScreenLteSmall ? 'stretch' : 'flex-end'}
+        gap={24}
+        vertical={isScreenLteSmall}>
         <Flex vertical>
           <Title level={5} fontWeight={FontWeightEnum.Medium}>
             Participants Users
           </Title>
-          <Flex gap={8}>
-            <Text>Contract Address: </Text>
-            <HashAddress address="ELF_0x00000000000000ADc04C56Bf30aC9d3c0aAF14dC_AELF" />
-          </Flex>
+          {!!virtualAddress && (
+            <Flex vertical={isScreenLteLarge}>
+              <Text className="margin-right-8">Contract Address: </Text>
+              <HashAddress
+                preLen={isScreenLteLarge ? 8 : 0}
+                endLen={isScreenLteLarge ? 9 : 0}
+                chain={DEFAULT_CHAIN_ID}
+                address={virtualAddress}
+              />
+            </Flex>
+          )}
         </Flex>
-        <Search inputClassName="address-search" placeholder="Address" onBlur={onSearch} onClear={onClear} />
+        <Search
+          inputClassName={clsx('address-search', { ['full-width']: isScreenLteSmall })}
+          placeholder="Address"
+          onBlur={onSearch}
+          onClear={onClear}
+        />
       </Flex>
-      <CommonTable className="table" loading={isTableLoading} columns={columns} dataSource={list} />
-      <Flex justify="space-between" align="center">
+      <CommonTable
+        className="table"
+        loading={isTableLoading}
+        scroll={{
+          x: 'max-content',
+        }}
+        columns={columns}
+        dataSource={list}
+      />
+      <Flex justify="space-between" align={isScreenLteMini ? 'stretch' : 'center'} gap={16} vertical={isScreenLteMini}>
         <Flex gap={16}>
           <Text size="small">
             Number of Participants Users:{' '}
