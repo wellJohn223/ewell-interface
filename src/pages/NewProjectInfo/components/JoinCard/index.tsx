@@ -16,7 +16,7 @@ import { PROJECT_STATUS_TEXT_MAP } from 'constants/project';
 import { useWallet } from 'contexts/useWallet/hooks';
 import { ZERO } from 'constants/misc';
 import { divDecimals, divDecimalsStr, timesDecimals } from 'utils/calculate';
-import { getPriceDecimal } from 'utils';
+import { getHref, getPriceDecimal } from 'utils';
 import { parseInputNumberChange } from 'utils/input';
 import { useBalance } from 'hooks/useBalance';
 import { useTxFee } from 'contexts/useAssets/hooks';
@@ -327,7 +327,9 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
                 className="purple-text cursor-pointer"
                 fontWeight={FontWeightEnum.Medium}
                 onClick={() => {
-                  window.open(projectInfo?.whitelistInfo?.url, '_blank');
+                  if (projectInfo?.whitelistInfo?.url) {
+                    window.open(getHref(projectInfo.whitelistInfo.url), '_blank');
+                  }
                 }}>
                 View Whitelist Tasks
               </Text>
