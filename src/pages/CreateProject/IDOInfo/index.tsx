@@ -10,18 +10,29 @@ import { disabledDateBefore, disabledTimeBefore } from '../utils';
 import dayjs from 'dayjs';
 import { getIDOFormJson, formWhitelist } from '../constants';
 import { ITradingParCard } from '../components/TradingPairList';
-import BigNumber from 'bignumber.js';
-import { formatInputNumberString, numberLteZERO } from 'utils/calculate';
+
+export interface TIdoInfo {
+  crowdFundingIssueAmount?: number;
+  crowdFundingType?: string;
+  startTime?: string;
+  endTime?: string;
+  tokenReleaseTime?: string;
+  isBurnRestToken?: boolean;
+  maxSubscription?: number;
+  minSubscription?: number;
+  preSalePrice?: number;
+  whitelistUrl?: string;
+  isEnableWhitelist?: boolean;
+}
 
 const IDOInfo: React.FC<CreateStepProps> = ({ onNext, onPre }) => {
   const [form] = Form.useForm();
   const [tradingPair] = useLocalStorage<ITradingParCard>(storages.ConfirmTradingPair);
-  const [idoInfo, setIDOInfo] = useLocalStorage(storages.IDOInfo, {});
+  const [idoInfo, setIDOInfo] = useLocalStorage<TIdoInfo>(storages.IDOInfo, {});
   const [showWhitelist, setShowWhitelist] = useState(true);
-  const [formList, setFormList] = useState<FormItemProps[]>(() => getIDOFormJson(tradingPair));
+  const [formList, setFormList] = useState<FormItemProps[]>(() => getIDOFormJson(tradingPair, idoInfo));
 
   const adapterIdoInfo = useMemo(() => {
-    window['bigNum'] = BigNumber;
     const _idoInfo = { ...idoInfo };
     Object.keys(_idoInfo).map((key) => {
       if (key.includes('Time')) {
@@ -29,6 +40,7 @@ const IDOInfo: React.FC<CreateStepProps> = ({ onNext, onPre }) => {
         _idoInfo[key] = dayjs(value);
       }
     });
+
     return _idoInfo;
   }, [idoInfo]);
 
@@ -44,16 +56,6 @@ const IDOInfo: React.FC<CreateStepProps> = ({ onNext, onPre }) => {
   const onValuesChange = (changedValues: any, allValues: any) => {
     console.log('changeValues', changedValues);
     console.log('allValues', allValues);
-
-    if (Object.hasOwn(changedValues, 'preSalePrice')) {
-      const { preSalePrice = '' } = changedValues;
-      if (numberLteZERO(preSalePrice)) {
-        form.setFieldValue('preSalePrice', '');
-        return;
-      }
-      form.setFieldValue('preSalePrice', formatInputNumberString(preSalePrice, 8));
-      return;
-    }
 
     if (Object.hasOwn(changedValues, 'isEnableWhitelist')) {
       return setShowWhitelist(changedValues.isEnableWhitelist);

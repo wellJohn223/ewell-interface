@@ -57,17 +57,6 @@ export function getTextAreaOptions(option: string | Options): textAreaProps & Fo
   };
 }
 
-export function integeNumberFormat(val: string) {
-  console.log('integeNumberFormat', typeof val);
-  if (!val) return '';
-  return new BigNumber(val).toFormat(0);
-}
-
-export function formatNumberParser(val: string) {
-  console.log('formatInterNumberParser', val);
-  return val.replace(/,*/g, '');
-}
-
 export function normFile(e: any) {
   if (Array.isArray(e)) {
     return e;

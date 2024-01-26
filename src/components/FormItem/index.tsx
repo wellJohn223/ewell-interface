@@ -73,7 +73,6 @@ function getChildren(type: FormItemProps['type'], childrenProps: FormItemProps['
     }
     case 'datePicker': {
       const customFormat = (value) => {
-        // console.log('datepicker-value', dayjs(value));
         return `${value.format('YYYY-MM-DD HH:mm:ss [UTC] Z')}`;
       };
       return (

@@ -1,12 +1,19 @@
 import { StepProps } from 'antd';
-import BigNumber from 'bignumber.js';
 import { getInputOptions, normFile } from 'components/FormItem/utils';
-import { FormItemProps, FormFields } from 'components/FormItem';
-import { minSubscriptionValidator, maxSubscriptionValidator, Validators, urlValidator } from './validate';
-import { integeNumberFormat, formatNumberParser } from 'components/FormItem/utils';
-import { disabledDateBefore, disabledTimeBefore } from './utils';
+import { FormItemProps } from 'components/FormItem';
+import {
+  minSubscriptionValidator,
+  maxSubscriptionValidator,
+  Validators,
+  urlValidator,
+  preSalePriceValidator,
+  purchaseValidate,
+} from './validate';
+import { disabledDateBefore, disabledTimeBefore, integerNumberFormat, formatNumberParser } from './utils';
 import { TSteps } from './types';
 import { ITradingParCard } from './components/TradingPairList';
+import { formatInputNumberString } from 'utils/calculate';
+import { TIdoInfo } from './IDOInfo';
 
 export const stepTitle = ['Trading Pair', 'Project Information', 'IDO Information', 'Preview & Transfer'];
 
@@ -163,7 +170,7 @@ export const formWhitelist: FormItemProps[] = [
   },
 ];
 
-export const getIDOFormJson = (tradingCard?: ITradingParCard): FormItemProps[] => {
+export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo): FormItemProps[] => {
   return [
     {
       type: 'select',
@@ -200,9 +207,15 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard): FormItemProps[] =
         {
           type: 'inputNumber',
           name: 'preSalePrice',
-          rules: [{ validator: Validators.preSalePrice }],
+          rules: [
+            (form: any) => ({
+              validator: (rule, value) => preSalePriceValidator(form, value),
+            }),
+          ],
+          validateTrigger: 'onBlur',
           childrenProps: {
             className: 'flex-grow',
+            formatter: (value) => formatInputNumberString(value, 8),
             stringMode: true,
             controls: false,
           },
@@ -225,13 +238,14 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard): FormItemProps[] =
         {
           type: 'inputNumber',
           name: 'crowdFundingIssueAmount',
+          validateTrigger: 'onBlur',
           rules: [
             (form: any) => ({
               validator: (_, value) => Validators.crowdFundingIssueAmount(form, value),
             }),
           ],
           childrenProps: {
-            formatter: integeNumberFormat,
+            formatter: integerNumberFormat,
             parser: formatNumberParser,
             precision: 0,
             min: 0,
@@ -257,13 +271,14 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard): FormItemProps[] =
         {
           type: 'inputNumber',
           name: 'minSubscription',
+          validateTrigger: 'onBlur',
           rules: [
             (form: any) => ({
               validator: (_, value) => minSubscriptionValidator(form, value),
             }),
           ],
           childrenProps: {
-            formatter: integeNumberFormat,
+            formatter: integerNumberFormat,
             parser: formatNumberParser,
             precision: 0,
             min: 0,
@@ -286,13 +301,14 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard): FormItemProps[] =
         {
           type: 'inputNumber',
           name: 'maxSubscription',
+          validateTrigger: 'onBlur',
           rules: [
             (form: any) => ({
               validator: (_, value) => maxSubscriptionValidator(form, value),
             }),
           ],
           childrenProps: {
-            formatter: integeNumberFormat,
+            formatter: integerNumberFormat,
             parser: formatNumberParser,
             precision: 0,
             min: 1,
@@ -322,6 +338,7 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard): FormItemProps[] =
       tooltip: 'IDO start time, users can start participating in the IDO.',
       childrenProps: {
         showTime: true,
+        showNow: false,
         disabledDate: disabledDateBefore,
         disabledTime: (current) => disabledTimeBefore(current),
       },
@@ -333,8 +350,11 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard): FormItemProps[] =
       name: 'endTime',
       required: true,
       childrenProps: {
-        disabled: true,
+        disabled: !idoInfo?.startTime,
         showTime: true,
+        showNow: false,
+        disabledDate: (current) => disabledDateBefore(current, idoInfo?.endTime),
+        disabledTime: (current) => disabledTimeBefore(current, idoInfo?.endTime),
       },
     },
     {
@@ -345,8 +365,11 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard): FormItemProps[] =
       tooltip:
         'Crowdfunded Token will be released to users after this time, and the project owner can also withdraw the fundraising proceeds and unsold Token after this time.',
       childrenProps: {
-        disabled: true,
+        disabled: !idoInfo?.startTime || !idoInfo?.endTime,
         showTime: true,
+        showNow: false,
+        disabledDate: (current) => disabledDateBefore(current, idoInfo?.tokenReleaseTime),
+        disabledTime: (current) => disabledTimeBefore(current, idoInfo?.tokenReleaseTime),
       },
     },
     {

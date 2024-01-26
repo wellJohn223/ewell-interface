@@ -16,7 +16,7 @@ import { PROJECT_STATUS_TEXT_MAP } from 'constants/project';
 import { useWallet } from 'contexts/useWallet/hooks';
 import { ZERO } from 'constants/misc';
 import { divDecimals, divDecimalsStr, timesDecimals } from 'utils/calculate';
-import { getPriceDecimal } from 'utils';
+import { getHref, getPriceDecimal } from 'utils';
 import { parseInputNumberChange } from 'utils/input';
 import { useBalance } from 'hooks/useBalance';
 import { useTxFee } from 'contexts/useAssets/hooks';
@@ -72,6 +72,10 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
   const notEnoughTokens = useMemo(() => {
     return canPurchaseAmount.lt(minCanInvestAmount);
   }, [canPurchaseAmount, minCanInvestAmount]);
+
+  const isMaxDisabled = useMemo(() => {
+    return isPreview || notEnoughTokens;
+  }, [isPreview, notEnoughTokens]);
 
   const progressPercent = useMemo(() => {
     const percent = ZERO.plus(projectInfo?.currentRaisedAmount ?? 0)
@@ -166,7 +170,9 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
 
   const handleValidatePurchaseInput = (value?: string) => {
     const bigValue = new BigNumber(value || 0);
-    if (bigValue.gt(divDecimals(maxCanInvestAmount, projectInfo?.toRaiseToken?.decimals))) {
+    if (!value) {
+      setPurchaseInputErrorMessage('');
+    } else if (bigValue.gt(divDecimals(maxCanInvestAmount, projectInfo?.toRaiseToken?.decimals))) {
       setPurchaseInputErrorMessage(
         `Max Amount ${divDecimalsStr(maxCanInvestAmount, projectInfo?.toRaiseToken?.decimals)}`,
       );
@@ -327,7 +333,9 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
                 className="purple-text cursor-pointer"
                 fontWeight={FontWeightEnum.Medium}
                 onClick={() => {
-                  window.open(projectInfo?.whitelistInfo?.url, '_blank');
+                  if (projectInfo?.whitelistInfo?.url) {
+                    window.open(getHref(projectInfo.whitelistInfo.url), '_blank');
+                  }
                 }}>
                 View Whitelist Tasks
               </Text>
@@ -383,6 +391,9 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
                           className="max-operation purple-text cursor-pointer"
                           fontWeight={FontWeightEnum.Medium}
                           onClick={() => {
+                            if (isMaxDisabled) {
+                              return;
+                            }
                             const maxValue = divDecimals(
                               maxCanInvestAmount,
                               projectInfo?.toRaiseToken?.decimals,
@@ -390,7 +401,7 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
                             setPurchaseInputValue(maxValue);
                             handleValidatePurchaseInput(maxValue);
                           }}
-                          disabled={isPreview || notEnoughTokens}>
+                          disabled={isMaxDisabled}>
                           MAX
                         </Title>
                       </div>
