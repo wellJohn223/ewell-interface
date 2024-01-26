@@ -1,14 +1,11 @@
 import React, { useCallback, useMemo } from 'react';
 import clsx from 'clsx';
-import { Row, Col, Flex } from 'antd';
-import { Typography, FontWeightEnum, Progress } from 'aelf-design';
-import { getProjectStatus } from 'utils/project';
+import { Flex } from 'antd';
+import { Typography, Progress } from 'aelf-design';
 import communityLogo from 'assets/images/communityLogo';
-import { IProjectInfo, IAdditionalInfo } from './types';
-import { mockDetail } from './mock';
+import { IProjectInfo } from './types';
 import { ZERO } from 'constants/misc';
 import { divDecimals } from 'utils/calculate';
-import { NumberFormat } from 'utils/format';
 import { ProjectStatus } from 'types/project';
 import { useNavigate, useParams } from 'react-router-dom';
 import { stringifyUrl } from 'query-string';
@@ -16,6 +13,8 @@ import { parseAdditionalInfo } from 'utils/project';
 import './styles.less';
 import { PROJECT_STATUS_TEXT_MAP } from 'constants/project';
 import dayjs from 'dayjs';
+import { timeDuration } from 'utils/time';
+
 const ONE_DAY_IN_MS = 24 * 60 * 60 * 1000;
 
 export interface IProjectCard {
@@ -108,15 +107,13 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
     const timestamp = dayjs(timeValue).valueOf();
 
     const remainingTime = timestamp - Date.now();
-    let format;
-    let formatValue = remainingTime;
+    let formatValue = '';
     if (remainingTime <= ONE_DAY_IN_MS) {
-      format = 'HH:mm:ss';
+      formatValue = timeDuration(remainingTime);
     } else {
-      formatValue = timestamp;
-      format = 'DD MMM YYYY';
+      formatValue = dayjs(timestamp).format('DD MMM YYYY');
     }
-    return dayjs(formatValue).format(format);
+    return formatValue;
   }, [data.cancelTime, data.endTime, data.startTime, data.tokenReleaseTime, status]);
 
   return (

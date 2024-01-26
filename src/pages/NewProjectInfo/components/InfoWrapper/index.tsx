@@ -9,7 +9,6 @@ import ProjectTabs from '../ProjectTabs';
 import ActionCard from '../ActionCard';
 import { IProjectInfo } from 'types/project';
 import { pick } from 'utils';
-import { useMobileMd } from 'contexts/useStore/hooks';
 import './styles.less';
 
 const { Title, Text } = Typography;
@@ -19,6 +18,7 @@ interface IInfoWrapperProps {
   isPreview: boolean;
   isLogin: boolean;
   canEdit: boolean;
+  isMobileStyle: boolean;
   handleRefresh: () => void;
 }
 
@@ -26,8 +26,14 @@ const MAX_THUMBS_SLIDES_PER_VIEW = 5;
 const THUMBS_ITEM_WIDTH = 72;
 const THUMBS_ITEM_GAP = 16;
 
-export default function InfoWrapper({ projectInfo, isPreview, isLogin, canEdit, handleRefresh }: IInfoWrapperProps) {
-  const isMobileMd = useMobileMd();
+export default function InfoWrapper({
+  projectInfo,
+  isPreview,
+  isLogin,
+  canEdit,
+  isMobileStyle,
+  handleRefresh,
+}: IInfoWrapperProps) {
   const { projectId } = useParams();
 
   const { additionalInfo } = projectInfo;
@@ -54,7 +60,7 @@ export default function InfoWrapper({ projectInfo, isPreview, isLogin, canEdit, 
     <div className="project-info-wrapper flex">
       <Flex justify="space-between" align="flex-start">
         <ProjectLogo src={additionalInfo?.logoUrl} alt="logo" />
-        {canEdit && isMobileMd && (
+        {canEdit && isMobileStyle && (
           <EditButton size="small" projectId={projectId}>
             Edit Project
           </EditButton>
@@ -76,12 +82,13 @@ export default function InfoWrapper({ projectInfo, isPreview, isLogin, canEdit, 
             data={projectImgs}
           />
         )}
-        {isMobileMd && (
+        {isMobileStyle && (
           <ActionCard
             projectInfo={projectInfo}
             isPreview={isPreview}
             isLogin={isLogin}
             canEdit={canEdit}
+            isMobileStyle={isMobileStyle}
             handleRefresh={handleRefresh}
           />
         )}

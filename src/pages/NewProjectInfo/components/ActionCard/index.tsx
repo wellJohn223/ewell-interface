@@ -7,7 +7,6 @@ import ProjectManagementCard from '../ProjectManagementCard';
 import { login as loginIcon } from 'assets/images';
 import { useWallet } from 'contexts/useWallet/hooks';
 import { IProjectInfo } from 'types/project';
-import { useMobileMd } from 'contexts/useStore/hooks';
 import './styles.less';
 
 interface IActionCardProps {
@@ -15,17 +14,24 @@ interface IActionCardProps {
   isPreview: boolean;
   isLogin: boolean;
   canEdit: boolean;
+  isMobileStyle: boolean;
   handleRefresh?: () => void;
 }
 
-export default function ActionCard({ projectInfo, isPreview, isLogin, canEdit, handleRefresh }: IActionCardProps) {
-  const isMobileMd = useMobileMd();
+export default function ActionCard({
+  projectInfo,
+  isPreview,
+  isLogin,
+  canEdit,
+  isMobileStyle,
+  handleRefresh,
+}: IActionCardProps) {
   const { login } = useWallet();
   const { projectId } = useParams();
 
   return (
     <Flex className="action-card-wrapper" vertical gap={24}>
-      {canEdit && !isMobileMd && (
+      {canEdit && !isMobileStyle && (
         <EditButton className="edit-button" projectId={projectId}>
           Edit Project Information
         </EditButton>
