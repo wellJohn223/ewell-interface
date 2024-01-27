@@ -1,8 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { Flex } from 'antd';
 import { Modal, Typography, Button } from 'aelf-design';
-import { SET_GLOBAL_SYNC_TIPS_MODAL } from 'constants/events';
-import { eventBus } from 'utils';
+import myEvents from 'utils/myEvent';
 
 const { Text } = Typography;
 
@@ -19,9 +18,10 @@ export default function PageSyncTipsModal() {
   }, []);
 
   useEffect(() => {
-    eventBus.addListener(SET_GLOBAL_SYNC_TIPS_MODAL, setModalHandler);
+    const { remove } = myEvents.SetGlobalSyncTipsModal.addListener(setModalHandler);
+
     return () => {
-      eventBus.removeListener(SET_GLOBAL_SYNC_TIPS_MODAL, setModalHandler);
+      remove();
     };
   }, [setModalHandler]);
 
