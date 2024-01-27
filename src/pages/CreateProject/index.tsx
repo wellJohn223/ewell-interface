@@ -51,7 +51,7 @@ const CreateProject: React.FC = () => {
   }, [currentStep, onNext, onPre]);
 
   return (
-    <div className="common-page-1360 cre-project page-body">
+    <div className="common-page cre-project page-body">
       {currentStep <= TSteps.THREE && <Breadcrumb className="project-nav" separator="\" items={breadTitles} />}
       <div className={clsx('project-wrapper', currentStep === TSteps.FOUR && 'project-wrapper-full')}>
         {/* TODO: scroll top */}

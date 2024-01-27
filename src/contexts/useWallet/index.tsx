@@ -142,11 +142,6 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   }, [navigate]);
   useWebLoginEvent(WebLoginEvents.LOGOUT, onLogout);
 
-  // TODO: remove
-  useEffect(() => {
-    console.log('wallet state', state);
-  }, [state]);
-
   const onAuthorizationExpired = useCallback(() => {
     if (webLoginContext.loginState !== WebLoginState.logined) {
       console.log('AuthorizationExpired: Not Logined');
