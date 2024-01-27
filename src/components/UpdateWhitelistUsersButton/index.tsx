@@ -136,7 +136,8 @@ export default function UpdateWhitelistUsers({
         title={`${updateType === UpdateType.ADD ? 'Added' : 'Removed'} Successfully`}
         footer={null}
         centered
-        open={isUpdateSuccessModalOpen}>
+        open={isUpdateSuccessModalOpen}
+        onCancel={() => setIsUpdateSuccessModalOpen(false)}>
         <Flex vertical gap={24} align="center">
           <Flex vertical gap={8} align="center">
             <img className="success-icon" src={success} alt="success" />
