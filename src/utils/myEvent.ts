@@ -2,7 +2,7 @@ import EventEmitter from 'events';
 
 export const eventBus = new EventEmitter();
 
-const EventList = ['AuthToken', 'AuthorizationExpired', 'AuthAsk'] as const;
+const EventList = ['AuthToken', 'AuthorizationExpired', 'AuthAsk', 'LogoutAsk'] as const;
 
 // eslint-disable-next-line no-new-func
 const eventsServer = new Function();

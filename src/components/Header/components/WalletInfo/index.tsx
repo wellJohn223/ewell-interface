@@ -7,6 +7,8 @@ import projectsSvg from '../../images/projects.svg';
 import logoutSvg from '../../images/logout.svg';
 import './styles.less';
 import { useMobile } from 'contexts/useStore/hooks';
+import { useCallback } from 'react';
+import myEvents from 'utils/myEvent';
 
 export interface IWalletInfoProps {
   onMyProjectClick?: () => void;
@@ -16,6 +18,9 @@ export const WalletInfo = ({ onMyProjectClick }: IWalletInfoProps) => {
   const { wallet, logout } = useWallet();
   const navigate = useNavigate();
   const isMobile = useMobile();
+  const onLogout = useCallback(() => {
+    myEvents.LogoutAsk.emit();
+  }, []);
 
   return (
     <>
@@ -49,11 +54,7 @@ export const WalletInfo = ({ onMyProjectClick }: IWalletInfoProps) => {
       </div>
 
       {!isMobile && (
-        <div
-          className="wallet-info-item-wrap"
-          onClick={() => {
-            logout();
-          }}>
+        <div className="wallet-info-item-wrap" onClick={onLogout}>
           <img src={logoutSvg} alt="" />
           <div className="wallet-item-body">
             <span className="wallet-item-title">Log Out</span>

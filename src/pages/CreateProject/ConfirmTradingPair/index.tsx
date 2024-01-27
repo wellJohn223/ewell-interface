@@ -78,7 +78,7 @@ const ConfirmTradingPair: React.FC<CreateStepProps> = ({ onNext }) => {
       <div className="trading-footer">
         <div className="footer-text">
           There is proper token, go to{' '}
-          <span className="link-text" onClick={() => window.open(NETWORK_CONFIG.symbolMarket)}>
+          <span className="link-text" onClick={() => window.open(NETWORK_CONFIG.symbolMarketUrl)}>
             Symbol Market
           </span>{' '}
           and create a?

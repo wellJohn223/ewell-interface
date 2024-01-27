@@ -1,8 +1,8 @@
 import { useState, useCallback, useEffect } from 'react';
-import { eventBus } from 'aelf-web-login';
 import { Flex } from 'antd';
 import { Modal, Typography, Button } from 'aelf-design';
 import { SET_GLOBAL_SYNC_TIPS_MODAL } from 'constants/events';
+import { eventBus } from 'utils';
 
 const { Text } = Typography;
 

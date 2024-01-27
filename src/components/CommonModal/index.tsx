@@ -1,50 +1,73 @@
-import { Col, Modal, ModalProps, Row } from 'antd';
-import clsx from 'clsx';
-import { LeftOutlined } from '@ant-design/icons';
-import { ReactNode } from 'react';
-import { useMobile } from 'contexts/useStore/hooks';
-import { prefixCls } from 'constants/theme';
+import { ReactNode, forwardRef, useCallback, useImperativeHandle, useState } from 'react';
 import './styles.less';
-export default function CommonModal(
-  props: ModalProps & {
-    children?: any;
-    className?: string;
-    leftCallBack?: () => void;
-    leftElement?: ReactNode;
-    transitionName?: string;
-  },
-) {
-  const { leftCallBack, width, title, leftElement, transitionName } = props;
-  const isMobile = useMobile();
-  return (
-    <Modal
-      maskClosable={false}
-      centered={props.centered ? props.centered : !isMobile}
-      destroyOnClose
-      footer={null}
-      {...props}
-      width={width ? width : '800px'}
-      className={clsx(
-        'common-modals',
-        {
-          'common-modal-center': isMobile && props.centered,
-        },
-        props.className,
-      )}
-      transitionName={transitionName ?? isMobile ? `${prefixCls}-move-down` : undefined}
-      title={
-        <Row justify="space-between">
-          {leftCallBack || leftElement ? (
-            <Col className="common-modal-left-icon" flex={1} onClick={leftCallBack}>
-              {leftElement || <LeftOutlined />}
-            </Col>
-          ) : null}
-          <Col flex={2} style={{ textAlign: 'center' }}>
-            {title}
-          </Col>
-          {leftCallBack || leftElement ? <Col flex={1} /> : null}
-        </Row>
-      }
-    />
-  );
+import { Button, Modal } from 'aelf-design';
+import type { ModalProps } from 'antd';
+import closeSvg from 'assets/images/close.svg';
+import clsx from 'clsx';
+
+export interface ICommonModalProps extends ModalProps {
+  children?: ReactNode;
+  className?: string;
+  title?: string;
+  cancelText?: string;
+  onCancelClick?: () => void;
+  confirmText?: string;
+  onConfirmClick?: () => void;
 }
+
+export interface ICommonModalInterface {
+  show: () => void;
+  hide: () => void;
+}
+
+export const CommonModal = forwardRef((props: ICommonModalProps, ref) => {
+  const { className, width, title, confirmText, onConfirmClick, cancelText, onCancelClick, children } = props;
+  const [isOpen, setIsOpen] = useState(false);
+
+  const show = useCallback(() => {
+    setIsOpen(true);
+  }, []);
+
+  const hide = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
+  const onCancel = useCallback(() => {
+    setIsOpen(false);
+    onCancelClick?.();
+  }, [onCancelClick]);
+
+  const onConfirm = useCallback(() => {
+    setIsOpen(false);
+    onConfirmClick?.();
+  }, [onConfirmClick]);
+
+  useImperativeHandle(ref, () => ({
+    show,
+    hide,
+  }));
+
+  return (
+    <Modal width={width} title={null} footer={null} open={isOpen} closeIcon={false}>
+      <div className={clsx(['common-modal-frame', className])}>
+        <div className="common-modal-header">
+          {title || ''}
+          <img className="common-modal-close" src={closeSvg} alt="" onClick={onCancel} />
+        </div>
+        <div className="common-modal-content">{children}</div>
+        <div className="common-modal-footer">
+          <div className="common-modal-btn">
+            <Button onClick={onCancel} block>
+              {cancelText || 'Cancel'}
+            </Button>
+          </div>
+          <div className="common-modal-btn">
+            <Button type="primary" onClick={onConfirm} block>
+              {confirmText || 'Confirm'}
+            </Button>
+          </div>
+        </div>
+      </div>
+    </Modal>
+  );
+});

@@ -10,18 +10,6 @@
   .@{app-prefix}-hash-address span {
     color: #070a26;
   }
-  .order-column {
-    min-width: 66px;
-  }
-  .address-column {
-    min-width: 236px;
-  }
-  .result-column {
-    min-width: 151px;
-  }
-  .reason-column {
-    min-width: 167px;
-  }
   .footer-wrapper {
     button {
       width: 206px;
@@ -32,6 +20,18 @@
 .whitelist-users-address-validation-drawer {
   .content-wrapper {
     height: 100%;
+  }
+  .table-wrapper {
+    flex: 1;
+    overflow: scroll;
+    border: 1px solid;
+    border-radius: 6px;
+    .@{app-prefix}-table {
+      border: none;
+    }
+    .@{app-prefix}-table-tbody > tr > td {
+      padding: 14px 16px;
+    }
   }
   .footer-wrapper {
     button {

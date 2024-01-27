@@ -73,6 +73,10 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
     return canPurchaseAmount.lt(minCanInvestAmount);
   }, [canPurchaseAmount, minCanInvestAmount]);
 
+  const isMaxDisabled = useMemo(() => {
+    return isPreview || notEnoughTokens;
+  }, [isPreview, notEnoughTokens]);
+
   const progressPercent = useMemo(() => {
     const percent = ZERO.plus(projectInfo?.currentRaisedAmount ?? 0)
       .div(projectInfo?.toRaisedAmount ?? 0)
@@ -121,8 +125,12 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
   }, [projectInfo?.investAmount, projectInfo?.status, projectInfo?.toClaimAmount]);
 
   const showRevokeFineButton = useMemo(() => {
-    return projectInfo?.status === ProjectStatus.CANCELED && !projectInfo?.claimedLiquidatedDamage;
-  }, [projectInfo?.claimedLiquidatedDamage, projectInfo?.status]);
+    return (
+      projectInfo?.status === ProjectStatus.CANCELED &&
+      ZERO.plus(projectInfo?.liquidatedDamageAmount || 0).gt(0) &&
+      !projectInfo?.claimedLiquidatedDamage
+    );
+  }, [projectInfo?.claimedLiquidatedDamage, projectInfo?.liquidatedDamageAmount, projectInfo?.status]);
 
   const showOperationArea = useMemo(() => {
     return (
@@ -166,7 +174,9 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
 
   const handleValidatePurchaseInput = (value?: string) => {
     const bigValue = new BigNumber(value || 0);
-    if (bigValue.gt(divDecimals(maxCanInvestAmount, projectInfo?.toRaiseToken?.decimals))) {
+    if (!value) {
+      setPurchaseInputErrorMessage('');
+    } else if (bigValue.gt(divDecimals(maxCanInvestAmount, projectInfo?.toRaiseToken?.decimals))) {
       setPurchaseInputErrorMessage(
         `Max Amount ${divDecimalsStr(maxCanInvestAmount, projectInfo?.toRaiseToken?.decimals)}`,
       );
@@ -246,11 +256,11 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
   return (
     <CommonCard className="join-card-wrapper">
       <Flex className="swap-progress-wrapper" vertical gap={8}>
-        <Flex align="center" justify="space-between">
+        <Flex align="center" justify="space-between" gap={16}>
           <Title fontWeight={FontWeightEnum.Medium}>Swap Progress</Title>
           {!!projectInfo?.status && (
             <div
-              className={clsx('status', {
+              className={clsx('status', 'flex-none', {
                 'purple-status':
                   projectInfo?.status === ProjectStatus.UPCOMING ||
                   projectInfo?.status === ProjectStatus.UNLOCKED ||
@@ -385,6 +395,9 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
                           className="max-operation purple-text cursor-pointer"
                           fontWeight={FontWeightEnum.Medium}
                           onClick={() => {
+                            if (isMaxDisabled) {
+                              return;
+                            }
                             const maxValue = divDecimals(
                               maxCanInvestAmount,
                               projectInfo?.toRaiseToken?.decimals,
@@ -392,7 +405,7 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
                             setPurchaseInputValue(maxValue);
                             handleValidatePurchaseInput(maxValue);
                           }}
-                          disabled={isPreview || notEnoughTokens}>
+                          disabled={isMaxDisabled}>
                           MAX
                         </Title>
                       </div>

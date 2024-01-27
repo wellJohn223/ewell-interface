@@ -5,14 +5,13 @@ import { arrow } from 'assets/images';
 import clsx from 'clsx';
 import { WalletInfo } from '../WalletInfo';
 import { Button } from 'aelf-design';
-import { useWallet } from 'contexts/useWallet/hooks';
+import myEvents from 'utils/myEvent';
 
 export interface IMyDrawerProps {
   drawerRef?: MutableRefObject<ICommonDrawerInterface | undefined>;
 }
 export const MyDrawer = ({ drawerRef }: IMyDrawerProps) => {
   const [isOpen, setIsOpen] = useState(true);
-  const { logout } = useWallet();
 
   const onMyProjectClick = useCallback(() => {
     drawerRef?.current?.hide();
@@ -20,8 +19,8 @@ export const MyDrawer = ({ drawerRef }: IMyDrawerProps) => {
 
   const onLogout = useCallback(() => {
     drawerRef?.current?.hide();
-    logout();
-  }, [drawerRef, logout]);
+    myEvents.LogoutAsk.emit();
+  }, [drawerRef]);
   return (
     <CommonDrawer ref={drawerRef} className="mobile-my-drawer">
       <div className="mobile-my-drawer-body">
