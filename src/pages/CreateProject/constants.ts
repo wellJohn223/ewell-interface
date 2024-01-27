@@ -7,13 +7,13 @@ import {
   Validators,
   urlValidator,
   preSalePriceValidator,
-  purchaseValidate,
 } from './validate';
 import { disabledDateBefore, disabledTimeBefore, integerNumberFormat, formatNumberParser } from './utils';
 import { TSteps } from './types';
 import { ITradingParCard } from './components/TradingPairList';
 import { formatInputNumberString } from 'utils/calculate';
 import { TIdoInfo } from './IDOInfo';
+import { Rule } from 'antd/es/form';
 
 export const stepTitle = ['Trading Pair', 'Project Information', 'IDO Information', 'Preview & Transfer'];
 
@@ -31,6 +31,8 @@ export const stepsItems: StepProps[] = [
     title: stepTitle[TSteps.FOUR],
   },
 ];
+
+const urlRule: Rule = { type: 'url', message: 'please input the correct url' };
 
 export const ProjectInfoFromJson: FormItemProps[] = [
   getInputOptions({
@@ -103,7 +105,7 @@ export const ProjectInfoFromJson: FormItemProps[] = [
         required: true,
         message: 'Please enter the necessary information',
       },
-      { validator: urlValidator },
+      urlRule,
     ],
   }),
   {
@@ -114,43 +116,43 @@ export const ProjectInfoFromJson: FormItemProps[] = [
         label: 'Medium:',
         name: 'medium',
         required: false,
-        rules: [{ validator: urlValidator }],
+        rules: [urlRule],
       }),
       getInputOptions({
         label: 'X:',
         name: 'x',
         required: false,
-        rules: [{ validator: urlValidator }],
+        rules: [urlRule],
       }),
       getInputOptions({
         label: 'Telegram:',
         name: 'telegram',
         required: false,
-        rules: [{ validator: urlValidator }],
+        rules: [urlRule],
       }),
       getInputOptions({
         label: 'Github:',
         name: 'github',
         required: false,
-        rules: [{ validator: urlValidator }],
+        rules: [urlRule],
       }),
       getInputOptions({
         label: 'Discord:',
         name: 'discord',
         required: false,
-        rules: [{ validator: urlValidator }],
+        rules: [urlRule],
       }),
       getInputOptions({
         label: 'Reddit:',
         name: 'reddit',
         required: false,
-        rules: [{ validator: urlValidator }],
+        rules: [urlRule],
       }),
       getInputOptions({
         label: 'Facebook:',
         name: 'facebook',
         required: false,
-        rules: [{ validator: urlValidator }],
+        rules: [urlRule],
       }),
     ],
   },
@@ -163,10 +165,7 @@ export const formWhitelist: FormItemProps[] = [
     name: 'whitelistUrl',
     tooltip:
       'Enter an accessible link that the user clicks on and is redirected to a third-party platform to view the whitelisted tasks. We recommend using the official Community.',
-    rules: [{ validator: urlValidator }],
-    childrenProps: {
-      maxLength: 20,
-    },
+    rules: [urlRule],
   },
 ];
 
@@ -212,7 +211,6 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
               validator: (rule, value) => preSalePriceValidator(form, value),
             }),
           ],
-          validateTrigger: 'onBlur',
           childrenProps: {
             className: 'flex-grow',
             formatter: (value) => formatInputNumberString(value, 8),
@@ -238,7 +236,6 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
         {
           type: 'inputNumber',
           name: 'crowdFundingIssueAmount',
-          validateTrigger: 'onBlur',
           rules: [
             (form: any) => ({
               validator: (_, value) => Validators.crowdFundingIssueAmount(form, value),
@@ -271,7 +268,6 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
         {
           type: 'inputNumber',
           name: 'minSubscription',
-          validateTrigger: 'onBlur',
           rules: [
             (form: any) => ({
               validator: (_, value) => minSubscriptionValidator(form, value),
@@ -301,7 +297,6 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
         {
           type: 'inputNumber',
           name: 'maxSubscription',
-          validateTrigger: 'onBlur',
           rules: [
             (form: any) => ({
               validator: (_, value) => maxSubscriptionValidator(form, value),
