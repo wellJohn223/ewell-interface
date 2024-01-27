@@ -31,7 +31,7 @@ export default function CancelProjectButton({ projectInfo }: ICancelProjectButto
 
   const handleSubmit = async () => {
     setIsSubmitModalOpen(false);
-    emitLoading(true, { text: 'Processing on the blockchain...' });
+    emitLoading(true, { text: 'Synchronising data on the blockchain...' });
     const isManagerSynced = await checkManagerSyncState();
     if (!isManagerSynced) {
       emitLoading(false);
@@ -63,20 +63,19 @@ export default function CancelProjectButton({ projectInfo }: ICancelProjectButto
     <>
       {contextHolder}
       <Button danger onClick={() => setIsConfirmModalOpen(true)}>
-        Closure Of Project
+        Cancel Sale
       </Button>
       <Modal
         className="common-modal"
-        title="Closure of Project"
+        title="Cancel Sale"
         footer={null}
         centered
         open={isConfirmModalOpen}
         onCancel={() => setIsConfirmModalOpen(false)}>
         <Flex vertical gap={24}>
           <Text className="text-center">
-            You are closing project{' '}
-            <Text fontWeight={FontWeightEnum.Medium}>“{projectInfo?.additionalInfo?.projectName}”</Text>. After the
-            project is closed, you will not receive the funds raised, but only the full amount of Token.
+            Are you sure you want to cancel the sale? Once cancelled, you can claim all the tokens you provided, yet you
+            won't receive any ELF raised.
           </Text>
           <Flex className="mobile-flex-vertical-reverse" gap={16}>
             <Button className="flex-1" onClick={() => setIsConfirmModalOpen(false)}>
@@ -90,7 +89,7 @@ export default function CancelProjectButton({ projectInfo }: ICancelProjectButto
                 setIsConfirmModalOpen(false);
                 setIsSubmitModalOpen(true);
               }}>
-              Closure and Claim
+              Cancel and Claim
             </Button>
           </Flex>
         </Flex>
@@ -113,7 +112,7 @@ export default function CancelProjectButton({ projectInfo }: ICancelProjectButto
             <Title fontWeight={FontWeightEnum.Medium}>{projectInfo?.crowdFundingIssueToken?.symbol || '--'}</Title>
           </Flex>
           <Flex className="modal-box-data-wrapper" justify="space-between" align="center">
-            <Text>Address</Text>
+            <Text>My address</Text>
             <HashAddress
               className="hash-address-small"
               preLen={8}
@@ -150,7 +149,7 @@ export default function CancelProjectButton({ projectInfo }: ICancelProjectButto
       </Modal>
       <SuccessModal
         modalProps={{
-          title: 'Closure and Claim Success',
+          title: 'Sale Cancelled and Tokens Claimed',
           open: isSuccessModalOpen,
           onCancel: () => {
             setIsSuccessModalOpen(false);
@@ -169,7 +168,7 @@ export default function CancelProjectButton({ projectInfo }: ICancelProjectButto
               symbol: projectInfo?.crowdFundingIssueToken?.symbol || '--',
             },
           ],
-          description: 'Congratulations, transfer success!',
+          description: 'Congratulations! Your tokens have been successfully claimed and the sale is now cancelled.',
           boxData: {
             label: 'Transaction ID',
             value: transactionId,

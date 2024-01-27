@@ -63,7 +63,7 @@ const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
   const onTransfer = useCallback(async () => {
     try {
       setOpenConfirmModal(false);
-      emitLoading(true, { text: 'Processing on the blockchain...' });
+      emitLoading(true, { text: 'Synchronising data on the blockchain...' });
       const isSync = await checkManagerSyncState();
       if (!isSync) {
         emitLoading(false);

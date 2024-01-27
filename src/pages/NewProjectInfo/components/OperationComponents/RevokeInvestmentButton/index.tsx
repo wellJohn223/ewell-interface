@@ -64,7 +64,7 @@ export default function RevokeInvestmentButton({ projectInfo }: IRevokeInvestmen
 
   const handleSubmit = async () => {
     setIsSubmitModalOpen(false);
-    emitLoading(true, { text: 'Processing on the blockchain...' });
+    emitLoading(true, { text: 'Synchronising data on the blockchain...' });
     const isManagerSynced = await checkManagerSyncState();
     if (!isManagerSynced) {
       emitLoading(false);
@@ -99,11 +99,11 @@ export default function RevokeInvestmentButton({ projectInfo }: IRevokeInvestmen
         className="revoke-investment-button cursor-pointer"
         fontWeight={FontWeightEnum.Medium}
         onClick={() => setIsConfirmModalOpen(true)}>
-        Revoke Investment
+        Cancel Investment
       </Text>
       <Modal
         className="common-modal"
-        title="Revoke Investment"
+        title="Cancel Investment"
         footer={null}
         centered
         open={isConfirmModalOpen}
@@ -112,8 +112,8 @@ export default function RevokeInvestmentButton({ projectInfo }: IRevokeInvestmen
         }}>
         <Flex vertical gap={24}>
           <Text>
-            Are you sure you want to cancel your investment? Withdrawal of investment will be charged 10% of your ELF as
-            liquidated damages and the remaining ELF will be refunded after deduction of Gas.
+            Are you sure you want to cancel your investment? Upon cancellation, a penalty of 10% of the ELF you invested
+            will be deducted, and the remaining 90% will be returned to you.
           </Text>
           <Flex className="mobile-flex-vertical-reverse" gap={16}>
             <Button className="flex-1" onClick={() => setIsConfirmModalOpen(false)}>
@@ -126,14 +126,14 @@ export default function RevokeInvestmentButton({ projectInfo }: IRevokeInvestmen
                 setIsConfirmModalOpen(false);
                 setIsSubmitModalOpen(true);
               }}>
-              Revoke Investment
+              Cancel
             </Button>
           </Flex>
         </Flex>
       </Modal>
       <Modal
         className="common-modal"
-        title="Revoke Investment"
+        title="Cancel Investment"
         footer={null}
         centered
         open={isSubmitModalOpen}
@@ -141,9 +141,9 @@ export default function RevokeInvestmentButton({ projectInfo }: IRevokeInvestmen
           setIsSubmitModalOpen(false);
         }}>
         <Flex vertical gap={24}>
-          <Text>After clicking “Submit”, EWELL transfer ELF to the designated account.</Text>
+          <Text>Upon clicking "Confirm," ELF will be returned to the specified address.</Text>
           <Flex justify="space-between">
-            <Text>Address</Text>
+            <Text>My address</Text>
             <HashAddress
               className="hash-address-small"
               preLen={8}
@@ -153,7 +153,7 @@ export default function RevokeInvestmentButton({ projectInfo }: IRevokeInvestmen
             />
           </Flex>
           <Flex className="modal-box-data-wrapper" justify="space-between">
-            <Text fontWeight={FontWeightEnum.Medium}>Revoke</Text>
+            <Text fontWeight={FontWeightEnum.Medium}>Available</Text>
             <Flex gap={8} align="baseline">
               <Text fontWeight={FontWeightEnum.Medium}>
                 {divDecimalsStr(revokeAmount, projectInfo?.toRaiseToken?.decimals)}{' '}
@@ -191,7 +191,7 @@ export default function RevokeInvestmentButton({ projectInfo }: IRevokeInvestmen
               </Flex>
             </Flex>
             <Flex justify="space-between">
-              <Text>Final</Text>
+              <Text>Amount to Be Received</Text>
               <Flex className="mobile-flex-vertical-end-gap-2" gap={8} align="baseline">
                 <Text>
                   {divDecimalsStr(finalAmount, projectInfo?.toRaiseToken?.decimals)}{' '}
@@ -211,18 +211,19 @@ export default function RevokeInvestmentButton({ projectInfo }: IRevokeInvestmen
           <Text
             className={clsx('error-text', 'text-center', { ['display-none']: !notEnoughTokens })}
             fontWeight={FontWeightEnum.Medium}>
-            Not enough tokens to pay for the Gas!
+            Insufficient balance to cover the transaction fee. Please transfer some ELF to this address before you try
+            again.
           </Text>
           <Flex justify="center">
             <Button className="modal-single-button" type="primary" disabled={notEnoughTokens} onClick={handleSubmit}>
-              Submit
+              Confirm
             </Button>
           </Flex>
         </Flex>
       </Modal>
       <SuccessModal
         modalProps={{
-          title: 'Revoke Successfully',
+          title: 'Successfully Cancelled',
           open: isSuccessModalOpen,
           onCancel: () => {
             setIsSuccessModalOpen(false);
@@ -238,7 +239,7 @@ export default function RevokeInvestmentButton({ projectInfo }: IRevokeInvestmen
               symbol: projectInfo?.toRaiseToken?.symbol || '--',
             },
           ],
-          description: 'Congratulations, your token has been revoked successfully!',
+          description: 'Congratulations! Your investment has been successfully cancelled.',
           boxData: {
             label: 'Transaction ID',
             value: transactionId,

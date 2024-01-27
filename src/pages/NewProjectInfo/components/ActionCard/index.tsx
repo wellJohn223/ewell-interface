@@ -43,7 +43,7 @@ export default function ActionCard({
           type="primary"
           icon={<img src={loginIcon} alt="login" />}
           onClick={() => login()}>
-          Log in to view details
+          Log in to View Details
         </Button>
       )}
       {canEdit && <ProjectManagementCard projectInfo={projectInfo} />}

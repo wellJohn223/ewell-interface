@@ -20,14 +20,13 @@ interface IAddressValidationModalProps {
 }
 
 const { Text, Title } = Typography;
-const ACTIVE_LABEL = 'Addable';
 
 const VALIDATION_STATUS_REASON_MAP = {
   [WhitelistAddressIdentifyStatusEnum.active]: '-',
-  [WhitelistAddressIdentifyStatusEnum.exist]: 'Already Exist',
-  [WhitelistAddressIdentifyStatusEnum.matchFail]: 'Match Fail',
+  [WhitelistAddressIdentifyStatusEnum.exist]: 'Already exists',
+  [WhitelistAddressIdentifyStatusEnum.matchFail]: 'Invalid address',
   [WhitelistAddressIdentifyStatusEnum.notExist]: 'Not Exist',
-  [WhitelistAddressIdentifyStatusEnum.repeat]: 'Duplicate Address',
+  [WhitelistAddressIdentifyStatusEnum.repeat]: 'Already exists',
 };
 
 const TABLE_HEADER_HEIGHT = 48;
@@ -50,10 +49,15 @@ export default function AddressValidationModal({
         key: `${idx + 1}`,
         order: `${idx + 1}`,
         address: item.address,
-        result: item.status === WhitelistAddressIdentifyStatusEnum.active ? 'Addable' : 'Not Addable',
+        result:
+          item.status === WhitelistAddressIdentifyStatusEnum.active
+            ? 'Can be '
+            : "Can't be " + updateType === UpdateType.ADD
+            ? 'added'
+            : 'removed',
         reason: VALIDATION_STATUS_REASON_MAP[item.status],
       })),
-    [validationData],
+    [updateType, validationData],
   );
 
   const attemptsNum = useMemo(() => validationData.length, [validationData]);
@@ -87,13 +91,13 @@ export default function AddressValidationModal({
           width: index === 0 ? '18%' : '50%',
         }))
         .concat({
-          title: 'Results',
+          title: 'Result',
           dataIndex: 'result',
           key: 'result',
           width: '32%',
           render: (result, record) => (
             <Flex vertical>
-              <Text size="mini" className={clsx(result !== ACTIVE_LABEL && 'error-text')}>
+              <Text size="mini" className={clsx(result?.includes("Can't") && 'error-text')}>
                 {result || '-'}
               </Text>
               <Text size="mini">{record.reason || '-'}</Text>
@@ -108,11 +112,13 @@ export default function AddressValidationModal({
         }))
         .concat(
           {
-            title: 'Results',
+            title: 'Result',
             dataIndex: 'result',
             key: 'result',
             width: 151,
-            render: (result) => <Text className={clsx(result !== ACTIVE_LABEL && 'error-text')}>{result || '-'}</Text>,
+            render: (result) => (
+              <Text className={clsx(result?.includes("Can't") && 'error-text')}>{result || '-'}</Text>
+            ),
           },
           {
             title: 'Reason',
@@ -130,28 +136,30 @@ export default function AddressValidationModal({
     <CommonModalSwitchDrawer
       className="whitelist-users-address-validation"
       drawerClassName="whitelist-users-address-validation-drawer"
-      title={`${updateType === UpdateType.ADD ? 'Add Allowlist' : 'Remove Whitelisted'} Users`}
+      title={updateType === UpdateType.ADD ? 'Add Users to Whitelist' : 'Remove Users from Whitelist'}
       modalWidth={668}
       drawerHeight="100vh"
       open={modalOpen}
       onCancel={onModalCancel}>
       <Flex id="whitelist-users-address-validation-content" className="content-wrapper" vertical gap={24}>
         <Flex vertical gap={8}>
-          <Title fontWeight={FontWeightEnum.Medium}>Address validation results</Title>
+          <Title fontWeight={FontWeightEnum.Medium}>Address checking result</Title>
           <Flex className="info-wrapper" vertical>
             <Flex className="info-row" justify="space-between" align="flex-start" gap={16}>
-              <Text>Total number of attempts to whitelist</Text>
+              <Text>Total number of address{attemptsNum > 1 ? 'es' : ''} provided:</Text>
               <Text fontWeight={FontWeightEnum.Medium}>{attemptsNum}</Text>
             </Flex>
             <Flex className="info-row" justify="space-between" align="flex-start" gap={16}>
               <Text>
-                Total number of whitelist users that can be {updateType === UpdateType.ADD ? 'added' : 'removed'}
+                Number of address{addableNum > 1 ? 'es' : ''} can be{' '}
+                {updateType === UpdateType.ADD ? 'added' : 'removed'}:
               </Text>
               <Text fontWeight={FontWeightEnum.Medium}>{addableNum}</Text>
             </Flex>
             <Flex className="info-row" justify="space-between" align="flex-start" gap={16}>
               <Text>
-                Total number of non-{updateType === UpdateType.ADD ? 'addable' : 'removable'} whitelisted users
+                Number of address{nonAddableNum > 1 ? 'es' : ''} can't be{' '}
+                {updateType === UpdateType.ADD ? 'added' : 'removed'}:
               </Text>
               <Text className="error-text" fontWeight={FontWeightEnum.Medium}>
                 {nonAddableNum}
@@ -173,7 +181,7 @@ export default function AddressValidationModal({
         <Flex className="footer-wrapper" gap={16} justify="center">
           <Button onClick={onModalBack}>Back</Button>
           <Button disabled={addableNum === 0} type="primary" onClick={onModalConfirm}>
-            Confirmation
+            {UpdateType.ADD === updateType ? 'Add' : 'Remove'}
           </Button>
         </Flex>
       </Flex>

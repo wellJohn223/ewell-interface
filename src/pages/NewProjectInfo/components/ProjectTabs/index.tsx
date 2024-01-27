@@ -13,7 +13,7 @@ const { Text } = Typography;
 
 enum ProjectTabsLabel {
   DESCRIPTION = 'Description',
-  IDO_INFORMATION = 'IDO Information',
+  TOKEN_SALE = 'Token Sale',
 }
 
 interface IProjectTabsProps {
@@ -94,8 +94,8 @@ export default function ProjectTabs({ projectInfo }: IProjectTabsProps) {
           ),
         },
         {
-          key: 'Supply',
-          label: 'Supply',
+          key: 'Total Amount for Sale',
+          label: 'Total Amount for Sale',
           value: `${divDecimalsStr(
             projectInfo?.crowdFundingIssueAmount,
             projectInfo?.crowdFundingIssueToken?.decimals ?? 8,
@@ -109,8 +109,8 @@ export default function ProjectTabs({ projectInfo }: IProjectTabsProps) {
           }`,
         },
         {
-          key: 'Token Unsold',
-          label: 'Token Unsold',
+          key: 'Unsold Tokens',
+          label: 'Unsold Tokens',
           value: projectInfo ? (projectInfo?.isBurnRestToken ? 'Burn' : 'Return') : '--',
         },
       ],
@@ -119,12 +119,12 @@ export default function ProjectTabs({ projectInfo }: IProjectTabsProps) {
       title: 'Schedule',
       data: [
         {
-          key: 'IDO Starts At',
+          key: 'Sale Start Time',
           label: <CommonWrapText rowTextList={['IDO', 'Starts At']} />,
           value: renderCardRowTimeWrapText(projectInfo?.startTime),
         },
         {
-          key: 'IDO Ends At',
+          key: 'Sale End Time',
           label: <CommonWrapText rowTextList={['IDO', 'Ends At']} />,
           value: renderCardRowTimeWrapText(projectInfo?.endTime),
         },
@@ -144,8 +144,8 @@ export default function ProjectTabs({ projectInfo }: IProjectTabsProps) {
       children: <Text className="white-space-pre-wrap">{projectInfo?.additionalInfo?.projectDescription || '--'}</Text>,
     },
     {
-      key: ProjectTabsLabel.IDO_INFORMATION,
-      label: ProjectTabsLabel.IDO_INFORMATION,
+      key: ProjectTabsLabel.TOKEN_SALE,
+      label: ProjectTabsLabel.TOKEN_SALE,
       children: (
         <div className="tabs-ido-information-wrapper flex">
           {idoInformationData.map(({ title, data }, index) => (
