@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 import { Flex } from 'antd';
 import { Typography, Progress } from 'aelf-design';
@@ -37,6 +37,8 @@ export interface IProjectCard {
 export interface ProjectCardProps {
   data: IProjectInfo;
 }
+
+const Close_Status = [ProjectStatus.CANCELED, ProjectStatus.ENDED];
 
 function ProjectStatusRow({ status }: { status: ProjectStatus }) {
   if (!status) return null;
@@ -94,27 +96,41 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
       return 'Unlock Time';
     return '--';
   }, [status]);
-  const remainderTimeStr = useMemo(() => {
-    if (status === ProjectStatus.CANCELED)
-      return data?.cancelTime ? dayjs(data.cancelTime).format('DD MMM YYYY') : '--';
-    if (status === ProjectStatus.ENDED)
-      return data?.tokenReleaseTime ? dayjs(data.tokenReleaseTime).format('DD MMM YYYY') : '--';
 
-    let timeValue = '0';
-    if (status === ProjectStatus.UPCOMING) timeValue = data?.startTime ?? '0';
-    if (status === ProjectStatus.PARTICIPATORY) timeValue = data?.endTime ?? '0';
-    if (status === ProjectStatus.UNLOCKED) timeValue = data?.tokenReleaseTime ?? '0';
-    const timestamp = dayjs(timeValue).valueOf();
+  const [remainderTimeStr, setRemainderTimeStr] = useState('');
 
-    const remainingTime = timestamp - Date.now();
-    let formatValue = '';
-    if (remainingTime <= ONE_DAY_IN_MS) {
-      formatValue = timeDuration(remainingTime);
-    } else {
-      formatValue = dayjs(timestamp).format('DD MMM YYYY');
+  useEffect(() => {
+    if (status === ProjectStatus.CANCELED) {
+      setRemainderTimeStr(data?.cancelTime ? dayjs(data.cancelTime).format('DD MMM YYYY') : '--');
     }
-    return formatValue;
-  }, [data.cancelTime, data.endTime, data.startTime, data.tokenReleaseTime, status]);
+
+    if (status === ProjectStatus.ENDED) {
+      setRemainderTimeStr(data?.tokenReleaseTime ? dayjs(data.tokenReleaseTime).format('DD MMM YYYY') : '--');
+    }
+  }, [data.cancelTime, data.tokenReleaseTime, status]);
+
+  useEffect(() => {
+    if (Close_Status.includes(status || ProjectStatus.ENDED)) return;
+    const timer = setInterval(() => {
+      let timeValue = '0';
+      if (status === ProjectStatus.UPCOMING) timeValue = data?.startTime ?? '0';
+      if (status === ProjectStatus.PARTICIPATORY) timeValue = data?.endTime ?? '0';
+      if (status === ProjectStatus.UNLOCKED) timeValue = data?.tokenReleaseTime ?? '0';
+      const timestamp = dayjs(timeValue).valueOf();
+
+      const remainingTime = timestamp - Date.now();
+      let formatValue = '';
+      if (remainingTime <= ONE_DAY_IN_MS) {
+        formatValue = timeDuration(remainingTime);
+      } else {
+        formatValue = dayjs(timestamp).format('DD MMM YYYY');
+      }
+      setRemainderTimeStr(formatValue);
+    }, 1000);
+    return () => {
+      clearInterval(timer);
+    };
+  }, [data?.endTime, data?.startTime, data?.tokenReleaseTime, status]);
 
   return (
     <div className="project-card" onClick={jumpDetail}>
