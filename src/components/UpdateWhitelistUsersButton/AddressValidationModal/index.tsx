@@ -14,6 +14,7 @@ interface IAddressValidationModalProps {
   updateType: UpdateType;
   modalOpen: boolean;
   onModalCancel: () => void;
+  onModalBack: () => void;
   onModalConfirm: () => void;
   validationData: TWhitelistIdentifyItem[];
 }
@@ -36,6 +37,7 @@ export default function AddressValidationModal({
   updateType,
   modalOpen,
   onModalCancel,
+  onModalBack,
   onModalConfirm,
   validationData,
 }: IAddressValidationModalProps) {
@@ -169,7 +171,7 @@ export default function AddressValidationModal({
           />
         </div>
         <Flex className="footer-wrapper" gap={16} justify="center">
-          <Button onClick={onModalCancel}>Back</Button>
+          <Button onClick={onModalBack}>Back</Button>
           <Button disabled={addableNum === 0} type="primary" onClick={onModalConfirm}>
             Confirmation
           </Button>

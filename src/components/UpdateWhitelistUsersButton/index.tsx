@@ -129,6 +129,10 @@ export default function UpdateWhitelistUsers({
         modalOpen={isAddressValidationModalOpen}
         validationData={validationData}
         onModalCancel={() => setIsAddressValidationModalOpen(false)}
+        onModalBack={() => {
+          setIsAddressValidationModalOpen(false);
+          setIsUpdateModalOpen(true);
+        }}
         onModalConfirm={onValidationConfirm}
       />
       <Modal
