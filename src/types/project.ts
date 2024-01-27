@@ -46,6 +46,7 @@ export interface IProjectInfo {
   crowdFundingIssueAmount?: string;
   crowdFundingIssueToken?: TokenInfo & {
     name: string;
+    balance?: string;
   };
   crowdFundingType?: string;
   currentCrowdfundingTokenAmount?: string;

@@ -6,7 +6,7 @@ import { CreateStepProps } from '../types';
 import { ConfirmModal, SuccessModal } from './components/Modal';
 import { ITradingParCard } from '../components/TradingPairList';
 import { useTransfer } from './useTransfer';
-import { emitLoading } from 'utils/events';
+import { emitLoading, emitSyncTipsModal } from 'utils/events';
 import { message, Flex } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import NewProjectInfo from 'pages/NewProjectInfo';
@@ -17,6 +17,7 @@ import BigNumber from 'bignumber.js';
 import { ProjectStatus } from 'types/project';
 import { resetCreateProjectInfo } from '../utils';
 import { timesDecimals } from 'utils/calculate';
+import { useTokenPrice, useTxFee } from 'contexts/useAssets/hooks';
 
 interface SuccessInfo {
   supply?: number;
@@ -33,7 +34,7 @@ const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
   const [successInfo, setSuccessInfo] = useState<SuccessInfo>();
-  const { register } = useTransfer();
+  const { register, checkManagerSyncState } = useTransfer();
   const navigate = useNavigate();
 
   const previewData = useMemo(() => {
@@ -41,27 +42,35 @@ const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
     const { startTime, endTime, tokenReleaseTime, whitelistUrl } = idoInfo;
     return {
       ...data,
-      additionalInfo: additionalInfo.data,
-      toRaiseToken: AELF_TOKEN_INFO,
-      crowdFundingIssueToken: tradingPair,
       startTime,
       endTime,
       tokenReleaseTime,
+      additionalInfo: additionalInfo.data,
+      toRaiseToken: AELF_TOKEN_INFO,
+      crowdFundingIssueToken: tradingPair,
       unlockTime: tokenReleaseTime,
-      toRaisedAmount: timesDecimals(
-        new BigNumber(data.crowdFundingIssueAmount).div(data.preSalePrice),
-        AELF_TOKEN_INFO.decimals,
-      ).toString(),
       status: ProjectStatus.UPCOMING,
       whitelistInfo: {
         url: whitelistUrl,
       },
+      toRaisedAmount: timesDecimals(
+        new BigNumber(data.crowdFundingIssueAmount).div(data.preSalePrice),
+        AELF_TOKEN_INFO.decimals,
+      ).toString(),
     } as any;
   }, [additional, idoInfo, tradingPair]);
 
   const onTransfer = useCallback(async () => {
     setOpenConfirmModal(false);
     emitLoading(true, { text: 'Processing on the blockchain...' });
+
+    const isSync = await checkManagerSyncState();
+    if (!isSync) {
+      emitLoading(false);
+      emitSyncTipsModal(true);
+      return;
+    }
+
     const result: any = await register({ tradingPair, idoInfo, additional });
     console.log('createResult:', result);
     emitLoading(false);
@@ -73,7 +82,7 @@ const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
     setSuccessInfo(result);
     resetCreateProjectInfo();
     setOpenSuccessModal(true);
-  }, [additional, idoInfo, register, tradingPair]);
+  }, [additional, checkManagerSyncState, idoInfo, register, tradingPair]);
 
   const gotoDetail = useCallback(() => {
     navigate(`/project/${successInfo?.projectId}`, { replace: true });
@@ -108,7 +117,11 @@ const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
         onOk={onTransfer}
       />
       <SuccessModal
-        info={{ transactionId: successInfo?.transactionId, supply: successInfo?.supply }}
+        info={{
+          transactionId: successInfo?.transactionId,
+          supply: successInfo?.supply,
+          tokenSymbol: tradingPair?.symbol,
+        }}
         open={openSuccessModal}
         onCancel={() => setOpenSuccessModal(false)}
         onOk={gotoDetail}

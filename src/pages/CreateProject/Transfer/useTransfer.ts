@@ -8,7 +8,7 @@ import { getInfo } from '../utils';
 import { handleLoopFetch } from 'utils';
 
 export const useTransfer = () => {
-  const { wallet } = useWallet();
+  const { wallet, checkManagerSyncState } = useWallet();
 
   const preCreate = useCallback(
     async (params: { amount: string; symbol: string }) => {
@@ -117,5 +117,5 @@ export const useTransfer = () => {
     [create, getDetail, preCreate],
   );
 
-  return { register, preCreate, create, getDetail };
+  return { register, preCreate, create, getDetail, checkManagerSyncState };
 };
