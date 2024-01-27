@@ -19,6 +19,7 @@ import myEvents from 'utils/myEvent';
 import { useLocation } from 'react-use';
 import { useNavigate } from 'react-router-dom';
 import { checkPathExist } from 'utils/reg';
+import { LogoutModal } from 'components/LogoutModal';
 
 const APPNAME = 'explorer.aelf.io';
 
@@ -197,7 +198,10 @@ export default function Provider({ children }: { children: React.ReactNode }) {
           },
         }}
         extraWallets={['discover', 'elf']}>
-        <WalletProvider>{children}</WalletProvider>
+        <WalletProvider>
+          {children}
+          <LogoutModal />
+        </WalletProvider>
       </WebLoginProvider>
     </PortkeyDid.PortkeyProvider>
   );
