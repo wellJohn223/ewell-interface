@@ -67,7 +67,7 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
     const percent = ZERO.plus(currentRaisedAmount ?? 0)
       .div(toRaisedAmount ?? 0)
       .times(1e2);
-    return percent.isNaN() ? ZERO : percent;
+    return percent.isNaN() ? 0 : Number(percent.toFixed(2));
   }, [currentRaisedAmount, toRaisedAmount]);
   const navigate = useNavigate();
 
@@ -132,6 +132,29 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
     };
   }, [data?.endTime, data?.startTime, data?.tokenReleaseTime, status]);
 
+  const ProgressStrokeColor = useMemo(() => (status === ProjectStatus.PARTICIPATORY ? '#131631' : '#C1C2C9'), [status]);
+
+  const currentRaisedAmountStr = useMemo(
+    () => divDecimals(currentRaisedAmount, toRaiseToken?.decimals).toFixed(),
+    [currentRaisedAmount, toRaiseToken?.decimals],
+  );
+
+  const toRaisedAmountStr = useMemo(
+    () => divDecimals(toRaisedAmount, toRaiseToken?.decimals).toFixed(),
+    [toRaiseToken?.decimals, toRaisedAmount],
+  );
+
+  const preSalePriceStr = useMemo(
+    () => divDecimals(preSalePrice, crowdFundingIssueToken?.decimals).toFixed(),
+    [crowdFundingIssueToken?.decimals, preSalePrice],
+  );
+
+  const communityLogoList = useMemo(
+    () =>
+      Object.entries(additionalInfo || []).filter(([key]) => Object.keys(communityLogo).find((item) => item === key)),
+    [additionalInfo],
+  );
+
   return (
     <div className="project-card" onClick={jumpDetail}>
       <img className="project-img" src={_additionalInfo?.projectImgs?.split(',')[0] || ''} />
@@ -143,47 +166,33 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
         </div>
       </Flex>
       <div className="project-community">
-        {Object.entries(additionalInfo || [])
-          .filter(([key]) => Object.keys(communityLogo).find((item) => item === key))
-          .map(([key, value], index) => (
-            <img
-              key={index}
-              className="cursor-pointer"
-              src={communityLogo[key]}
-              alt="community"
-              onClick={() => {
-                window.open(value, '_blank');
-              }}
-            />
-          ))}
+        {communityLogoList.map(([key, value], index) => (
+          <img
+            key={index}
+            className="cursor-pointer"
+            src={communityLogo[key]}
+            alt="community"
+            onClick={() => {
+              window.open(value, '_blank');
+            }}
+          />
+        ))}
       </div>
       <Flex className="project-card-sale" justify="space-between">
         <div className="text-left">
           <div>Sale Price</div>
-          {/* TODO: calculate prePrice */}
-          <div>
-            1 ELF ={' '}
-            {`${divDecimals(preSalePrice, crowdFundingIssueToken?.decimals).toFixed()} ${
-              crowdFundingIssueToken?.symbol || ''
-            }`}
-          </div>
+          <div>1 ELF = {`${preSalePriceStr} ${crowdFundingIssueToken?.symbol || ''}`}</div>
         </div>
         <div className="text-right">
           <div>{remainderStr}</div>
           <div>{remainderTimeStr}</div>
         </div>
       </Flex>
-      <Progress
-        size={['100%', 12]}
-        percent={progressPercent.toNumber()}
-        strokeColor={status === ProjectStatus.PARTICIPATORY ? '#131631' : '#C1C2C9'}
-        trailColor="#F5F5F6"
-      />
+      <Progress size={['100%', 12]} percent={progressPercent} strokeColor={ProgressStrokeColor} trailColor="#F5F5F6" />
       <Flex className="project-progress" justify="space-between">
-        <Text>{progressPercent.toNumber()}%</Text>
+        <Text>{progressPercent}%</Text>
         <Text>
-          {divDecimals(currentRaisedAmount, toRaiseToken?.decimals).toFixed()}/
-          {divDecimals(toRaisedAmount, toRaiseToken?.decimals).toFixed()} ELF
+          {currentRaisedAmountStr}/{toRaisedAmountStr} ELF
         </Text>
       </Flex>
     </div>
