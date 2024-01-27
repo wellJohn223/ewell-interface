@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { useWalletContext } from '.';
-import { WalletType, did, useWebLogin } from 'aelf-web-login';
+import { WalletType, useWebLogin, PortkeyDid } from 'aelf-web-login';
 import useDiscoverProvider from 'hooks/useDiscoverProvider';
 import { DEFAULT_CHAIN_ID } from 'constants/network';
 
@@ -17,7 +17,7 @@ export function useWallet() {
     if (!wallet) return false;
     if (wallet.walletType === WalletType.elf) return true;
     if (wallet.walletType === WalletType.portkey) {
-      return did.checkManagerIsExist({
+      return PortkeyDid.did.checkManagerIsExist({
         chainId: DEFAULT_CHAIN_ID,
         caHash: wallet.walletInfo.portkeyInfo?.caInfo?.caHash || '',
         managementAddress: wallet.walletInfo.portkeyInfo?.walletInfo?.address || '',

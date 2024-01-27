@@ -7,14 +7,13 @@ import {
   useWebLoginEvent,
   WebLoginEvents,
   setGlobalConfig,
-  PortkeyProvider,
+  PortkeyDid,
   useWebLoginContext,
   WebLoginContextType,
-  useWebLogin,
 } from 'aelf-web-login';
 import Wallet from './Wallet';
 import { IWallet } from './Wallet/types';
-import { DEFAULT_CHAIN_ID, NETWORK_CONFIG } from 'constants/network';
+import { DEFAULT_CHAIN_ID, IS_OFFLINE_NETWORK, NETWORK_CONFIG } from 'constants/network';
 import { authToken, clearLocalJWT } from './utils';
 import myEvents from 'utils/myEvent';
 import { useLocation } from 'react-use';
@@ -26,21 +25,23 @@ const APPNAME = 'explorer.aelf.io';
 setGlobalConfig({
   appName: APPNAME,
   chainId: DEFAULT_CHAIN_ID,
-  networkType: NETWORK_CONFIG.networkType as any,
-  portkey: {
+  networkType: NETWORK_CONFIG.webLoginNetworkType,
+  onlyShowV2: true,
+  portkey: {} as any,
+  portkeyV2: {
+    networkType: NETWORK_CONFIG.networkType,
     useLocalStorage: true,
     graphQLUrl: NETWORK_CONFIG.webLoginGraphqlUrl,
+    connectUrl: NETWORK_CONFIG.webLoginConnectUrl,
+    // loginConfig: {
+    //   recommendIndexes: [0, 1],
+    //   loginMethodsOrder: ['Google', 'Telegram', 'Apple', 'Phone', 'Email'],
+    // },
     requestDefaults: {
       baseURL: NETWORK_CONFIG.webLoginRequestDefaultsUrl,
     },
-    connectUrl: NETWORK_CONFIG.webLoginConnectUrl,
-    // socialLogin: {
-    //   Portkey: {
-    //     websiteName: APPNAME,
-    //     websiteIcon: WEBSITE_ICON,
-    //   },
-    // },
-  } as any,
+    customNetworkType: IS_OFFLINE_NETWORK ? 'Offline' : 'onLine',
+  },
   aelfReact: {
     appName: APPNAME,
     nodes: {
@@ -95,7 +96,6 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   const webLoginContext = useWebLoginContext();
   const webLoginContextRef = useRef<WebLoginContextType>(webLoginContext);
   webLoginContextRef.current = webLoginContext;
-  const { logout } = useWebLogin();
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -176,7 +176,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
 
 export default function Provider({ children }: { children: React.ReactNode }) {
   return (
-    <PortkeyProvider networkType={'MAIN'}>
+    <PortkeyDid.PortkeyProvider networkType={NETWORK_CONFIG.networkType}>
       <WebLoginProvider
         nightElf={{
           connectEagerly: true,
@@ -199,6 +199,6 @@ export default function Provider({ children }: { children: React.ReactNode }) {
         extraWallets={['discover', 'elf']}>
         <WalletProvider>{children}</WalletProvider>
       </WebLoginProvider>
-    </PortkeyProvider>
+    </PortkeyDid.PortkeyProvider>
   );
 }

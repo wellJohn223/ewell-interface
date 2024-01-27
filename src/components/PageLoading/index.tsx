@@ -1,9 +1,9 @@
 import { useState, useCallback, useEffect } from 'react';
-import { eventBus } from 'aelf-web-login';
 import { Flex } from 'antd';
 import { Loading } from 'aelf-design';
 import SandGlassLoading from 'components/SandGlassLoading';
 import { SET_GLOBAL_LOADING } from 'constants/events';
+import { eventBus } from 'utils';
 
 export interface ILoadingInfo {
   isLoading: boolean;

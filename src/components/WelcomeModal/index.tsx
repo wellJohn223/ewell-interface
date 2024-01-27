@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import myEvents from 'utils/myEvent';
 import { useWallet } from 'contexts/useWallet/hooks';
 import { IWallet } from 'contexts/useWallet/Wallet/types';
-import { WalletType, did } from 'aelf-web-login';
+import { WalletType, PortkeyDid } from 'aelf-web-login';
 import { GetCAHolderByManagerParams } from '@portkey/services';
 import AElf from 'aelf-sdk';
 import { recoverPubKey, setLocalJWT } from 'contexts/useWallet/utils';
@@ -39,7 +39,7 @@ export const WelcomeModal = () => {
     const key = `ELF_${address}_${NETWORK_CONFIG.sideChainId}`;
     if (wallet.walletType === WalletType.discover) {
       try {
-        const res = await did.services.getHolderInfoByManager({
+        const res = await PortkeyDid.did.services.getHolderInfoByManager({
           caAddresses: [address],
         } as unknown as GetCAHolderByManagerParams);
         const caInfo = res[0];

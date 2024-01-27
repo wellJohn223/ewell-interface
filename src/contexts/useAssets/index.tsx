@@ -24,7 +24,7 @@ function reducer(state: any, { type, payload }: any) {
     }
     case SET_TOKEN_PRICE: {
       const tokenPrice = { ...state.tokenPrice, ...payload.tokenPrice };
-      localStorage.setItem(LocalStorageKey.TOKEN_PRICE, JSON.stringify(tokenPrice));
+      // localStorage.setItem(LocalStorageKey.TOKEN_PRICE, JSON.stringify(tokenPrice));
       return { ...state, tokenPrice };
     }
     case DESTROY: {
@@ -41,7 +41,7 @@ export default function AssetsProvider({ children }: { children: React.ReactNode
 
   useEffectOnce(() => {
     const txFeeStorage = localStorage.getItem(LocalStorageKey.TX_FEE);
-    const tokenPriceStorage = localStorage.getItem(LocalStorageKey.TOKEN_PRICE);
+    // const tokenPriceStorage = localStorage.getItem(LocalStorageKey.TOKEN_PRICE);
     try {
       const txFee = txFeeStorage ? JSON.parse(txFeeStorage) : null;
       if (txFee) {
@@ -51,14 +51,14 @@ export default function AssetsProvider({ children }: { children: React.ReactNode
       console.log('Init txFee', error);
     }
 
-    try {
-      const tokenPrice = tokenPriceStorage ? JSON.parse(tokenPriceStorage) : null;
-      if (tokenPrice) {
-        dispatch({ type: SET_TOKEN_PRICE, payload: { tokenPrice } });
-      }
-    } catch (error) {
-      console.log('Init txFee', error);
-    }
+    // try {
+    //   const tokenPrice = tokenPriceStorage ? JSON.parse(tokenPriceStorage) : null;
+    //   if (tokenPrice) {
+    //     dispatch({ type: SET_TOKEN_PRICE, payload: { tokenPrice } });
+    //   }
+    // } catch (error) {
+    //   console.log('Init txFee', error);
+    // }
   });
 
   return (
