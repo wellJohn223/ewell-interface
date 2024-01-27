@@ -100,7 +100,6 @@ export const ProjectInfoFromJson: FormItemProps[] = [
     label: 'Official Website:',
     name: 'website',
     tooltip: 'test',
-    validateTrigger: 'onBlur',
     rules: [
       {
         required: true,
@@ -117,49 +116,42 @@ export const ProjectInfoFromJson: FormItemProps[] = [
         label: 'Medium:',
         name: 'medium',
         required: false,
-        validateTrigger: 'onBlur',
         rules: [urlRule],
       }),
       getInputOptions({
         label: 'X:',
         name: 'x',
         required: false,
-        validateTrigger: 'onBlur',
         rules: [urlRule],
       }),
       getInputOptions({
         label: 'Telegram:',
         name: 'telegram',
         required: false,
-        validateTrigger: 'onBlur',
         rules: [urlRule],
       }),
       getInputOptions({
         label: 'Github:',
         name: 'github',
         required: false,
-        validateTrigger: 'onBlur',
         rules: [urlRule],
       }),
       getInputOptions({
         label: 'Discord:',
         name: 'discord',
         required: false,
-        validateTrigger: 'onBlur',
         rules: [urlRule],
       }),
       getInputOptions({
         label: 'Reddit:',
         name: 'reddit',
         required: false,
-        validateTrigger: 'onBlur',
         rules: [urlRule],
       }),
       getInputOptions({
         label: 'Facebook:',
         name: 'facebook',
         required: false,
-        validateTrigger: 'onBlur',
         rules: [urlRule],
       }),
     ],
@@ -219,7 +211,6 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
               validator: (rule, value) => preSalePriceValidator(form, value),
             }),
           ],
-          validateTrigger: 'onBlur',
           childrenProps: {
             className: 'flex-grow',
             formatter: (value) => formatInputNumberString(value, 8),
@@ -245,7 +236,6 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
         {
           type: 'inputNumber',
           name: 'crowdFundingIssueAmount',
-          validateTrigger: 'onBlur',
           rules: [
             (form: any) => ({
               validator: (_, value) => Validators.crowdFundingIssueAmount(form, value),
@@ -278,7 +268,6 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
         {
           type: 'inputNumber',
           name: 'minSubscription',
-          validateTrigger: 'onBlur',
           rules: [
             (form: any) => ({
               validator: (_, value) => minSubscriptionValidator(form, value),
@@ -308,7 +297,6 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
         {
           type: 'inputNumber',
           name: 'maxSubscription',
-          validateTrigger: 'onBlur',
           rules: [
             (form: any) => ({
               validator: (_, value) => maxSubscriptionValidator(form, value),

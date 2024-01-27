@@ -61,27 +61,27 @@ const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
   }, [additional, idoInfo, tradingPair]);
 
   const onTransfer = useCallback(async () => {
-    setOpenConfirmModal(false);
-    emitLoading(true, { text: 'Processing on the blockchain...' });
+    try {
+      setOpenConfirmModal(false);
+      emitLoading(true, { text: 'Processing on the blockchain...' });
+      const isSync = await checkManagerSyncState();
+      if (!isSync) {
+        emitLoading(false);
+        emitSyncTipsModal(true);
+        return;
+      }
 
-    const isSync = await checkManagerSyncState();
-    if (!isSync) {
+      const result: any = await register({ tradingPair, idoInfo, additional });
+      console.log('createResult:', result);
+      setSuccessInfo(result);
+      resetCreateProjectInfo();
+      setOpenSuccessModal(true);
+    } catch (error: any) {
+      console.log('register error', error);
+      message.error(error?.message || 'register failed');
+    } finally {
       emitLoading(false);
-      emitSyncTipsModal(true);
-      return;
     }
-
-    const result: any = await register({ tradingPair, idoInfo, additional });
-    console.log('createResult:', result);
-    emitLoading(false);
-    if (result?.errMsg) {
-      console.log('error', result);
-      message.error('create failed');
-      return;
-    }
-    setSuccessInfo(result);
-    resetCreateProjectInfo();
-    setOpenSuccessModal(true);
   }, [additional, checkManagerSyncState, idoInfo, register, tradingPair]);
 
   const gotoDetail = useCallback(() => {
@@ -123,7 +123,10 @@ const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
           tokenSymbol: tradingPair?.symbol,
         }}
         open={openSuccessModal}
-        onCancel={() => setOpenSuccessModal(false)}
+        onCancel={() => {
+          setOpenSuccessModal(false);
+          gotoDetail();
+        }}
         onOk={gotoDetail}
       />
     </div>
