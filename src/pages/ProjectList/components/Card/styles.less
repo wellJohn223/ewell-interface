@@ -13,22 +13,30 @@
   }
 
   .project-card-info {
-    margin: 12px 0;
-
     .project-card-logo {
       width: 48px;
       height: 48px;
       margin-right: 12px;
+      img {
+        height: 40px;
+        width: 40px;
+      }
     }
     .project-name {
       color: #070a26;
       font-size: 16px;
       font-weight: 500;
       line-height: 24px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      /* stylelint-disable-next-line value-no-vendor-prefix */
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
     }
   }
 
-  .project-desc {
+  .project-summary {
     font-size: 14px;
     line-height: 22px;
     height: 44px;
@@ -40,18 +48,18 @@
     -webkit-box-orient: vertical;
   }
   .project-community {
-    margin-top: 4px;
-    > img {
+    height: 16px;
+    .project-community-img {
       width: 16px;
       height: 16px;
-      margin-right: 8px;
     }
   }
 
   .project-card-sale {
-    margin-top: 12px;
-    font-size: 12px;
-    line-height: 20px;
+    span {
+      font-size: 12px;
+      line-height: 20px;
+    }
   }
 
   &:hover {
@@ -82,9 +90,5 @@
       background-color: #863dff;
       color: #fff;
     }
-  }
-
-  .project-progress {
-    margin-top: 4px;
   }
 }
