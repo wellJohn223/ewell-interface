@@ -57,7 +57,7 @@ export const WalletInfo = ({ onMyProjectClick }: IWalletInfoProps) => {
         <div className="wallet-info-item-wrap" onClick={onLogout}>
           <img src={logoutSvg} alt="" />
           <div className="wallet-item-body">
-            <span className="wallet-item-title">Log Out</span>
+            <span className="wallet-item-title">Log out</span>
           </div>
         </div>
       )}

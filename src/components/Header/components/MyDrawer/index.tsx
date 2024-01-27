@@ -48,7 +48,7 @@ export const MyDrawer = ({ drawerRef }: IMyDrawerProps) => {
         </div>
 
         <Button type="primary" className="logout-btn" onClick={onLogout}>
-          Log Out
+          Log out
         </Button>
       </div>
     </CommonDrawer>

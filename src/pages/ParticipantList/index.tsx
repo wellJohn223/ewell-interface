@@ -4,7 +4,7 @@ import type { ColumnsType } from 'antd/es/table';
 import { HashAddress, Search, Pagination, Typography, FontWeightEnum } from 'aelf-design';
 import CommonTable from 'components/CommonTable';
 import './styles.less';
-import { NavLink, useParams } from 'react-router-dom';
+import { NavLink, useLocation, useParams } from 'react-router-dom';
 import { useEffectOnce } from 'react-use';
 import { request } from 'api';
 import { DEFAULT_CHAIN_ID } from 'constants/network';
@@ -15,6 +15,7 @@ import { stringifyUrl } from 'query-string';
 import { useScreenSize } from 'contexts/useStore/hooks';
 import { ScreenSize } from 'constants/theme';
 import clsx from 'clsx';
+import { ProjectListType } from 'types/project';
 
 const { Title, Text } = Typography;
 
@@ -28,6 +29,8 @@ type TParticipantItem = {
 
 const DEFAULT_PAGE_SIZE = 10;
 export default function ParticipantList() {
+  const location = useLocation();
+  const { from = ProjectListType.ALL } = (location.state || {}) as { from?: ProjectListType };
   const screenSize = useScreenSize();
   const isScreenLteLarge = useMemo(
     () =>
@@ -134,7 +137,7 @@ export default function ParticipantList() {
   const breadList = useMemo(
     () => [
       {
-        title: <NavLink to={`/projects/my`}>My Projects</NavLink>,
+        title: <NavLink to={`/projects/${from}`}>{from === ProjectListType.MY && 'My '}Projects</NavLink>,
       },
       {
         title: (
@@ -153,7 +156,7 @@ export default function ParticipantList() {
         title: 'Participants List',
       },
     ],
-    [projectId, projectName],
+    [from, projectId, projectName],
   );
 
   const columns: ColumnsType<any> = useMemo(

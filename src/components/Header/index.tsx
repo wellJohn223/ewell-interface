@@ -60,7 +60,7 @@ export default function Header() {
         })),
       },
       {
-        name: 'Launch with EWELL',
+        name: 'Launch with ewell',
         onClick: () => {
           if (loginState === WebLoginState.logining) return;
           if (loginState === WebLoginState.logined) {
