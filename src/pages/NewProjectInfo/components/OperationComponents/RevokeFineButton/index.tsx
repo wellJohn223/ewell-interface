@@ -32,7 +32,7 @@ export default function RevokeFineButton({ projectInfo }: IClaimTokenButtonProps
 
   const handleSubmit = async () => {
     setIsSubmitModalOpen(false);
-    emitLoading(true, { text: 'Processing on the blockchain...' });
+    emitLoading(true, { text: 'Synchronising data on the blockchain...' });
     const isManagerSynced = await checkManagerSyncState();
     if (!isManagerSynced) {
       emitLoading(false);

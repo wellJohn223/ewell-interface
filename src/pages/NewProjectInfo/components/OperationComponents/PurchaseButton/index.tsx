@@ -65,7 +65,7 @@ export default function PurchaseButton({ buttonDisabled, projectInfo, purchaseAm
 
   const handleSubmit = async () => {
     setIsSubmitModalOpen(false);
-    emitLoading(true, { text: 'Processing on the blockchain...' });
+    emitLoading(true, { text: 'Synchronising data on the blockchain...' });
     const isManagerSynced = await checkManagerSyncState();
     if (!isManagerSynced) {
       emitLoading(false);
@@ -150,11 +150,11 @@ export default function PurchaseButton({ buttonDisabled, projectInfo, purchaseAm
         onClick={() => {
           setIsSubmitModalOpen(true);
         }}>
-        Purchase with ELF
+        Purchase
       </Button>
       <Modal
         className="purchase-submit-modal-wrapper common-modal"
-        title="Confirm Payment"
+        title="Confirm Purchase"
         footer={null}
         centered
         open={isSubmitModalOpen}
@@ -168,7 +168,7 @@ export default function PurchaseButton({ buttonDisabled, projectInfo, purchaseAm
           </Flex>
           <Flex vertical gap={8}>
             <Flex justify="space-between">
-              <Text>Contract Address</Text>
+              <Text>Tokens stored at:</Text>
               <HashAddress
                 className="hash-address-small"
                 preLen={8}
@@ -265,14 +265,14 @@ export default function PurchaseButton({ buttonDisabled, projectInfo, purchaseAm
           </Flex>
           <Flex justify="center">
             <Button className="modal-single-button" type="primary" onClick={handleSubmit}>
-              Submit
+              Confirm
             </Button>
           </Flex>
         </Flex>
       </Modal>
       <SuccessModal
         modalProps={{
-          title: 'Payment Success',
+          title: 'Successfully Purchased',
           open: isSuccessModalOpen,
           onCancel: () => {
             setIsSuccessModalOpen(false);
@@ -288,7 +288,7 @@ export default function PurchaseButton({ buttonDisabled, projectInfo, purchaseAm
               symbol: projectInfo?.toRaiseToken?.symbol ?? '--',
             },
           ],
-          description: 'Congratulations, payment success!',
+          description: 'Congratulations! The purchase has been successfully made.',
           boxData: {
             label: 'Transaction ID',
             value: transactionId,

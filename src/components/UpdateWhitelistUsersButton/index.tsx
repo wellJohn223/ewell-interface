@@ -52,7 +52,15 @@ export default function UpdateWhitelistUsers({
     async (uploadAddressList: string[]) => {
       setIsUpdateModalOpen(false);
 
-      emitLoading(true);
+      emitLoading(true, {
+        text: (
+          <>
+            Checking the address{uploadAddressList.length > 1 ? 'es' : ''}...
+            <br />
+            Please wait a while.
+          </>
+        ),
+      });
       try {
         const userList = await getWhitelistUserList(whitelistId || '');
         const userAddressList = userList.map((item) => item.address);
@@ -146,8 +154,8 @@ export default function UpdateWhitelistUsers({
           <Flex vertical gap={8} align="center">
             <img className="success-icon" src={success} alt="success" />
             <Text className="text-center">
-              Successfully {updateType === UpdateType.ADD ? 'added' : 'removed'} {activeAddressList.length} users to the
-              whitelist
+              {activeAddressList.length} Address{activeAddressList.length > 1 ? 'es' : ''} Successfully{' '}
+              {updateType === UpdateType.ADD ? 'Added' : 'Removed'}
             </Text>
           </Flex>
           <Button className="modal-single-button" type="primary" onClick={() => setIsUpdateSuccessModalOpen(false)}>

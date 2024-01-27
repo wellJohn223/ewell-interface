@@ -78,17 +78,24 @@ const UpdateModal = forwardRef(function (
       drawerClassName="update-whitelist-users-drawer"
       modalWidth={668}
       drawerHeight="100vh"
-      title={`${updateType === UpdateType.ADD ? 'Add Allowlist' : 'Remove Whitelisted'} Users`}
+      title={updateType === UpdateType.ADD ? 'Add Users to Whitelist' : 'Remove Users from Whitelist'}
       open={modalOpen}
       onCancel={onModalCancel}>
       <Flex className="content-wrapper" vertical gap={24}>
         <Text>
-          Please enter the user's address, support batch user input separate addressed with special characters. If your
-          list exists CSV or EXCEL, please click the corresponding button in the upper right corner to upload the file.
+          Please enter users' wallet addresses.
+          <br />
+          Batch input is supported, and you can separate addresses with special symbols such as "," or "|" and so on.
+          <br />
+          <br />
+          If you have a list of addresses in CSV or EXCEL doc, you can import them via the "Upload" button.
+          <br />
+          Ewell also provides a template for you to fill in addresses and you can download it via the "Download
+          Template" button.
           <Space className="download-template cursor-pointer" size={8} align="center">
             <img src={download} alt="download" />
             <Text className="purple-text" fontWeight={FontWeightEnum.Medium}>
-              Download the template
+              Download Template
             </Text>
           </Space>
         </Text>
@@ -98,7 +105,7 @@ const UpdateModal = forwardRef(function (
             justify="center"
             align="center"
             onClick={() => setCurrentUpdateWay(UpdateWay.UPLOAD)}>
-            <Text>Upload CSV/EXCEL</Text>
+            <Text>Upload</Text>
           </Flex>
           <Flex
             className={clsx('radio-item', {
@@ -113,7 +120,15 @@ const UpdateModal = forwardRef(function (
         {currentUpdateWay === UpdateWay.UPLOAD && (
           <Upload
             className="address-upload"
-            tips="Browse your file here"
+            tips={
+              <Flex className="address-upload-tips" vertical>
+                <Text size="small">
+                  Drag and drop or click to upload a list of addresses to{' '}
+                  {updateType === UpdateType.ADD ? 'add' : 'remove'} in a batch.
+                </Text>
+                <Text size="small">Formats supported: CSV and EXCEL.</Text>
+              </Flex>
+            }
             showUploadButton={fileList.length === 0}
             accept=".csv, .xlsx, .xls"
             fileList={fileList}
