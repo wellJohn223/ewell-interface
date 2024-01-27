@@ -1,4 +1,3 @@
-import { useState, useEffect, useCallback } from 'react';
 import { Flex } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { Button, Typography, FontWeightEnum, Table, HashAddress } from 'aelf-design';
@@ -21,41 +20,6 @@ interface IAddressValidationModalProps {
 
 const { Text, Title } = Typography;
 const ACTIVE_LABEL = 'Addable';
-const columns: ColumnsType<any> = [
-  {
-    title: 'No.',
-    dataIndex: 'order',
-    key: 'order',
-    className: 'order-column',
-    width: 66,
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
-    className: 'address-column',
-    width: 236,
-    render: (address) => (
-      <HashAddress ignorePrefixSuffix={true} preLen={8} endLen={9} hasCopy={false} address={address} />
-    ),
-  },
-  {
-    title: 'Results',
-    dataIndex: 'result',
-    key: 'result',
-    className: 'result-column',
-    width: 151,
-    render: (result) => <Text className={clsx(result !== ACTIVE_LABEL && 'error-text')}>{result || '-'}</Text>,
-  },
-  {
-    title: 'Reason',
-    dataIndex: 'reason',
-    key: 'reason',
-    className: 'reason-column',
-    width: 167,
-    render: (reason) => <Text>{reason || '-'}</Text>,
-  },
-];
 
 const VALIDATION_STATUS_REASON_MAP = {
   [WhitelistAddressIdentifyStatusEnum.active]: '-',
@@ -65,8 +29,6 @@ const VALIDATION_STATUS_REASON_MAP = {
   [WhitelistAddressIdentifyStatusEnum.repeat]: 'Duplicate Address',
 };
 
-const WHITELIST_USERS_ADDRESS_VALIDATION_CONTENT_ID = 'whitelist-users-address-validation-content';
-const DRAWER_CONTENT_TOTAL_PADDING = 24 * 2;
 const TABLE_HEADER_HEIGHT = 48;
 const MODAL_TABLE_HEIGHT = 400;
 
@@ -79,32 +41,6 @@ export default function AddressValidationModal({
 }: IAddressValidationModalProps) {
   const screenSize = useScreenSize();
   const isSwitchDrawer = useMemo(() => screenSize === ScreenSize.MINI || screenSize === ScreenSize.SMALL, [screenSize]);
-  const [tableBodyHeight, setTableBodyHeight] = useState(0);
-
-  const updateTableBodyHeight = useCallback(() => {
-    const contentWrapper = document.querySelector(`#${WHITELIST_USERS_ADDRESS_VALIDATION_CONTENT_ID}`) as HTMLElement;
-    const firstChild = contentWrapper?.firstChild as HTMLElement;
-    const footer = contentWrapper?.lastChild as HTMLElement;
-    if (contentWrapper && firstChild && footer) {
-      const contentWrapperHeight = contentWrapper.offsetHeight;
-      const firstChildHeight = firstChild.offsetHeight;
-      const footerHeight = footer.offsetHeight;
-      const newTableBodyHeight =
-        contentWrapperHeight - firstChildHeight - footerHeight - DRAWER_CONTENT_TOTAL_PADDING - TABLE_HEADER_HEIGHT;
-      setTableBodyHeight(newTableBodyHeight);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!isSwitchDrawer) {
-      return;
-    }
-    updateTableBodyHeight();
-    window.addEventListener('resize', updateTableBodyHeight);
-    return () => {
-      window.removeEventListener('resize', updateTableBodyHeight);
-    };
-  }, [updateTableBodyHeight, isSwitchDrawer]);
 
   const data = useMemo(
     () =>
@@ -124,6 +60,69 @@ export default function AddressValidationModal({
     [validationData],
   );
   const nonAddableNum = useMemo(() => attemptsNum - addableNum, [attemptsNum, addableNum]);
+
+  const columns = useMemo(() => {
+    let result: ColumnsType<any> = [];
+    const baseColumns: ColumnsType<any> = [
+      {
+        title: 'No.',
+        dataIndex: 'order',
+        key: 'order',
+      },
+      {
+        title: 'Address',
+        dataIndex: 'address',
+        key: 'address',
+        render: (address) => (
+          <HashAddress ignorePrefixSuffix={true} preLen={8} endLen={9} hasCopy={false} address={address} />
+        ),
+      },
+    ];
+    if (isSwitchDrawer) {
+      result = baseColumns
+        .map((item, index) => ({
+          ...item,
+          width: index === 0 ? '18%' : '50%',
+        }))
+        .concat({
+          title: 'Results',
+          dataIndex: 'result',
+          key: 'result',
+          width: '32%',
+          render: (result, record) => (
+            <Flex vertical>
+              <Text size="mini" className={clsx(result !== ACTIVE_LABEL && 'error-text')}>
+                {result || '-'}
+              </Text>
+              <Text size="mini">{record.reason || '-'}</Text>
+            </Flex>
+          ),
+        });
+    } else {
+      result = baseColumns
+        .map((item, index) => ({
+          ...item,
+          width: index === 0 ? 66 : 236,
+        }))
+        .concat(
+          {
+            title: 'Results',
+            dataIndex: 'result',
+            key: 'result',
+            width: 151,
+            render: (result) => <Text className={clsx(result !== ACTIVE_LABEL && 'error-text')}>{result || '-'}</Text>,
+          },
+          {
+            title: 'Reason',
+            dataIndex: 'reason',
+            key: 'reason',
+            width: 167,
+            render: (reason) => <Text>{reason || '-'}</Text>,
+          },
+        );
+    }
+    return result;
+  }, [isSwitchDrawer]);
 
   return (
     <CommonModalSwitchDrawer
@@ -158,14 +157,17 @@ export default function AddressValidationModal({
             </Flex>
           </Flex>
         </Flex>
-        <Table
-          scroll={{
-            x: 'max-content',
-            y: isSwitchDrawer ? tableBodyHeight : MODAL_TABLE_HEIGHT - TABLE_HEADER_HEIGHT,
-          }}
-          dataSource={data}
-          columns={columns}
-        />
+        <div className="table-wrapper">
+          <Table
+            sticky
+            scroll={{
+              x: 'max-content',
+              y: isSwitchDrawer ? '' : MODAL_TABLE_HEIGHT - TABLE_HEADER_HEIGHT,
+            }}
+            dataSource={data}
+            columns={columns}
+          />
+        </div>
         <Flex className="footer-wrapper" gap={16} justify="center">
           <Button onClick={onModalCancel}>Back</Button>
           <Button disabled={addableNum === 0} type="primary" onClick={onModalConfirm}>
