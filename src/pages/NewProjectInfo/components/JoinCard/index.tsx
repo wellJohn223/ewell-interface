@@ -125,8 +125,12 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
   }, [projectInfo?.investAmount, projectInfo?.status, projectInfo?.toClaimAmount]);
 
   const showRevokeFineButton = useMemo(() => {
-    return projectInfo?.status === ProjectStatus.CANCELED && !projectInfo?.claimedLiquidatedDamage;
-  }, [projectInfo?.claimedLiquidatedDamage, projectInfo?.status]);
+    return (
+      projectInfo?.status === ProjectStatus.CANCELED &&
+      ZERO.plus(projectInfo?.liquidatedDamageAmount || 0).gt(0) &&
+      !projectInfo?.claimedLiquidatedDamage
+    );
+  }, [projectInfo?.claimedLiquidatedDamage, projectInfo?.liquidatedDamageAmount, projectInfo?.status]);
 
   const showOperationArea = useMemo(() => {
     return (
