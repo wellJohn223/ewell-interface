@@ -37,9 +37,10 @@ const ProjectInfo: React.FC<CreateStepProps> = ({ onNext, onPre }) => {
       <Form
         layout="vertical"
         name="projectInfo"
+        scrollToFirstError
         initialValues={additional}
         requiredMark={CustomMark}
-        scrollToFirstError
+        validateTrigger="onBlur"
         onFinish={onFinish}>
         {FormFields(ProjectInfoFromJson)}
         <Form.Item>

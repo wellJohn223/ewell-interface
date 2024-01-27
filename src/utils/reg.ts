@@ -46,7 +46,7 @@ export const checkPathExist = (route: string | string[], pathname: string) => {
   if (typeof route === 'string') return pathname.includes(`${route}/`);
 
   const isExist = route.find((path) => {
-    return pathname.includes(`${path}/`);
+    return pathname.includes(`/${path}/`);
   });
   return !!isExist;
 };

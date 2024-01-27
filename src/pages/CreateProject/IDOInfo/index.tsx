@@ -110,6 +110,7 @@ const IDOInfo: React.FC<CreateStepProps> = ({ onNext, onPre }) => {
         initialValues={adapterIdoInfo}
         scrollToFirstError
         onFinish={onFinish}
+        validateTrigger="onBlur"
         onValuesChange={onValuesChange}
         requiredMark={CustomMark}>
         {FormFields(formList)}

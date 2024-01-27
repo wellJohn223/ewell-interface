@@ -96,24 +96,6 @@ export const maxSubscriptionValidator: ValidatorFun = async (form, v) => {
   return Promise.resolve();
 };
 
-export const startsAtValidator: ValidatorFun = async (form, v) => {
-  if (!v) return Promise.reject('please select start time');
-  const endTime: dayjs.Dayjs = form.getFieldValue('endTime');
-  if (endTime && ZERO.plus(endTime.diff(v)).lte(0))
-    return Promise.reject('The start date should be before the end date.');
-  validateFields(form, ['endTime']);
-  return Promise.resolve();
-};
-
-export const endsAtValidator: ValidatorFun = async (form, v) => {
-  if (!v) return Promise.reject('please select end time');
-  const startTime: dayjs.Dayjs = form.getFieldValue('startTime');
-  if (startTime && ZERO.plus(startTime.diff(v)).gte(0))
-    return Promise.reject('The end date should be later than start date.');
-  validateFields(form, ['startTime']);
-  return Promise.resolve();
-};
-
 export const urlValidator = async (_: any, v: any) => {
   if (typeof v === 'string' && v.length > 255) return Promise.reject('Your input exceeds maximum length limit.');
   return Promise.resolve(false);
@@ -132,15 +114,9 @@ export const urlRequiredValidator = async (_: any, v: any) => {
   return Promise.resolve();
 };
 
-export const purchaseValidate = (value) => {
-  console.log('purchaseValidate');
-};
-
 export const Validators: any = {
   minSubscription: minSubscriptionValidator,
   maxSubscription: maxSubscriptionValidator,
-  startTime: startsAtValidator,
-  endTime: endsAtValidator,
   preSalePrice: preSalePriceValidator,
   crowdFundingIssueAmount: crowdFundingIssueAmountValidator,
 };

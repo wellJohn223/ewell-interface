@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import TradingPairList, { ITradingParCard } from '../components/TradingPairList';
 import './styles.less';
-import { Button, message as adMessage } from 'antd';
+import { Button, message } from 'antd';
 import { CreateStepProps } from '../types';
 import { useLocalStorage } from 'react-use';
 import storages from '../storages';
@@ -19,6 +19,7 @@ const ConfirmTradingPair: React.FC<CreateStepProps> = ({ onNext }) => {
   const [select, setSelect] = useState<ITradingParCard>(tradingPair as ITradingParCard);
   const [tokenList, setTokenList] = useState<ITradingParCard[]>([]);
   const [disabledBtn, setDisabledBtn] = useState<boolean>(true);
+
   const { loginState } = useWallet();
   const isBtnDisabled = useMemo(
     () => loginState !== WebLoginState.logined || (disabledBtn && !select),
@@ -37,19 +38,25 @@ const ConfirmTradingPair: React.FC<CreateStepProps> = ({ onNext }) => {
   }, [setTradingPair, select, onNext]);
 
   const getTokenList = useCallback(async () => {
+    emitLoading(true);
     try {
-      emitLoading(true);
-      const { code, data, message } = await request.project.getTokenList({
+      const {
+        code,
+        data,
+        message: msg,
+      } = await request.project.getTokenList({
         params: { chainId: DEFAULT_CHAIN_ID },
       });
-      emitLoading(false);
       if (code === '20000') {
         setTokenList(data);
         return;
       }
-      message && adMessage.error(message);
-    } catch (error) {
+      msg && message.error(msg);
+    } catch (error: any) {
       console.log('error', error);
+      message.error(error?.message || 'get token list failed');
+    } finally {
+      emitLoading(false);
     }
   }, []);
 

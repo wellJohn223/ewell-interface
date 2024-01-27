@@ -2,8 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { Flex } from 'antd';
 import { Loading } from 'aelf-design';
 import SandGlassLoading from 'components/SandGlassLoading';
-import { SET_GLOBAL_LOADING } from 'constants/events';
-import { eventBus } from 'utils';
+import myEvents from 'utils/myEvent';
 
 export interface ILoadingInfo {
   isLoading: boolean;
@@ -26,9 +25,9 @@ export default function PageLoading() {
   }, []);
 
   useEffect(() => {
-    eventBus.addListener(SET_GLOBAL_LOADING, setLoadingHandler);
+    const { remove } = myEvents.SetGlobalLoading.addListener(setLoadingHandler);
     return () => {
-      eventBus.removeListener(SET_GLOBAL_LOADING, setLoadingHandler);
+      remove();
     };
   }, [setLoadingHandler]);
 

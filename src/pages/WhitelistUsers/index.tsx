@@ -7,7 +7,7 @@ import UpdateWhitelistUsersButton from 'components/UpdateWhitelistUsersButton';
 import { UpdateType } from 'components/UpdateWhitelistUsersButton/types';
 import { add, remove } from 'assets/images';
 import './styles.less';
-import { NavLink, useParams } from 'react-router-dom';
+import { NavLink, useLocation, useParams } from 'react-router-dom';
 import { useEffectOnce } from 'react-use';
 import { useViewContract } from 'contexts/useViewContract/hooks';
 import { DEFAULT_CHAIN_ID } from 'constants/network';
@@ -16,6 +16,7 @@ import { useQuery } from 'hooks/useQuery';
 import { useScreenSize } from 'contexts/useStore/hooks';
 import { ScreenSize } from 'constants/theme';
 import clsx from 'clsx';
+import { ProjectListType } from 'types/project';
 
 const { Title, Text } = Typography;
 
@@ -27,6 +28,8 @@ type TAddressItem = {
   time: string;
 };
 export default function WhitelistUsers() {
+  const location = useLocation();
+  const { from = ProjectListType.ALL } = (location.state || {}) as { from?: ProjectListType };
   const screenSize = useScreenSize();
   const isScreenLteSmall = useMemo(
     () => screenSize === ScreenSize.MINI || screenSize === ScreenSize.SMALL,
@@ -98,7 +101,7 @@ export default function WhitelistUsers() {
   const breadList = useMemo(
     () => [
       {
-        title: <NavLink to={`/projects/my`}>My Projects</NavLink>,
+        title: <NavLink to={`/projects/${from}`}>{from === ProjectListType.MY && 'My '}Projects</NavLink>,
       },
       {
         title: <NavLink to={`/project/${projectId}`}>{projectName}</NavLink>,
@@ -107,7 +110,7 @@ export default function WhitelistUsers() {
         title: 'Whitelist Users',
       },
     ],
-    [projectName, projectId],
+    [from, projectId, projectName],
   );
 
   const columns: ColumnsType<any> = useMemo(

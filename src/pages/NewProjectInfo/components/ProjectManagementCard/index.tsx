@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Flex, Switch, message } from 'antd';
 import { Button, Typography, FontWeightEnum } from 'aelf-design';
 import CommonCard from 'components/CommonCard';
@@ -7,7 +7,7 @@ import WhitelistTasksButton from './components/WhitelistTasksButton';
 import CancelProjectButton from './components/CancelProjectButton';
 // import CreatorClaimTokenButton from '../OperationComponents/CreatorClaimTokenButton';
 import { useWallet } from 'contexts/useWallet/hooks';
-import { IProjectInfo, ProjectStatus } from 'types/project';
+import { IProjectInfo, ProjectListType, ProjectStatus } from 'types/project';
 import { NETWORK_CONFIG } from 'constants/network';
 import UpdateWhitelistUsersButton from 'components/UpdateWhitelistUsersButton';
 import { UpdateType } from 'components/UpdateWhitelistUsersButton/types';
@@ -24,6 +24,8 @@ interface IProjectManagementCardProps {
 export default function ProjectManagementCard({ projectInfo }: IProjectManagementCardProps) {
   const navigate = useNavigate();
   const { projectId } = useParams();
+  const location = useLocation();
+  const { from = ProjectListType.ALL } = (location.state || {}) as { from?: ProjectListType };
   const { wallet, checkManagerSyncState } = useWallet();
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -84,8 +86,13 @@ export default function ProjectManagementCard({ projectInfo }: IProjectManagemen
           projectName: projectInfo?.additionalInfo?.projectName || '',
         },
       }),
+      {
+        state: {
+          from,
+        },
+      },
     );
-  }, [navigate, projectId, projectInfo]);
+  }, [navigate, from, projectId, projectInfo]);
 
   const jumpWhitelistUsers = useCallback(() => {
     navigate(
@@ -96,8 +103,13 @@ export default function ProjectManagementCard({ projectInfo }: IProjectManagemen
           projectId,
         },
       }),
+      {
+        state: {
+          from,
+        },
+      },
     );
-  }, [navigate, projectId, projectInfo?.additionalInfo?.projectName, projectInfo?.whitelistId]);
+  }, [navigate, from, projectId, projectInfo?.additionalInfo?.projectName, projectInfo?.whitelistId]);
 
   return (
     <>

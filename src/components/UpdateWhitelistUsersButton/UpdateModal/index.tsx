@@ -5,7 +5,6 @@ import { Button, Upload, Input, Typography, FontWeightEnum } from 'aelf-design';
 import { download } from 'assets/images';
 import { UpdateType } from '../types';
 import './styles.less';
-import type { RcFile } from 'antd/es/upload';
 import { parseWhitelistFile, parseWhitelistInput } from 'utils/parseWhiteList';
 import CommonModalSwitchDrawer from 'components/CommonModalSwitchDrawer';
 
@@ -33,11 +32,13 @@ const UpdateModal = forwardRef(function (
   ref,
 ) {
   const [currentUpdateWay, setCurrentUpdateWay] = useState<UpdateWay>(UpdateWay.UPLOAD);
-  const [file, setFile] = useState<RcFile>();
+  const [fileList, setFileList] = useState<any[]>([]);
   const [addressInput, setAddressInput] = useState<string>('');
 
+  const file = useMemo(() => fileList?.[0]?.originFileObj, [fileList]);
+
   const handleUpload = useCallback(({ fileList }) => {
-    setFile(fileList?.[0]);
+    setFileList(fileList);
   }, []);
 
   const onSubmit = useCallback(async () => {
@@ -66,7 +67,7 @@ const UpdateModal = forwardRef(function (
   }, []);
 
   const reset = useCallback(() => {
-    setFile(undefined);
+    setFileList([]);
     setAddressInput('');
   }, []);
   useImperativeHandle(ref, () => ({ reset }));
@@ -113,9 +114,9 @@ const UpdateModal = forwardRef(function (
           <Upload
             className="address-upload"
             tips="Browse your file here"
-            showUploadButton={!file}
+            showUploadButton={fileList.length === 0}
             accept=".csv, .xlsx, .xls"
-            fileList={file ? [file] : []}
+            fileList={fileList}
             onChange={handleUpload}
           />
         )}

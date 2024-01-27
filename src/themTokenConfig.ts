@@ -59,6 +59,7 @@ export const ANTD_THEME_CONFIG: ThemeConfig = {
     colorPrimaryHover: '#9B5EFF',
     colorPrimaryActive: '#863DFF',
     colorBorder: '#070A26',
+    colorBgSpotlight: '#070A26',
   },
   components: {
     Steps: {

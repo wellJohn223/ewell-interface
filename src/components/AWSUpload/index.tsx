@@ -69,13 +69,15 @@ const FUpload: React.FC<IFUploadProps> = ({ fileList, maxFileCount, fileLimit = 
 
   const onCustomRequest: IUploadProps['customRequest'] = async ({ file, onSuccess, onError }) => {
     try {
+      console.log('onCustom loading');
       emitLoading(true, { text: 'uploading...' });
       const fileUrl = await awsUploadFile(file as File);
-      emitLoading(false);
       console.log('awsUpload-success', fileUrl);
       onSuccess?.({ url: fileUrl });
     } catch (error) {
       onError?.(error as Error);
+    } finally {
+      emitLoading(false);
     }
   };
 
