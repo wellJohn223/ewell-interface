@@ -95,12 +95,12 @@ export const WelcomeModal = () => {
       title={'Welcome'}
       confirmText="Continue"
       onConfirmClick={onAccept}
-      cancelText="Return"
+      cancelText="Cancel"
       onCancelClick={onCancel}>
       <div className="terms-info">
-        Welcome to the EWELL IDO platform, please click “Continue” to sign the authorization.
+        {'Click "Continue" to sign in to ewell.'}
         <br />
-        This request will not trigger a blockchain transaction or cost any transaction fee.
+        {'This request will not trigger a blockchain transaction or cost any transaction fees.'}
       </div>
     </CommonModal>
   );
