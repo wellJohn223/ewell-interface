@@ -120,6 +120,12 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
 
       const remainingTime = timestamp - Date.now();
       let formatValue = '';
+      if (remainingTime <= 0) {
+        setRemainderTimeStr('00:00:00');
+        console.log(timer, 'timer');
+        clearInterval(timer);
+        return;
+      }
       if (remainingTime <= ONE_DAY_IN_MS) {
         formatValue = timeDuration(remainingTime);
       } else {
