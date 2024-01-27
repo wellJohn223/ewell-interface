@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Row, Col } from 'antd';
 import { useEffectOnce } from 'react-use';
 import { useCardCol } from '../../hooks/useCardCol';
