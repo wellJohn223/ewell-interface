@@ -102,7 +102,7 @@ export default function AddressValidationModal({
       result = baseColumns
         .map((item, index) => ({
           ...item,
-          width: index === 0 ? 66 : 236,
+          width: index === 0 ? 65 : 236,
         }))
         .concat(
           {
@@ -116,7 +116,7 @@ export default function AddressValidationModal({
             title: 'Reason',
             dataIndex: 'reason',
             key: 'reason',
-            width: 167,
+            width: 166,
             render: (reason) => <Text>{reason || '-'}</Text>,
           },
         );
