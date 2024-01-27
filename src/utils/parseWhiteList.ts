@@ -1,4 +1,4 @@
-import { isAelfAddress } from 'aelf-web-login';
+import { PortkeyDid } from 'aelf-web-login';
 import { DEFAULT_CHAIN_ID } from 'constants/network';
 import * as ExcelJS from 'exceljs';
 import { getAddressInfo } from 'utils/aelf';
@@ -137,7 +137,7 @@ export const identifyWhitelistData = ({ originData, identifyData, type }: TIdent
     if (
       addressInfo.prefix !== 'ELF' ||
       addressInfo.suffix !== DEFAULT_CHAIN_ID ||
-      !isAelfAddress(addressInfo.address)
+      !PortkeyDid.isAelfAddress(addressInfo.address)
     ) {
       identifyList.push({
         address: address,

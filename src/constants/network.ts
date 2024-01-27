@@ -1,15 +1,45 @@
+import { NetworkType } from '@portkey/did-ui-react';
 import { ChainId } from '@portkey/types';
 
-const NETWORK_CONFIG_LIST = {
+export type TNetworkConfig = {
+  networkType: NetworkType;
+  mainChainId: string;
+  sideChainId: string;
+  webLoginNetworkType: 'MAIN' | 'TESTNET';
+  webLoginGraphqlUrl: string;
+  webLoginRequestDefaultsUrl: string;
+  webLoginConnectUrl: string;
+  ewellContractAddress: string;
+  whitelistContractAddress: string;
+  symbolMarketUrl: string;
+  mainChainInfo: {
+    chainId: string;
+    exploreUrl: string;
+    endPoint: string;
+    caContractAddress: string;
+    tokenContractAddress: string;
+  };
+  sideChainInfo: {
+    chainId: string;
+    exploreUrl: string;
+    endPoint: string;
+    caContractAddress: string;
+    tokenContractAddress: string;
+  };
+};
+
+const NETWORK_CONFIG_LIST: Record<string, TNetworkConfig> = {
   mainnet: {
-    networkType: 'MAIN',
+    networkType: 'MAINNET',
     mainChainId: 'AELF',
     sideChainId: 'tDVV',
+    webLoginNetworkType: 'MAIN',
     webLoginGraphqlUrl: 'https://dapp-portkey.portkey.finance/Portkey_DID/PortKeyIndexerCASchema/graphql',
     webLoginRequestDefaultsUrl: 'https://did-portkey.portkey.finance',
     webLoginConnectUrl: 'https://auth-portkey.portkey.finance',
     ewellContractAddress: '',
     whitelistContractAddress: '',
+    symbolMarketUrl: '',
     mainChainInfo: {
       chainId: 'AELF',
       exploreUrl: 'https://explorer.aelf.io/',
@@ -29,10 +59,13 @@ const NETWORK_CONFIG_LIST = {
     networkType: 'TESTNET',
     mainChainId: 'AELF',
     sideChainId: 'tDVW',
+    webLoginNetworkType: 'TESTNET',
     webLoginGraphqlUrl: 'https://dapp-portkey.portkey.finance/Portkey_DID/PortKeyIndexerCASchema/graphql',
+    webLoginRequestDefaultsUrl: '',
     webLoginConnectUrl: 'https://auth-portkey-test.portkey.finance',
     ewellContractAddress: '',
     whitelistContractAddress: '',
+    symbolMarketUrl: '',
     mainChainInfo: {
       chainId: 'AELF',
       exploreUrl: '',
@@ -49,27 +82,28 @@ const NETWORK_CONFIG_LIST = {
     },
   },
   test3: {
-    networkType: 'MAIN',
+    networkType: 'TESTNET',
     mainChainId: 'AELF',
     sideChainId: 'tDVV',
+    webLoginNetworkType: 'TESTNET',
     webLoginGraphqlUrl: '/AElfIndexer_DApp/PortKeyIndexerCASchema/graphql',
     webLoginRequestDefaultsUrl: '/webLoginRequest',
     webLoginConnectUrl: '/webLoginConnect',
     ewellContractAddress: 'mhgUyGhd27YaoG8wgXTbwtbAiYx7E59n5GXEkmkTFKKQTvGnB',
     whitelistContractAddress: 'x4CTSuM8typUbpdfxRZDTqYVa42RdxrwwPkXX7WUJHeRmzE6k',
-    symbolMarket: 'http://192.168.67.124:3001/symbolmarket',
+    symbolMarketUrl: 'http://192.168.67.124:3001/symbolmarket',
     mainChainInfo: {
       chainId: 'AELF',
-      exploreUrl: 'http://192.168.67.156:8000',
+      exploreUrl: 'http://192.168.66.3:8000',
       endPoint: 'http://192.168.66.3:8000',
-      caContractAddress: '2LUmicHyH4RXrMjG4beDwuDsiWJESyLkgkwPdGTR8kahRzq5XS',
+      caContractAddress: '2RpNgskXSDgzp3v9VVuciudQQo6ZxSgsXftot3TzN5ncKxs73k',
       tokenContractAddress: 'JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE',
     },
     sideChainInfo: {
       chainId: 'tDVV',
-      exploreUrl: 'http://192.168.66.113:8000',
+      exploreUrl: 'http://192.168.66.241:8000',
       endPoint: 'http://192.168.66.241:8000',
-      caContractAddress: 'RXcxgSXuagn8RrvhQAV81Z652EEYSwR6JLnqHYJ5UVpEptW8Y',
+      caContractAddress: '2RpNgskXSDgzp3v9VVuciudQQo6ZxSgsXftot3TzN5ncKxs73k',
       tokenContractAddress: '7RzVGiuVWkvL4VfVHdZfQF2Tri3sgLe9U991bohHFfSRZXuGX',
     },
   },
@@ -78,3 +112,5 @@ const NETWORK_CONFIG_LIST = {
 export const NETWORK_CONFIG = NETWORK_CONFIG_LIST[process.env.REACT_APP_NETWORK_KEY || ''];
 
 export const DEFAULT_CHAIN_ID = NETWORK_CONFIG_LIST['test3'].sideChainId as ChainId;
+
+export const IS_OFFLINE_NETWORK = process.env.REACT_APP_NETWORK_KEY === 'test3';

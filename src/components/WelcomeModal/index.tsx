@@ -1,12 +1,9 @@
 import './styles.less';
-import closeSvg from 'assets/images/close.svg';
-import { Button, Modal } from 'aelf-design';
-import { Checkbox } from 'antd';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import myEvents from 'utils/myEvent';
 import { useWallet } from 'contexts/useWallet/hooks';
 import { IWallet } from 'contexts/useWallet/Wallet/types';
-import { WalletType, did } from 'aelf-web-login';
+import { WalletType, PortkeyDid } from 'aelf-web-login';
 import { GetCAHolderByManagerParams } from '@portkey/services';
 import AElf from 'aelf-sdk';
 import { recoverPubKey, setLocalJWT } from 'contexts/useWallet/utils';
@@ -14,23 +11,19 @@ import { NETWORK_CONFIG } from 'constants/network';
 import axios from 'axios';
 import { stringify } from 'query-string';
 import { service } from 'api/axios';
+import { CommonModal, ICommonModalInterface } from 'components/CommonModal';
 
 export const WelcomeModal = () => {
-  const { logout } = useWallet();
-  const [isOpen, setIsOpen] = useState(false);
-  const [isActive, setIsActive] = useState(false);
-
+  const commonModalRef = useRef<ICommonModalInterface>();
   const walletRef = useRef<IWallet>();
+  const { logout } = useWallet();
 
   const onCancel = useCallback(() => {
     logout();
-    setIsOpen(false);
     walletRef.current = undefined;
   }, [logout]);
 
   const onAccept = useCallback(async () => {
-    setIsOpen(false);
-
     let caHash: string | undefined;
     const wallet = walletRef.current;
     if (!wallet) return;
@@ -39,7 +32,7 @@ export const WelcomeModal = () => {
     const key = `ELF_${address}_${NETWORK_CONFIG.sideChainId}`;
     if (wallet.walletType === WalletType.discover) {
       try {
-        const res = await did.services.getHolderInfoByManager({
+        const res = await PortkeyDid.did.services.getHolderInfoByManager({
           caAddresses: [address],
         } as unknown as GetCAHolderByManagerParams);
         const caInfo = res[0];
@@ -84,15 +77,10 @@ export const WelcomeModal = () => {
     }
   }, [logout]);
 
-  const onCheck = useCallback((e) => {
-    setIsActive(e.target.checked);
-  }, []);
-
   useEffect(() => {
     const { remove } = myEvents.AuthAsk.addListener((wallet: IWallet) => {
       walletRef.current = wallet;
-      setIsActive(false);
-      setIsOpen(true);
+      commonModalRef.current?.show();
     });
     return () => {
       remove();
@@ -100,35 +88,20 @@ export const WelcomeModal = () => {
   }, []);
 
   return (
-    <Modal width={438} title={null} footer={null} open={isOpen} closeIcon={false}>
-      <div className="terms-frame">
-        <div className="terms-header">
-          Welcome
-          <img className="terms-close" src={closeSvg} alt="" onClick={onCancel} />
-        </div>
-        <div className="terms-content">
-          <div className="terms-info">
-            By connecting your wallet and using EWELL, you agree to our <span>Terms of Service</span> and{' '}
-            <span>Privacy Policy</span>
-          </div>
-          <div className="terms-check-wrap">
-            <Checkbox checked={isActive} onChange={onCheck}></Checkbox>
-            <div className="terms-check-info">I have read and accept the Terms of Service and Privacy Policy</div>
-          </div>
-        </div>
-        <div className="terms-footer">
-          <div className="terms-btn">
-            <Button onClick={onCancel} block>
-              Cancel
-            </Button>
-          </div>
-          <div className="terms-btn">
-            <Button type="primary" disabled={!isActive} onClick={onAccept} block>
-              Accept
-            </Button>
-          </div>
-        </div>
+    <CommonModal
+      className="welcome-modal-wrap"
+      ref={commonModalRef}
+      width={438}
+      title={'Welcome'}
+      confirmText="Continue"
+      onConfirmClick={onAccept}
+      cancelText="Cancel"
+      onCancelClick={onCancel}>
+      <div className="terms-info">
+        {'Click "Continue" to sign in to ewell.'}
+        <br />
+        {'This request will not trigger a blockchain transaction or cost any transaction fees.'}
       </div>
-    </Modal>
+    </CommonModal>
   );
 };

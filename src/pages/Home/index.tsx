@@ -46,7 +46,7 @@ export default function Home() {
                   Projects
                 </Button>
                 <Web3Button className="btn-wrap" block onClick={onLaunchClick}>
-                  Launch with EWELL
+                  Launch with ewell
                 </Web3Button>
               </div>
             </div>

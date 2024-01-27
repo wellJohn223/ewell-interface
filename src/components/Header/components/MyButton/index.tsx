@@ -2,12 +2,7 @@ import './styles.less';
 import { useWallet } from 'contexts/useWallet/hooks';
 import userSvg from '../../images/user.svg';
 import { useMobile } from 'contexts/useStore/hooks';
-import walletSvg from '../../images/wallet.svg';
-import { Button, HashAddress } from 'aelf-design';
-import { NETWORK_CONFIG } from 'constants/network';
-import { useNavigate } from 'react-router-dom';
-import projectsSvg from '../../images/projects.svg';
-import logoutSvg from '../../images/logout.svg';
+import { Button } from 'aelf-design';
 import { WebLoginState } from 'aelf-web-login';
 import { useCallback, useRef } from 'react';
 import { MyDrawer } from '../MyDrawer';
@@ -16,8 +11,7 @@ import { WalletInfo } from '../WalletInfo';
 
 export const MyButton = () => {
   const isMobile = useMobile();
-  const { login, loginState, logout, wallet } = useWallet();
-  const navigate = useNavigate();
+  const { login, loginState } = useWallet();
 
   const onWalletClick = useCallback(() => {
     console.log('WebLoginState', loginState);
