@@ -49,7 +49,7 @@ const NETWORK_CONFIG_LIST: Record<string, TNetworkConfig> = {
     },
     sideChainInfo: {
       chainId: 'tDVV',
-      exploreUrl: '',
+      exploreUrl: 'https://tdvv-explorer.aelf.io/',
       endPoint: '',
       caContractAddress: '',
       tokenContractAddress: '',
@@ -94,14 +94,14 @@ const NETWORK_CONFIG_LIST: Record<string, TNetworkConfig> = {
     symbolMarketUrl: 'http://192.168.67.124:3001/symbolmarket',
     mainChainInfo: {
       chainId: 'AELF',
-      exploreUrl: 'http://192.168.66.3:8000',
+      exploreUrl: 'http://192.168.66.3:8000/',
       endPoint: 'http://192.168.66.3:8000',
       caContractAddress: '2RpNgskXSDgzp3v9VVuciudQQo6ZxSgsXftot3TzN5ncKxs73k',
       tokenContractAddress: 'JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE',
     },
     sideChainInfo: {
       chainId: 'tDVV',
-      exploreUrl: 'http://192.168.66.241:8000',
+      exploreUrl: 'http://192.168.66.241:8000/',
       endPoint: 'http://192.168.66.241:8000',
       caContractAddress: '2RpNgskXSDgzp3v9VVuciudQQo6ZxSgsXftot3TzN5ncKxs73k',
       tokenContractAddress: '7RzVGiuVWkvL4VfVHdZfQF2Tri3sgLe9U991bohHFfSRZXuGX',

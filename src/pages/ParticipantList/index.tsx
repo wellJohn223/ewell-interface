@@ -16,6 +16,7 @@ import { useScreenSize } from 'contexts/useStore/hooks';
 import { ScreenSize } from 'constants/theme';
 import clsx from 'clsx';
 import { ProjectListType } from 'types/project';
+import { getExploreLink } from 'utils';
 
 const { Title, Text } = Typography;
 
@@ -180,6 +181,12 @@ export default function ParticipantList() {
             preLen={isScreenLteLarge ? 8 : 0}
             endLen={isScreenLteLarge ? 9 : 0}
             address={address}
+            addressClickCallback={(_, address) => {
+              const exploreLink = address ? getExploreLink(address) : '';
+              if (exploreLink) {
+                window.open(exploreLink, '_blank');
+              }
+            }}
           />
         ),
       },
@@ -222,6 +229,12 @@ export default function ParticipantList() {
                 endLen={isScreenLteLarge ? 9 : 0}
                 chain={DEFAULT_CHAIN_ID}
                 address={virtualAddress}
+                addressClickCallback={(_, address) => {
+                  const exploreLink = address ? getExploreLink(address) : '';
+                  if (exploreLink) {
+                    window.open(exploreLink, '_blank');
+                  }
+                }}
               />
             </Flex>
           )}

@@ -17,6 +17,7 @@ import { useScreenSize } from 'contexts/useStore/hooks';
 import { ScreenSize } from 'constants/theme';
 import clsx from 'clsx';
 import { ProjectListType } from 'types/project';
+import { getExploreLink } from 'utils';
 
 const { Title, Text } = Typography;
 
@@ -138,6 +139,12 @@ export default function WhitelistUsers() {
             endLen={isScreenLteMedium ? 9 : 0}
             address={address}
             chain={DEFAULT_CHAIN_ID}
+            addressClickCallback={(_, address) => {
+              const exploreLink = address ? getExploreLink(address) : '';
+              if (exploreLink) {
+                window.open(exploreLink, '_blank');
+              }
+            }}
           />
         ),
       },

@@ -9,6 +9,7 @@ import './styles.less';
 import { useMobile } from 'contexts/useStore/hooks';
 import { useCallback } from 'react';
 import myEvents from 'utils/myEvent';
+import { getExploreLink } from 'utils';
 
 export interface IWalletInfoProps {
   onMyProjectClick?: () => void;
@@ -36,6 +37,12 @@ export const WalletInfo = ({ onMyProjectClick }: IWalletInfoProps) => {
               hasCopy
               chain={NETWORK_CONFIG.sideChainId as any}
               size="small"
+              addressClickCallback={(_, address) => {
+                const exploreLink = address ? getExploreLink(address) : '';
+                if (exploreLink) {
+                  window.open(exploreLink, '_blank');
+                }
+              }}
             />
           </div>
         </div>

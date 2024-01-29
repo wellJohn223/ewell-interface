@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Flex } from 'antd';
 import { Button, Typography, FontWeightEnum, Modal, HashAddress } from 'aelf-design';
 import { InfoCircleOutlined } from '@ant-design/icons';
@@ -7,11 +7,12 @@ import { NumberFormat } from 'utils/format';
 import { success } from 'assets/images';
 import { DEFAULT_CHAIN_ID, NETWORK_CONFIG } from 'constants/network';
 import { IProjectInfo } from 'types/project';
-import { divDecimals, timesDecimals } from 'utils/calculate';
+import { divDecimals } from 'utils/calculate';
 import { useTokenPrice, useTxFee } from 'contexts/useAssets/hooks';
 import { useBalance } from 'hooks/useBalance';
-import BigNumber from 'bignumber.js';
 import { ZERO } from 'constants/misc';
+import { getExploreLink } from 'utils';
+import { ExplorerLinkType } from 'types/aelf';
 
 const { Text, Title } = Typography;
 
@@ -80,6 +81,12 @@ export function ConfirmModal({ open, info, onCancel, onOk }: ITransferModalProps
                 endLen={9}
                 chain={DEFAULT_CHAIN_ID}
                 address={NETWORK_CONFIG.ewellContractAddress}
+                addressClickCallback={(_, address) => {
+                  const exploreLink = address ? getExploreLink(address) : '';
+                  if (exploreLink) {
+                    window.open(exploreLink, '_blank');
+                  }
+                }}
               />
             </Flex>
           </Flex>
@@ -161,10 +168,16 @@ export function SuccessModal({ open, info, onCancel, onOk }: ISuccessModalProps)
           <Text>Transaction ID</Text>
           <HashAddress
             className="hash-address-small"
+            ignorePrefixSuffix
             preLen={8}
             endLen={9}
-            chain={DEFAULT_CHAIN_ID}
             address={info?.transactionId || ''}
+            addressClickCallback={(address) => {
+              const exploreLink = address ? getExploreLink(address, ExplorerLinkType.TRANSACTION) : '';
+              if (exploreLink) {
+                window.open(exploreLink, '_blank');
+              }
+            }}
           />
         </Flex>
         <Flex justify="center">

@@ -1,5 +1,7 @@
 import EventEmitter from 'events';
 import { PriceDecimal, ZERO } from 'constants/misc';
+import { NETWORK_CONFIG } from 'constants/network';
+import { ExplorerLinkType } from 'types/aelf';
 
 export const eventBus = new EventEmitter();
 
@@ -36,6 +38,28 @@ export function getPriceDecimal(crowdFundingIssueToken?: { decimals: number }, t
 export function getHref(href: string) {
   if (!(href.includes('https://') || href.includes('http://'))) return 'https://' + href;
   return href;
+}
+
+export function getExploreLink(data: string, type?: ExplorerLinkType): string {
+  const prefix = NETWORK_CONFIG.sideChainInfo.exploreUrl;
+  if (!prefix) {
+    return '';
+  }
+  switch (type) {
+    case ExplorerLinkType.TRANSACTION: {
+      return `${prefix}tx/${data}`;
+    }
+    case ExplorerLinkType.TOKEN: {
+      return `${prefix}token/${data}`;
+    }
+    case ExplorerLinkType.BLOCK: {
+      return `${prefix}block/${data}`;
+    }
+    case ExplorerLinkType.ADDRESS:
+    default: {
+      return `${prefix}address/${data}`;
+    }
+  }
 }
 
 export const handleLoopFetch = async <T>({
