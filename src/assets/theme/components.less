@@ -32,11 +32,14 @@
 }
 
 /** table **/
-// To increase the weight of the css selector
-.@{app-prefix}-table-wrapper .@{app-prefix}-spin-container .@{app-prefix}-table {
+.@{app-prefix}-table-container:not(:has(> .@{app-prefix}-table-wrapper)) {
   border: 1px solid;
   border-radius: 6px;
+}
+// To increase the weight of the css selector
+.@{app-prefix}-table-wrapper .@{app-prefix}-spin-container .@{app-prefix}-table {
   .@{app-prefix}-table-container {
+    overflow: hidden;
     &::after {
       display: none;
     }

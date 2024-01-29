@@ -31,6 +31,10 @@ export default function WhitelistUsers() {
   const location = useLocation();
   const { from = ProjectListType.ALL } = (location.state || {}) as { from?: ProjectListType };
   const screenSize = useScreenSize();
+  const isScreenLteMedium = useMemo(
+    () => screenSize === ScreenSize.MINI || screenSize === ScreenSize.SMALL || screenSize === ScreenSize.MEDIUM,
+    [screenSize],
+  );
   const isScreenLteSmall = useMemo(
     () => screenSize === ScreenSize.MINI || screenSize === ScreenSize.SMALL,
     [screenSize],
@@ -130,8 +134,8 @@ export default function WhitelistUsers() {
         width: '58%',
         render: (address) => (
           <HashAddress
-            preLen={isScreenLteSmall ? 8 : 0}
-            endLen={isScreenLteSmall ? 9 : 0}
+            preLen={isScreenLteMedium ? 8 : 0}
+            endLen={isScreenLteMedium ? 9 : 0}
             address={address}
             chain={DEFAULT_CHAIN_ID}
           />
@@ -145,7 +149,7 @@ export default function WhitelistUsers() {
         width: '34%',
       },
     ],
-    [isScreenLteSmall],
+    [isScreenLteMedium],
   );
 
   return (
@@ -191,7 +195,14 @@ export default function WhitelistUsers() {
           />
         </Flex>
         <Flex vertical gap={16}>
-          <CommonTable loading={isTableLoading} columns={columns} dataSource={curAddressList} />
+          <CommonTable
+            scroll={{
+              x: true,
+            }}
+            loading={isTableLoading}
+            columns={columns}
+            dataSource={curAddressList}
+          />
           {!!pager.total && (
             <Flex
               justify="space-between"
