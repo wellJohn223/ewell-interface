@@ -52,9 +52,11 @@ class Wallet implements IWallet {
       };
     }
 
-    const { TransactionId } = req.result || req;
+    const transactionId =
+      req.result?.TransactionId || req.result?.transactionId || req.TransactionId || req.transactionId;
+
     await sleep(1000);
-    return getTxResult(TransactionId);
+    return getTxResult(transactionId);
   }
 
   getSignature(params: TSignatureParams): Promise<SignatureData> {
