@@ -1,9 +1,10 @@
 import { Form, Select, FormItemProps as antFormItemProps, TimePicker, Flex, InputNumber } from 'antd';
-import { Input, DatePickerForPC } from 'aelf-design';
+import { DatePickerForPC, Input } from 'aelf-design';
 import { memo } from 'react';
 import FormGroup from './components/FormGroup';
 import FormTree from './components/FormTree';
 import Upload from '../AWSUpload';
+import FormDatePiker from './components/FormDatePicker';
 
 import {
   datePickerProps,
@@ -72,16 +73,7 @@ function getChildren(type: FormItemProps['type'], childrenProps: FormItemProps['
       );
     }
     case 'datePicker': {
-      const customFormat = (value) => {
-        return `${value.format('YYYY-MM-DD HH:mm:ss [UTC] Z')}`;
-      };
-      return (
-        <DatePickerForPC
-          style={{ width: '100%' }}
-          format={customFormat}
-          {...(childrenProps as datePickerProps['childrenProps'])}
-        />
-      );
+      return <FormDatePiker {...(childrenProps as datePickerProps['childrenProps'])} />;
     }
     case 'timePicker':
       return <TimePicker style={{ width: '100%' }} {...(childrenProps as timePickerProps['childrenProps'])} />;

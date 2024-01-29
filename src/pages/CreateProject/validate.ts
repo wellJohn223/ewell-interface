@@ -35,10 +35,10 @@ export const tokenGtTokenBalance = async (value: BigNumber) => {
   await numberGteZEROValidator('', value);
   const { decimals, balance }: ITradingParCard = getLocalStorage(storages.ConfirmTradingPair);
   if (!decimals && decimals !== 0 && !balance) {
-    return Promise.reject('please go to select trading pair');
+    return Promise.reject('please go to select token.');
   }
   if (timesDecimals(value, decimals).gt(balance))
-    return Promise.reject('the maximum value does not exceed the total amount of Token in the wallet');
+    return Promise.reject('Please enter a number not exceeding the token balance in your wallet.');
 
   return Promise.resolve();
 };
@@ -46,13 +46,14 @@ export const tokenGtTokenBalance = async (value: BigNumber) => {
 export const subscriptionGteTotal = async (form: FormInstance, value: BigNumber) => {
   const { crowdFundingIssueAmount, preSalePrice } = form.getFieldsValue(['crowdFundingIssueAmount', 'preSalePrice']);
   if (crowdFundingIssueAmount && preSalePrice && ZERO.plus(crowdFundingIssueAmount).div(preSalePrice).lt(value))
-    return Promise.reject('Purchase quantify may not exceed supply.');
+    return Promise.reject('Please enter a number not exceeding the total amount for sale.');
 
   return Promise.resolve();
 };
 
 export const preSalePriceValidator: ValidatorFun = async (form, v) => {
   console.log('preSalePriceValidator', v);
+  if (!v) return Promise.reject('Please enter the sale price.');
   const bigV = ZERO.plus(v);
   if (numberLteZERO(bigV)) {
     form.setFieldValue('preSalePrice', '');
@@ -64,6 +65,7 @@ export const preSalePriceValidator: ValidatorFun = async (form, v) => {
 };
 
 export const crowdFundingIssueAmountValidator: ValidatorFun = async (form: any, v: any) => {
+  if (!v) return Promise.reject('Please enter the total amount for sale.');
   const bigV = ZERO.plus(v);
   await numberGtZEROValidator('', v);
   await tokenGtTokenBalance(bigV);
@@ -78,7 +80,9 @@ export const minSubscriptionValidator: ValidatorFun = async (form, v) => {
   await subscriptionGteTotal(form, bigV);
   const maxSubscription = form.getFieldValue('maxSubscription');
   if (maxSubscription && bigV.gt(maxSubscription))
-    return Promise.reject('Minimum allocation should be less than maximum allocation.');
+    return Promise.reject(
+      'Please enter whole numbers, ensuring the first is greater than 0 and the second is greater than the first number.',
+    );
 
   return Promise.resolve();
 };
@@ -90,7 +94,9 @@ export const maxSubscriptionValidator: ValidatorFun = async (form, v) => {
   await subscriptionGteTotal(form, bigV);
   const minSubscription = form.getFieldValue('minSubscription');
   if (minSubscription && bigV.lt(minSubscription)) {
-    return Promise.reject('Maximum allocation should be greater than minimum allocation.');
+    return Promise.reject(
+      'Please enter whole numbers, ensuring the first is greater than 0 and the second is greater than the first number.',
+    );
   }
 
   return Promise.resolve();

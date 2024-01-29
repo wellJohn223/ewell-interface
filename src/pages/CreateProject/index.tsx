@@ -7,15 +7,13 @@ import ProjectInfo from './ProjectInfo';
 import IDOInfo from './IDOInfo';
 import Transfer from './Transfer';
 import ESteps from './components/ESteps';
-import { CreateStepProps, TSteps } from './types';
+import { TSteps } from './types';
 import { stepsItems, stepTitle } from './constants';
 import ScrollToTop from 'components/ScrollToTop';
 import './styles.less';
-import { useEffectOnce } from 'react-use';
-import { useWallet } from 'contexts/useWallet/hooks';
 
 const CreateProject: React.FC = () => {
-  const [currentStep, setCurrentStep] = useState<TSteps>(TSteps.ONE);
+  const [currentStep, setCurrentStep] = useState<TSteps>(TSteps.THREE);
 
   const breadTitles = useMemo(() => {
     return [
