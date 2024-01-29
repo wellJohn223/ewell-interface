@@ -49,6 +49,7 @@ export const WelcomeModal = () => {
       const result = await wallet?.getSignature({
         signInfo: AElf.utils.sha256(plainTextHex),
       });
+      if (result.error) throw result.errorMessage;
       const signature = result?.signature || '';
       const pubKey = recoverPubKey(plainTextHex, signature);
 
