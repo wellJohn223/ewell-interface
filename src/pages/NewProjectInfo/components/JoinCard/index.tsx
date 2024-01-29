@@ -190,14 +190,7 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
   };
 
   const renderRemainder = () => {
-    if (isPreview) {
-      return (
-        <>
-          <Text>Ends in</Text>
-          <Text fontWeight={FontWeightEnum.Medium}>23:50:45</Text>
-        </>
-      );
-    } else if (projectInfo?.status === ProjectStatus.UPCOMING) {
+    if (projectInfo?.status === ProjectStatus.UPCOMING) {
       return (
         <>
           <Text>Ends in</Text>
