@@ -1,8 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { useLocalStorage } from 'react-use';
 import { Form, Input } from 'antd';
-import { Input as AFInput } from 'aelf-design';
-import { DatePickerForMobile } from 'aelf-design';
 import { FormItemProps, FormFields } from 'components/FormItem';
 import CustomMark from '../components/CustomMark';
 import storages from '../storages';
@@ -12,7 +10,6 @@ import { disabledDateBefore, disabledTimeBefore } from '../utils';
 import dayjs from 'dayjs';
 import { getIDOFormJson, formWhitelist } from '../constants';
 import { ITradingParCard } from '../components/TradingPairList';
-import { DatePikerPC } from 'components/FormItem/components/FormDatePicker';
 export interface TIdoInfo {
   crowdFundingIssueAmount?: number;
   crowdFundingType?: string;
@@ -119,11 +116,6 @@ const IDOInfo: React.FC<CreateStepProps> = ({ onNext, onPre }) => {
       });
       return setFormList([...formList]);
     }
-  };
-
-  const [open, setOpen] = useState(false);
-  const onConfirm = (val) => {
-    console.log('from date', dayjs(val).format('YYYY-MM_DD HH:mm:ss [UTC] Z'));
   };
 
   return (

@@ -31,7 +31,7 @@ const ButtonGroup: React.FC<IButtonGroup> = ({
       {onPre && (
         <Button className={clsx('group-btn pre-btn', { disabled: disablePre })} disabled={disablePre} onClick={onPre}>
           <img className="arrow-icon" src={arrow} alt="" />
-          <span>Previous</span>
+          <span>Back</span>
         </Button>
       )}
       {(onNext || htmlType) && (
