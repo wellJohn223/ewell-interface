@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Flex, Switch, message } from 'antd';
-import { Button, Typography, FontWeightEnum } from 'aelf-design';
+import { Button, Typography, FontWeightEnum, Modal } from 'aelf-design';
 import CommonCard from 'components/CommonCard';
 import WhitelistTasksButton from './components/WhitelistTasksButton';
 import CancelProjectButton from './components/CancelProjectButton';
@@ -30,6 +30,7 @@ export default function ProjectManagementCard({ projectInfo }: IProjectManagemen
   const [messageApi, contextHolder] = message.useMessage();
 
   const [isWhitelistSwitchLoading, setIsWhitelistSwitchLoading] = useState(false);
+  const [isDisableWhitelistConfirmModalOpen, setIsDisableWhitelistConfirmModalOpen] = useState(false);
 
   const canEdit = useMemo(() => {
     return projectInfo?.status === ProjectStatus.UPCOMING || projectInfo?.status === ProjectStatus.PARTICIPATORY;
@@ -133,7 +134,13 @@ export default function ProjectManagementCard({ projectInfo }: IProjectManagemen
                 loading={isWhitelistSwitchLoading}
                 disabled={!canEdit}
                 checked={projectInfo?.isEnableWhitelist}
-                onChange={handleWhitelistSwitchChange}
+                onChange={(checked) => {
+                  if (checked) {
+                    handleWhitelistSwitchChange(true);
+                  } else {
+                    setIsDisableWhitelistConfirmModalOpen(true);
+                  }
+                }}
               />
             </Flex>
           </Flex>
@@ -178,6 +185,35 @@ export default function ProjectManagementCard({ projectInfo }: IProjectManagemen
           </>
         )}
       </CommonCard>
+      <Modal
+        className="common-modal"
+        title="Disable Whitelist"
+        footer={null}
+        centered
+        open={isDisableWhitelistConfirmModalOpen}
+        onCancel={() => setIsDisableWhitelistConfirmModalOpen(false)}>
+        <Flex vertical gap={24}>
+          <Text className="text-center">
+            Are you sure you want to disable the whitelist? Once disabled, all users will be eligible to participate in
+            the sale.
+          </Text>
+          <Flex className="mobile-flex-vertical-reverse" gap={16}>
+            <Button className="flex-1" onClick={() => setIsDisableWhitelistConfirmModalOpen(false)}>
+              Cancel
+            </Button>
+            <Button
+              className="flex-1"
+              type="primary"
+              danger
+              onClick={() => {
+                setIsDisableWhitelistConfirmModalOpen(false);
+                handleWhitelistSwitchChange(false);
+              }}>
+              Disable
+            </Button>
+          </Flex>
+        </Flex>
+      </Modal>
     </>
   );
 }

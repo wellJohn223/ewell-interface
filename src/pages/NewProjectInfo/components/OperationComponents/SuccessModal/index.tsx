@@ -2,7 +2,8 @@ import clsx from 'clsx';
 import { Flex } from 'antd';
 import { Modal, IModalProps, Button, Typography, FontWeightEnum, HashAddress } from 'aelf-design';
 import { success } from 'assets/images';
-import { DEFAULT_CHAIN_ID } from 'constants/network';
+import { getExploreLink } from 'utils';
+import { ExplorerLinkType } from 'types/aelf';
 import './styles.less';
 
 const { Title, Text } = Typography;
@@ -48,13 +49,18 @@ export default function SuccessModal({ modalProps, data: { amountList, descripti
         </Flex>
         <Flex className="modal-box-data-wrapper mobile-flex-vertical-gap-0" justify="space-between">
           <Text>{boxData.label}</Text>
-          {/* TODO: jump */}
           <HashAddress
             className="hash-address-small"
             ignorePrefixSuffix
             preLen={8}
             endLen={9}
             address={boxData.value}
+            addressClickCallback={(address) => {
+              const exploreLink = address ? getExploreLink(address, ExplorerLinkType.TRANSACTION) : '';
+              if (exploreLink) {
+                window.open(exploreLink, '_blank');
+              }
+            }}
           />
         </Flex>
         <Flex justify="center">

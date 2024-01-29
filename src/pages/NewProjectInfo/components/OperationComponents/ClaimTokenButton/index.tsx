@@ -14,6 +14,7 @@ import { timesDecimals } from 'utils/calculate';
 import { useTokenPrice, useTxFee } from 'contexts/useAssets/hooks';
 import { renderTokenPrice } from 'utils/project';
 import { useBalance } from 'hooks/useBalance';
+import { getExploreLink } from 'utils';
 
 const { Title, Text } = Typography;
 
@@ -116,6 +117,12 @@ export default function ClaimTokenButton({ projectInfo }: IClaimTokenButtonProps
               endLen={9}
               chain={DEFAULT_CHAIN_ID}
               address={wallet?.walletInfo.address || ''}
+              addressClickCallback={(_, address) => {
+                const exploreLink = address ? getExploreLink(address) : '';
+                if (exploreLink) {
+                  window.open(exploreLink, '_blank');
+                }
+              }}
             />
           </Flex>
           <Flex justify="space-between">

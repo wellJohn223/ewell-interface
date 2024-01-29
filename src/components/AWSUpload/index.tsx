@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Upload, IUploadProps } from 'aelf-design';
 import { GetProp, UploadFile, message } from 'antd';
 import { emitLoading } from 'utils/events';

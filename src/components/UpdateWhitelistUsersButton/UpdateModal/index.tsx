@@ -67,6 +67,7 @@ const UpdateModal = forwardRef(function (
   }, []);
 
   const reset = useCallback(() => {
+    setCurrentUpdateWay(UpdateWay.UPLOAD);
     setFileList([]);
     setAddressInput('');
   }, []);

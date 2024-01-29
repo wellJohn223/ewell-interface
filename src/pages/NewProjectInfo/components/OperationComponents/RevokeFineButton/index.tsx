@@ -1,4 +1,3 @@
-// TODO: check whether the operation is automatic
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Flex, message } from 'antd';
@@ -11,6 +10,7 @@ import { emitLoading, emitSyncTipsModal } from 'utils/events';
 import { DEFAULT_CHAIN_ID, NETWORK_CONFIG } from 'constants/network';
 import { useTokenPrice, useTxFee } from 'contexts/useAssets/hooks';
 import { renderTokenPrice } from 'utils/project';
+import { getExploreLink } from 'utils';
 
 const { Text, Title } = Typography;
 
@@ -114,13 +114,19 @@ export default function RevokeFineButton({ projectInfo }: IClaimTokenButtonProps
             <Title fontWeight={FontWeightEnum.Medium}>{projectInfo?.toRaiseToken?.symbol || '--'}</Title>
           </Flex>
           <Flex className="modal-box-data-wrapper" justify="space-between">
-            <Text fontWeight={FontWeightEnum.Medium}>Address</Text>
+            <Text fontWeight={FontWeightEnum.Medium}>My address</Text>
             <HashAddress
               className="hash-address-small"
               preLen={8}
               endLen={9}
               chain={DEFAULT_CHAIN_ID}
               address={wallet?.walletInfo.address || ''}
+              addressClickCallback={(_, address) => {
+                const exploreLink = address ? getExploreLink(address) : '';
+                if (exploreLink) {
+                  window.open(exploreLink, '_blank');
+                }
+              }}
             />
           </Flex>
           <Flex vertical gap={8}>

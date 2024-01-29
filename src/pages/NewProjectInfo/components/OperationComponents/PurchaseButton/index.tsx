@@ -9,7 +9,7 @@ import { wallet as walletIcon } from 'assets/images';
 import { IProjectInfo } from 'types/project';
 import { DEFAULT_CHAIN_ID, NETWORK_CONFIG } from 'constants/network';
 import { divDecimals, divDecimalsStr } from 'utils/calculate';
-import { getPriceDecimal } from 'utils';
+import { getExploreLink, getPriceDecimal } from 'utils';
 import { useWallet } from 'contexts/useWallet/hooks';
 import { emitLoading, emitSyncTipsModal } from 'utils/events';
 import { timesDecimals } from 'utils/calculate';
@@ -175,6 +175,12 @@ export default function PurchaseButton({ buttonDisabled, projectInfo, purchaseAm
                 endLen={9}
                 chain={DEFAULT_CHAIN_ID}
                 address={NETWORK_CONFIG.ewellContractAddress}
+                addressClickCallback={(_, address) => {
+                  const exploreLink = address ? getExploreLink(address) : '';
+                  if (exploreLink) {
+                    window.open(exploreLink, '_blank');
+                  }
+                }}
               />
             </Flex>
             <Flex justify="space-between">

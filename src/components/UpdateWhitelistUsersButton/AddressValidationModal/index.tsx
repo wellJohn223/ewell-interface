@@ -80,7 +80,7 @@ export default function AddressValidationModal({
         dataIndex: 'address',
         key: 'address',
         render: (address) => (
-          <HashAddress ignorePrefixSuffix={true} preLen={8} endLen={9} hasCopy={false} address={address} />
+          <HashAddress ignorePrefixSuffix ignoreEvent preLen={8} endLen={9} hasCopy={false} address={address} />
         ),
       },
     ];

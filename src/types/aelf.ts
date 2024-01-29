@@ -40,3 +40,10 @@ export type PBTimestamp = {
   seconds: number;
   nanos: number;
 };
+
+export enum ExplorerLinkType {
+  TRANSACTION = 'transaction',
+  TOKEN = 'token',
+  ADDRESS = 'address',
+  BLOCK = 'block',
+}

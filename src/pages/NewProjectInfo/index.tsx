@@ -54,9 +54,18 @@ export default function ProjectInfo({ previewData, style }: IProjectInfoProps) {
 
       console.log('isCreator', isCreator);
       let whitelistInfo;
-      if (whitelistId) {
-        const whitelistContract = await getWhitelistContract();
-        whitelistInfo = await whitelistContract.GetWhitelist.call(whitelistId);
+
+      try {
+        if (whitelistId) {
+          const whitelistContract = await getWhitelistContract();
+          whitelistInfo = await whitelistContract.GetWhitelist.call(whitelistId);
+        }
+      } catch (error: any) {
+        console.log('GetWhitelist error', error);
+        messageApi.open({
+          type: 'error',
+          content: error?.message || 'Get whitelist failed',
+        });
       }
 
       const whitelistAddressList =
@@ -134,6 +143,13 @@ export default function ProjectInfo({ previewData, style }: IProjectInfoProps) {
 
   useWebLoginEvent(WebLoginEvents.LOGOUT, onLogout);
 
+  const handleRefresh = useCallback(() => {
+    if (isPreview) {
+      return;
+    }
+    getProjectInfo();
+  }, [getProjectInfo, isPreview]);
+
   return (
     <>
       {contextHolder}
@@ -147,7 +163,7 @@ export default function ProjectInfo({ previewData, style }: IProjectInfoProps) {
               isLogin={isLogin}
               canEdit={canEdit}
               isMobileStyle={isMobileStyle}
-              handleRefresh={getProjectInfo}
+              handleRefresh={handleRefresh}
             />
             {!isMobileStyle && (
               <ActionCard
@@ -156,7 +172,7 @@ export default function ProjectInfo({ previewData, style }: IProjectInfoProps) {
                 isLogin={isLogin}
                 canEdit={canEdit}
                 isMobileStyle={isMobileStyle}
-                handleRefresh={getProjectInfo}
+                handleRefresh={handleRefresh}
               />
             )}
           </div>

@@ -1,9 +1,6 @@
-import ReactDOM from 'react-dom';
 import App from './App';
-
 import { prefixCls } from 'constants/theme';
 import WalletProvider from './contexts/useWallet';
-
 import './assets/theme/antd.css';
 import 'aelf-web-login/dist/assets/index.css';
 import '@portkey/did-ui-react/dist/assets/index.css';
@@ -17,6 +14,7 @@ import { AELFD_CUSTOM_TOKEN_CONFIG, AELFD_THEME_CONFIG, ANTD_THEME_CONFIG } from
 import { BrowserRouter } from 'react-router-dom';
 import 'aelf-design/css';
 import AssetsProvider from 'contexts/useAssets';
+import { createRoot } from 'react-dom/client';
 
 ConfigProvider.config({
   prefixCls,
@@ -39,9 +37,11 @@ function ContextProviders({ children }: { children?: ReactNode }) {
     </BrowserRouter>
   );
 }
-ReactDOM.render(
+
+const container = document.getElementById('root') as HTMLElement;
+const root = createRoot(container);
+root.render(
   <ContextProviders>
     <App />
   </ContextProviders>,
-  document.getElementById('root'),
 );
