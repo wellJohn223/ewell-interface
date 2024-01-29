@@ -237,7 +237,7 @@ export default function ParticipantList() {
         className="table"
         loading={isTableLoading}
         scroll={{
-          x: 'max-content',
+          x: true,
         }}
         columns={columns}
         dataSource={list}
