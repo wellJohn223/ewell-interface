@@ -8,8 +8,8 @@ import {
   WebLoginEvents,
   setGlobalConfig,
   PortkeyDid,
-  useWebLoginContext,
-  WebLoginContextType,
+  useWebLogin,
+  WebLoginInterface,
 } from 'aelf-web-login';
 import Wallet from './Wallet';
 import { IWallet } from './Wallet/types';
@@ -20,11 +20,10 @@ import { useLocation } from 'react-use';
 import { useNavigate } from 'react-router-dom';
 import { checkPathExist } from 'utils/reg';
 import { LogoutModal } from 'components/LogoutModal';
-
-const APPNAME = 'explorer.aelf.io';
+import { APP_NAME } from 'constants/aelf';
 
 setGlobalConfig({
-  appName: APPNAME,
+  appName: APP_NAME || '',
   chainId: DEFAULT_CHAIN_ID,
   networkType: NETWORK_CONFIG.webLoginNetworkType,
   onlyShowV2: true,
@@ -44,7 +43,7 @@ setGlobalConfig({
     customNetworkType: IS_OFFLINE_NETWORK ? 'Offline' : 'onLine',
   },
   aelfReact: {
-    appName: APPNAME,
+    appName: APP_NAME || '',
     nodes: {
       AELF: {
         chainId: 'AELF',
@@ -94,8 +93,8 @@ function reducer(state: any, { type, payload }: any) {
 const LOGOUT_STAY_PATH = ['example', 'project', 'projects/all'];
 export function WalletProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
-  const webLoginContext = useWebLoginContext();
-  const webLoginContextRef = useRef<WebLoginContextType>(webLoginContext);
+  const webLoginContext = useWebLogin();
+  const webLoginContextRef = useRef<WebLoginInterface>(webLoginContext);
   webLoginContextRef.current = webLoginContext;
 
   const navigate = useNavigate();
@@ -109,9 +108,9 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
     webLoginContext.getSignature && (wallet as IWallet).setGetSignature(webLoginContext.getSignature);
   }
 
-  const onLogin = useCallback(() => {
-    console.log('onLogin');
+  const onLogin = useCallback(async () => {
     const _webLoginContext = webLoginContextRef.current;
+    console.log('onLogin');
     const wallet = new Wallet({
       walletInfo: _webLoginContext.wallet,
       walletType: _webLoginContext.walletType,
@@ -125,7 +124,11 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
     authToken(wallet);
   }, []);
 
-  useWebLoginEvent(WebLoginEvents.LOGINED, onLogin);
+  // useWebLoginEvent(WebLoginEvents.LOGINED, onLogin);
+  useEffect(() => {
+    if (webLoginContext.loginState !== WebLoginState.logined) return;
+    onLogin();
+  }, [webLoginContext.loginState, onLogin]);
 
   const onLogout = useCallback(() => {
     console.log('onLogout');
@@ -188,7 +191,6 @@ export default function Provider({ children }: { children: React.ReactNode }) {
           autoLogoutOnAccountMismatch: true,
           autoLogoutOnChainMismatch: true,
           onPluginNotFound: (openStore) => {
-            console.log('openStore:', openStore);
             openStore();
           },
         }}

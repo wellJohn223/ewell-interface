@@ -3,6 +3,7 @@ import { CallContractFunc, GetSignatureFunc, IWallet, IWalletProps, TSignaturePa
 import { sleep } from 'utils';
 import { getTxResult } from 'utils/aelfUtils';
 import { NETWORK_CONFIG } from 'constants/network';
+import { APP_NAME } from 'constants/aelf';
 
 class Wallet implements IWallet {
   walletInfo: WalletInfo;
@@ -58,8 +59,7 @@ class Wallet implements IWallet {
 
   getSignature(params: TSignatureParams): Promise<SignatureData> {
     return this._getSignature({
-      // TODO: add appName
-      appName: '',
+      appName: APP_NAME || '',
       address: this.walletInfo.address,
       ...params,
     });

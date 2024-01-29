@@ -15,7 +15,6 @@ import { BrowserRouter } from 'react-router-dom';
 import 'aelf-design/css';
 import AssetsProvider from 'contexts/useAssets';
 import { createRoot } from 'react-dom/client';
-import ReactDOM from 'react-dom';
 
 ConfigProvider.config({
   prefixCls,
@@ -39,17 +38,10 @@ function ContextProviders({ children }: { children?: ReactNode }) {
   );
 }
 
-// const container = document.getElementById('root') as HTMLElement;
-// const root = createRoot(container);
-// root.render(
-//   <ContextProviders>
-//     <App />
-//   </ContextProviders>,
-// );
-
-ReactDOM.render(
+const container = document.getElementById('root') as HTMLElement;
+const root = createRoot(container);
+root.render(
   <ContextProviders>
     <App />
   </ContextProviders>,
-  document.getElementById('root'),
 );
