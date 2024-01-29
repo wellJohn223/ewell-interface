@@ -54,9 +54,18 @@ export default function ProjectInfo({ previewData, style }: IProjectInfoProps) {
 
       console.log('isCreator', isCreator);
       let whitelistInfo;
-      if (whitelistId) {
-        const whitelistContract = await getWhitelistContract();
-        whitelistInfo = await whitelistContract.GetWhitelist.call(whitelistId);
+
+      try {
+        if (whitelistId) {
+          const whitelistContract = await getWhitelistContract();
+          whitelistInfo = await whitelistContract.GetWhitelist.call(whitelistId);
+        }
+      } catch (error: any) {
+        console.log('GetWhitelist error', error);
+        messageApi.open({
+          type: 'error',
+          content: error?.message || 'Get whitelist failed',
+        });
       }
 
       const whitelistAddressList =
