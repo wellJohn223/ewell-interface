@@ -134,6 +134,13 @@ export default function ProjectInfo({ previewData, style }: IProjectInfoProps) {
 
   useWebLoginEvent(WebLoginEvents.LOGOUT, onLogout);
 
+  const handleRefresh = useCallback(() => {
+    if (isPreview) {
+      return;
+    }
+    getProjectInfo();
+  }, [getProjectInfo, isPreview]);
+
   return (
     <>
       {contextHolder}
@@ -147,7 +154,7 @@ export default function ProjectInfo({ previewData, style }: IProjectInfoProps) {
               isLogin={isLogin}
               canEdit={canEdit}
               isMobileStyle={isMobileStyle}
-              handleRefresh={getProjectInfo}
+              handleRefresh={handleRefresh}
             />
             {!isMobileStyle && (
               <ActionCard
@@ -156,7 +163,7 @@ export default function ProjectInfo({ previewData, style }: IProjectInfoProps) {
                 isLogin={isLogin}
                 canEdit={canEdit}
                 isMobileStyle={isMobileStyle}
-                handleRefresh={getProjectInfo}
+                handleRefresh={handleRefresh}
               />
             )}
           </div>
