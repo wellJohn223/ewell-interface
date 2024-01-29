@@ -15,6 +15,7 @@ enum CommunityLogoType {
 }
 
 interface ICommonCommunityLogoListProps {
+  gap?: number;
   flexProps?: FlexProps;
   imgClassName?: string;
   communityLink: { [key in CommunityLogoType]?: string };
@@ -32,6 +33,7 @@ export const COMMUNITY_LOGO_LIST = [
 ];
 
 export default function CommonCommunityLogoList({
+  gap,
   flexProps,
   imgClassName,
   communityLink,
@@ -42,7 +44,7 @@ export default function CommonCommunityLogoList({
     link: communityLink[type],
   }));
   return (
-    <Flex gap={12} align="center" {...flexProps}>
+    <Flex gap={gap || 12} align="center" {...flexProps}>
       {communityLogoList
         .filter((item) => !!item.link)
         .map((item, index) => {

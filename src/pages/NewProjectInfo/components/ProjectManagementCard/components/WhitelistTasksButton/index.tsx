@@ -74,7 +74,8 @@ export default function WhitelistTasksButton({ whitelistId, whitelistTasksUrl, d
         <Flex vertical gap={24}>
           <Flex vertical gap={12}>
             <Text className="text-center">
-              Please enter an accessible link that users can click on to view project whitelisting tasks.
+              Whitelist tasks are required when whitelist is enabled. Please provide a publicly accessible link that
+              explains the associated tasks.
             </Text>
             <Input placeholder="placeholder" value={urlInputValue} onChange={(e) => setUrlInputValue(e.target.value)} />
           </Flex>

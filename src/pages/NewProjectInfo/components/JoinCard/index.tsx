@@ -193,14 +193,14 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
     if (isPreview) {
       return (
         <>
-          <Text>Remainder</Text>
+          <Text>Ends in</Text>
           <Text fontWeight={FontWeightEnum.Medium}>23:50:45</Text>
         </>
       );
     } else if (projectInfo?.status === ProjectStatus.UPCOMING) {
       return (
         <>
-          <Text>Remainder</Text>
+          <Text>Ends in</Text>
           <NewBaseCountdown
             className="countdown-wrapper"
             value={projectInfo?.startTime ? dayjs(projectInfo.startTime).valueOf() : 0}
@@ -211,7 +211,7 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
     } else if (projectInfo?.status === ProjectStatus.PARTICIPATORY) {
       return (
         <>
-          <Text>Remainder</Text>
+          <Text>Ends in</Text>
           <NewBaseCountdown
             className="countdown-wrapper"
             value={projectInfo?.endTime ? dayjs(projectInfo.endTime).valueOf() : 0}
@@ -222,7 +222,7 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
     } else if (projectInfo?.status === ProjectStatus.UNLOCKED) {
       return (
         <>
-          <Text>Remainder</Text>
+          <Text>Ends in</Text>
           <NewBaseCountdown
             className="countdown-wrapper"
             value={projectInfo?.tokenReleaseTime ? dayjs(projectInfo.tokenReleaseTime).valueOf() : 0}
@@ -233,18 +233,18 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
     } else if (projectInfo?.status === ProjectStatus.CANCELED) {
       return (
         <>
-          <Text>Canceled Time</Text>
+          <Text>Cancelled on</Text>
           <Text fontWeight={FontWeightEnum.Medium}>
-            {projectInfo?.cancelTime ? dayjs(projectInfo?.cancelTime).format('DD MMM YYYY') : '--'}
+            {projectInfo?.cancelTime ? dayjs(projectInfo?.cancelTime).format('DD MMMM, YYYY') : '--'}
           </Text>
         </>
       );
     } else if (projectInfo?.status === ProjectStatus.ENDED) {
       return (
         <>
-          <Text>Ended Time</Text>
+          <Text>Ended on</Text>
           <Text fontWeight={FontWeightEnum.Medium}>
-            {projectInfo?.tokenReleaseTime ? dayjs(projectInfo?.tokenReleaseTime).format('DD MMM YYYY') : '--'}
+            {projectInfo?.tokenReleaseTime ? dayjs(projectInfo?.tokenReleaseTime).format('DD MMMM, YYYY') : '--'}
           </Text>
         </>
       );
@@ -309,7 +309,7 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
           />
         </Flex>
         <Flex gap={16} align="center" justify="space-between">
-          <Text>Purchase Quantity</Text>
+          <Text>Min & Max Allocation</Text>
           <CommonWrapText
             align={CommonWrapTextAlignType.RIGHT}
             textProps={{ fontWeight: FontWeightEnum.Medium }}
@@ -330,7 +330,10 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
           <>
             {(projectInfo?.status === ProjectStatus.UPCOMING ||
               projectInfo?.status === ProjectStatus.PARTICIPATORY) && (
-              <Text>The project is whitelisted. Investment projects need to complete Whitelist Tasks first.</Text>
+              <Text>
+                Whitelisted is enabled for this sale. To be eligible to participate, users need to complete the
+                whitelist tasks beforehand.
+              </Text>
             )}
             <Flex justify="flex-end">
               <Text
@@ -386,7 +389,7 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
                   help={purchaseInputErrorMessage}>
                   <InputNumber
                     className="purchase-input-number"
-                    placeholder="placeholder"
+                    placeholder="Enter amount"
                     controls={false}
                     stringMode
                     addonAfter={
@@ -435,7 +438,7 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
             {showRevokeInvestmentButton && <RevokeInvestmentButton projectInfo={projectInfo} />}
             {showUnlockTips && (
               <Text className="text-center" fontWeight={FontWeightEnum.Medium}>
-                Claim Token when it's time to unlock!
+                Be prepared to claim tokens when they're unlocked.
               </Text>
             )}
             {showClaimTokenButton && <ClaimTokenButton projectInfo={projectInfo} />}

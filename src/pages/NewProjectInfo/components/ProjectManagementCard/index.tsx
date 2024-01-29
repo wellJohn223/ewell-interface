@@ -65,7 +65,7 @@ export default function ProjectManagementCard({ projectInfo }: IProjectManagemen
       console.log('whitelist result', result);
       messageApi.open({
         type: 'success',
-        content: checked ? 'Enable whitelist successfully' : 'Disable whitelist successfully',
+        content: checked ? 'Whitelist Enabled' : 'Whitelist Disabled',
       });
     } catch (error: any) {
       console.log('error', error);
@@ -117,17 +117,17 @@ export default function ProjectManagementCard({ projectInfo }: IProjectManagemen
       <CommonCard
         className="project-management-card-wrapper"
         contentClassName="project-management-card-content"
-        title="Project Management">
+        title="Sale Management">
         <Flex vertical gap={12}>
           <Text fontWeight={FontWeightEnum.Medium}>Participants</Text>
-          <Button onClick={jumpParticipants}>View Participants List</Button>
+          <Button onClick={jumpParticipants}>Participant List</Button>
         </Flex>
         <div className="divider" />
         <Flex vertical gap={12}>
           <Flex gap={8} justify="space-between">
             <Text fontWeight={FontWeightEnum.Medium}>Whitelist</Text>
             <Flex gap={8} align="center">
-              <Text>{projectInfo?.isEnableWhitelist ? 'Enable' : 'Disable'}</Text>
+              <Text>{projectInfo?.isEnableWhitelist ? 'Enabled' : 'Disabled'}</Text>
               <Switch
                 size="small"
                 loading={isWhitelistSwitchLoading}
@@ -144,10 +144,10 @@ export default function ProjectManagementCard({ projectInfo }: IProjectManagemen
                 whitelistTasksUrl={projectInfo?.whitelistInfo?.url}
                 disabled={!canEdit}
               />
-              <Button onClick={jumpWhitelistUsers}>Whitelist Users</Button>
+              <Button onClick={jumpWhitelistUsers}>Whitelisted Users</Button>
               <UpdateWhitelistUsersButton
                 buttonProps={{
-                  children: 'Add Whitelisted Users',
+                  children: 'Add Users to Whitelist ',
                   disabled: !canEdit,
                 }}
                 updateType={UpdateType.ADD}
@@ -156,7 +156,7 @@ export default function ProjectManagementCard({ projectInfo }: IProjectManagemen
               />
               <UpdateWhitelistUsersButton
                 buttonProps={{
-                  children: 'Remove Whitelisted Users',
+                  children: 'Remove Users from Whitelist',
                   disabled: !canEdit,
                 }}
                 updateType={UpdateType.REMOVE}

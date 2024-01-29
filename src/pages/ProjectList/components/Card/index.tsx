@@ -1,8 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 import { Flex } from 'antd';
-import { Typography, Progress } from 'aelf-design';
+import { Typography, Progress, FontWeightEnum } from 'aelf-design';
 import communityLogo from 'assets/images/communityLogo';
+import ProjectLogo from 'components/ProjectLogo';
+import CommonCommunityLogoList, { COMMUNITY_LOGO_LIST } from 'components/CommonCommunityLogoList';
 import { IProjectInfo } from './types';
 import { ZERO } from 'constants/misc';
 import { divDecimals } from 'utils/calculate';
@@ -10,10 +12,11 @@ import { ProjectStatus } from 'types/project';
 import { useNavigate, useParams } from 'react-router-dom';
 import { stringifyUrl } from 'query-string';
 import { parseAdditionalInfo } from 'utils/project';
-import './styles.less';
 import { PROJECT_STATUS_TEXT_MAP } from 'constants/project';
 import dayjs from 'dayjs';
 import { timeDuration } from 'utils/time';
+import './styles.less';
+import { pick } from 'utils';
 
 const ONE_DAY_IN_MS = 24 * 60 * 60 * 1000;
 
@@ -49,7 +52,7 @@ function ProjectStatusRow({ status }: { status: ProjectStatus }) {
   );
 }
 
-const { Text } = Typography;
+const { Text, Title } = Typography;
 const Card: React.FC<ProjectCardProps> = ({ data }) => {
   const {
     additionalInfo = '',
@@ -141,12 +144,12 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
   const ProgressStrokeColor = useMemo(() => (status === ProjectStatus.PARTICIPATORY ? '#131631' : '#C1C2C9'), [status]);
 
   const currentRaisedAmountStr = useMemo(
-    () => divDecimals(currentRaisedAmount, toRaiseToken?.decimals).toFixed(),
+    () => divDecimals(currentRaisedAmount, toRaiseToken?.decimals).toFormat(),
     [currentRaisedAmount, toRaiseToken?.decimals],
   );
 
   const toRaisedAmountStr = useMemo(
-    () => divDecimals(toRaisedAmount, toRaiseToken?.decimals).toFixed(),
+    () => divDecimals(toRaisedAmount, toRaiseToken?.decimals).toFormat(),
     [toRaiseToken?.decimals, toRaisedAmount],
   );
 
@@ -161,45 +164,62 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
     [additionalInfo],
   );
 
+  const projectImageUrl = useMemo(
+    () => _additionalInfo?.projectImgs?.split(',')[0] || '',
+    [_additionalInfo?.projectImgs],
+  );
+
+  const projectLogoUrl = useMemo(() => _additionalInfo?.logoUrl || '', [_additionalInfo?.logoUrl]);
+
   return (
     <div className="project-card" onClick={jumpDetail}>
-      <img className="project-img" src={_additionalInfo?.projectImgs?.split(',')[0] || ''} />
-      <Flex className="project-card-info">
-        <img className="project-card-logo" src={_additionalInfo?.logoUrl?.split(',')[0] || ''} alt="" />
-        <div className="project-name-wrap">
-          <div className="project-name">{_additionalInfo?.projectName || '--'}</div>
-          <ProjectStatusRow status={status || ProjectStatus.UPCOMING} />
-        </div>
-      </Flex>
-      <div className="project-community">
-        {communityLogoList.map(([key, value], index) => (
-          <img
-            key={index}
-            className="cursor-pointer"
-            src={communityLogo[key]}
-            alt="community"
-            onClick={() => {
-              window.open(value, '_blank');
-            }}
-          />
-        ))}
-      </div>
-      <Flex className="project-card-sale" justify="space-between">
-        <div className="text-left">
-          <div>Sale Price</div>
-          <div>1 ELF = {`${preSalePriceStr} ${crowdFundingIssueToken?.symbol || ''}`}</div>
-        </div>
-        <div className="text-right">
-          <div>{remainderStr}</div>
-          <div>{remainderTimeStr}</div>
-        </div>
-      </Flex>
-      <Progress size={['100%', 12]} percent={progressPercent} strokeColor={ProgressStrokeColor} trailColor="#F5F5F6" />
-      <Flex className="project-progress" justify="space-between">
-        <Text>{progressPercent}%</Text>
-        <Text>
-          {currentRaisedAmountStr}/{toRaisedAmountStr} ELF
-        </Text>
+      <Flex vertical gap={12}>
+        <ProjectLogo className="project-img" src={projectImageUrl} alt="img" />
+        <Flex className="project-card-info">
+          <ProjectLogo className="project-card-logo" src={projectLogoUrl} alt="logo" />
+          <div className="project-name-wrap">
+            <div className="project-name">{_additionalInfo?.projectName || '--'}</div>
+            <ProjectStatusRow status={status || ProjectStatus.UPCOMING} />
+          </div>
+        </Flex>
+        <Flex vertical gap={4}>
+          <div className="project-summary">{_additionalInfo?.projectSummary}</div>
+          <div className="project-community">
+            <CommonCommunityLogoList
+              gap={8}
+              imgClassName="project-community-img"
+              communityLink={pick(_additionalInfo || {}, COMMUNITY_LOGO_LIST)}
+            />
+          </div>
+        </Flex>
+        <Flex className="project-card-sale" vertical gap={4}>
+          <Flex vertical>
+            <Flex justify="space-between">
+              <Text>Sale Price</Text>
+              <Text>{remainderStr}</Text>
+            </Flex>
+            <Flex justify="space-between">
+              <Text fontWeight={FontWeightEnum.Medium}>
+                1 ELF = {`${preSalePriceStr} ${crowdFundingIssueToken?.symbol || ''}`}
+              </Text>
+              <Text>{remainderTimeStr}</Text>
+            </Flex>
+          </Flex>
+          <Flex>
+            <Progress
+              size={['100%', 12]}
+              percent={progressPercent}
+              strokeColor={ProgressStrokeColor}
+              trailColor="#F5F5F6"
+            />
+          </Flex>
+          <Flex justify="space-between">
+            <Text>{progressPercent}%</Text>
+            <Text>
+              {currentRaisedAmountStr}/{toRaisedAmountStr} ELF
+            </Text>
+          </Flex>
+        </Flex>
       </Flex>
     </div>
   );

@@ -107,7 +107,7 @@ export default function WhitelistUsers() {
         title: <NavLink to={`/project/${projectId}`}>{projectName}</NavLink>,
       },
       {
-        title: 'Whitelist Users',
+        title: 'Whitelisted Users',
       },
     ],
     [from, projectId, projectName],
@@ -138,7 +138,7 @@ export default function WhitelistUsers() {
         ),
       },
       {
-        title: 'Add Time',
+        title: 'Time',
         dataIndex: 'time',
         key: 'time',
         className: 'time-column',
@@ -153,7 +153,7 @@ export default function WhitelistUsers() {
       <Breadcrumb className="bread-wrap" items={breadList} />
       <Flex vertical gap={24}>
         <Title level={5} fontWeight={FontWeightEnum.Medium}>
-          Whitelist Users
+          Whitelisted Users
         </Title>
         <Flex
           justify="space-between"
@@ -185,7 +185,7 @@ export default function WhitelistUsers() {
           <Search
             className={clsx({ ['flex-1']: isScreenLteSmall })}
             inputClassName={clsx('address-search', { ['full-width']: isScreenLteSmall })}
-            placeholder="Address"
+            placeholder="Enter address and search"
             onBlur={onSearch}
             onClear={onClear}
           />
@@ -199,7 +199,7 @@ export default function WhitelistUsers() {
               gap={16}
               vertical={isScreenLteMini}>
               <Text size="small">
-                Number of Participants Users:{' '}
+                Total number of whitelisted users:{' '}
                 <Text size="small" fontWeight={FontWeightEnum.Medium}>
                   {totalParticipants}
                 </Text>

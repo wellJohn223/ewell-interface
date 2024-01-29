@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import { Row, Col } from 'antd';
 import { useEffectOnce } from 'react-use';
 import { useCardCol } from '../../hooks/useCardCol';
@@ -8,49 +8,59 @@ import { useGetList, IListData } from '../../hooks/useGetList';
 import { ProjectType } from 'types/project';
 import InfiniteList from 'components/InfiniteList';
 import { emitLoading } from 'utils/events';
+import myEvents from 'utils/myEvent';
 
 const Projects: React.FC = () => {
   const [colNum] = useCardCol();
+  const [loading, setLoading] = useState(true);
   const [activeItems, setActiveItems] = useState<IListData['activeItems']>([]);
   const [closedItems, setClosedItems] = useState<IListData['closedItems']>([]);
-  const [closedListPage, setClosedListPage] = useState(0);
   const [loadAllClosedItems, setLoadAllClosedItems] = useState(false);
   const { getList } = useGetList();
 
   const getActiveProjects = useCallback(async () => {
     const { activeItems } = await getList({ types: ProjectType.ACTIVE });
+    setLoading(false);
     setActiveItems(activeItems || []);
   }, [getList]);
 
-  const getClosedProject = useCallback(
-    async (loading: boolean = false) => {
-      console.log('getClosed-project');
-      if (loading) emitLoading(true, { text: 'loading...' });
+  const getClosedProject = useCallback(async () => {
+    console.log('getClosed-project');
+    const list = await getList({
+      types: ProjectType.CLOSED,
+      skipCount: closedItems.length,
+      maxResultCount: colNum * 3,
+    });
+    setLoading(false);
+    if (list.closedItems.length === 0) return;
+    const newList = closedItems.concat(list.closedItems);
+    setClosedItems(newList);
+    setLoadAllClosedItems(newList.length >= list.totalCount);
+  }, [closedItems, colNum, getList]);
 
-      const list = await getList({
-        types: ProjectType.CLOSED,
-        skipCount: closedItems.length,
-        maxResultCount: colNum * 3,
-        // maxResultCount: 3,
-      });
+  useEffect(() => {
+    emitLoading(loading);
+  }, [loading]);
 
-      if (loading) emitLoading(false);
-
-      if (list.closedItems.length === 0) return;
-      const newList = closedItems.concat(list.closedItems);
-      setClosedItems(newList);
-      setClosedListPage(closedListPage + 1);
-      setLoadAllClosedItems(newList.length >= list.totalCount);
-    },
-    [closedItems, closedListPage, colNum, getList],
-  );
-
-  useEffectOnce(() => {
+  const initList = useCallback(() => {
     getActiveProjects();
     getClosedProject();
-  });
+  }, [getActiveProjects, getClosedProject]);
+
+  const initListRef = useRef(initList);
+  initListRef.current = initList;
+  useEffect(() => {
+    const { remove } = myEvents.AuthToken.addListener(() => {
+      initListRef.current?.();
+    });
+    return () => remove();
+  }, []);
+
+  useEffectOnce(() => initList());
 
   const render = useMemo(() => {
+    if (loading) return null;
+
     if (!activeItems.length && !closedItems.length) {
       return (
         <>
@@ -95,7 +105,7 @@ const Projects: React.FC = () => {
         )}
       </>
     );
-  }, [activeItems, closedItems, colNum, getClosedProject, loadAllClosedItems]);
+  }, [activeItems, closedItems, colNum, getClosedProject, loadAllClosedItems, loading]);
 
   return <div className="project-page">{render}</div>;
 };

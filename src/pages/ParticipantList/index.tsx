@@ -153,7 +153,7 @@ export default function ParticipantList() {
         ),
       },
       {
-        title: 'Participants List',
+        title: 'Participants',
       },
     ],
     [from, projectId, projectName],
@@ -184,7 +184,7 @@ export default function ParticipantList() {
         ),
       },
       {
-        title: 'ELF',
+        title: 'ELF Raised',
         dataIndex: 'elfCount',
         key: 'elfCount',
         className: 'elf-count-column',
@@ -212,11 +212,11 @@ export default function ParticipantList() {
         vertical={isScreenLteSmall}>
         <Flex vertical>
           <Title level={5} fontWeight={FontWeightEnum.Medium}>
-            Participants Users
+            Participants
           </Title>
           {!!virtualAddress && (
             <Flex vertical={isScreenLteLarge}>
-              <Text className="margin-right-8">Contract Address: </Text>
+              <Text className="margin-right-8">Tokens stored at: </Text>
               <HashAddress
                 preLen={isScreenLteLarge ? 8 : 0}
                 endLen={isScreenLteLarge ? 9 : 0}
@@ -228,7 +228,7 @@ export default function ParticipantList() {
         </Flex>
         <Search
           inputClassName={clsx('address-search', { ['full-width']: isScreenLteSmall })}
-          placeholder="Address"
+          placeholder="Enter address and search"
           onBlur={onSearch}
           onClear={onClear}
         />
@@ -245,13 +245,13 @@ export default function ParticipantList() {
       <Flex justify="space-between" align={isScreenLteMini ? 'stretch' : 'center'} gap={16} vertical={isScreenLteMini}>
         <Flex gap={16}>
           <Text size="small">
-            Number of Participants Users:{' '}
+            Total number of participants:{' '}
             <Text size="small" fontWeight={FontWeightEnum.Medium}>
               {totalUserCount}
             </Text>
           </Text>
           <Text size="small">
-            Total ELF:{' '}
+            Total amount of ELF raised:{' '}
             <Text size="small" fontWeight={FontWeightEnum.Medium}>
               {totalAmount}
             </Text>

@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Flex } from 'antd';
 import { Loading } from 'aelf-design';
 import SandGlassLoading from 'components/SandGlassLoading';
@@ -6,7 +6,7 @@ import myEvents from 'utils/myEvent';
 
 export interface ILoadingInfo {
   isLoading: boolean;
-  text: string;
+  text: string | React.ReactNode;
 }
 
 const DEFAULT_LOADING_TEXT = 'Loading...';
