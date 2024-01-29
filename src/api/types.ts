@@ -1,7 +1,12 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
 
+export enum CancelTokenSourceKey {
+  GET_PROJECT_DETAIL = 'getProjectDetail',
+}
+
 export type requestConfig = {
   query?: string; //this for url parameter； example: test/:id
+  cancelTokenSourceKey?: CancelTokenSourceKey;
 } & AxiosRequestConfig<any>;
 
 export type IBaseRequest = {

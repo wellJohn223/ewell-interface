@@ -15,7 +15,7 @@ export const MyButton = () => {
 
   const onWalletClick = useCallback(() => {
     console.log('WebLoginState', loginState);
-    if (loginState === WebLoginState.initial) return login();
+    if (loginState === WebLoginState.initial || loginState === WebLoginState.lock) return login();
   }, [login, loginState]);
 
   const menuDrawerRef = useRef<ICommonDrawerInterface>();

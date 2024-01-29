@@ -1,9 +1,12 @@
+import axios, { CancelTokenSource } from 'axios';
 import { DEFAULT_METHOD } from 'api/list';
 import { BaseConfig, UrlObj, requestConfig } from 'api/types';
 import { spliceUrl, service } from 'api/axios';
 import { getRequestConfig } from 'api/utils';
 
 const myServer = new Function();
+
+const cancelTokenSources: Map<string, CancelTokenSource> = new Map();
 
 /**
  * @method parseRouter
@@ -24,11 +27,25 @@ myServer.prototype.parseRouter = function (name: string, urlObj: UrlObj) {
  * @return {Promise<any>}
  */
 myServer.prototype.send = function (base: BaseConfig, config: requestConfig) {
-  const { method = DEFAULT_METHOD, query = '', url, ...axiosConfig } = getRequestConfig(base, config) || {};
+  const {
+    method = DEFAULT_METHOD,
+    query = '',
+    url,
+    cancelTokenSourceKey,
+    ...axiosConfig
+  } = getRequestConfig(base, config) || {};
+  const source = axios.CancelToken.source();
+  if (cancelTokenSourceKey) {
+    if (cancelTokenSources.has(cancelTokenSourceKey)) {
+      cancelTokenSources.get(cancelTokenSourceKey)?.cancel();
+    }
+    cancelTokenSources.set(cancelTokenSourceKey, source);
+  }
   return service({
     ...axiosConfig,
     url: url || spliceUrl(typeof base === 'string' ? base : base.target, query),
     method,
+    cancelToken: source.token,
   });
 };
 

@@ -349,7 +349,14 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
         {showWhitelistJoined && (
           <Flex gap={16} align="center" justify="space-between">
             <Text>Whitelist</Text>
-            <Text className="purple-text" fontWeight={FontWeightEnum.Medium}>
+            <Text
+              className="purple-text cursor-pointer"
+              fontWeight={FontWeightEnum.Medium}
+              onClick={() => {
+                if (projectInfo?.whitelistInfo?.url) {
+                  window.open(getHref(projectInfo.whitelistInfo.url), '_blank');
+                }
+              }}>
               Joined
             </Text>
           </Flex>
