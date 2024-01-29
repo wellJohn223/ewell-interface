@@ -23,8 +23,6 @@ interface IInfoWrapperProps {
 }
 
 const MAX_THUMBS_SLIDES_PER_VIEW = 5;
-const THUMBS_ITEM_WIDTH = 72;
-const THUMBS_ITEM_GAP = 16;
 
 export default function InfoWrapper({
   projectInfo,
@@ -52,10 +50,6 @@ export default function InfoWrapper({
     return projectImgs.length;
   }, [projectImgs.length]);
 
-  const thumbsSwiperWidth = useMemo(() => {
-    return THUMBS_ITEM_WIDTH * thumbsSlidesPerView + THUMBS_ITEM_GAP * (thumbsSlidesPerView - 1);
-  }, [thumbsSlidesPerView]);
-
   return (
     <div className="project-info-wrapper flex">
       <Flex justify="space-between" align="flex-start">
@@ -75,12 +69,7 @@ export default function InfoWrapper({
           {!!additionalInfo?.projectSummary && <Text>{additionalInfo?.projectSummary}</Text>}
         </div>
         {projectImgs.length > 0 && (
-          <Carousel
-            className="carousel"
-            thumbsSlidesPerView={thumbsSlidesPerView}
-            thumbsSwiperWidth={thumbsSwiperWidth}
-            data={projectImgs}
-          />
+          <Carousel className="carousel" thumbsSlidesPerView={thumbsSlidesPerView} data={projectImgs} />
         )}
         {isMobileStyle && (
           <ActionCard

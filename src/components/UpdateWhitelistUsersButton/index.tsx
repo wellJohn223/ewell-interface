@@ -36,6 +36,7 @@ export default function UpdateWhitelistUsers({
 
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [isAddressValidationModalOpen, setIsAddressValidationModalOpen] = useState(false);
+  const [isRemoveUsersConfirmModalOpen, setIsRemoveUsersConfirmModalOpen] = useState(false);
   const [isUpdateSuccessModalOpen, setIsUpdateSuccessModalOpen] = useState(false);
   const [validationData, setValidationData] = useState<TWhitelistIdentifyItem[]>([]);
   const { wallet } = useWallet();
@@ -83,7 +84,6 @@ export default function UpdateWhitelistUsers({
   );
 
   const onValidationConfirm = useCallback(async () => {
-    setIsAddressValidationModalOpen(false);
     emitLoading(true);
     try {
       const txResult = await wallet?.callContract({
@@ -141,8 +141,50 @@ export default function UpdateWhitelistUsers({
           setIsAddressValidationModalOpen(false);
           setIsUpdateModalOpen(true);
         }}
-        onModalConfirm={onValidationConfirm}
+        onModalConfirm={() => {
+          setIsAddressValidationModalOpen(false);
+          if (updateType === UpdateType.REMOVE) {
+            setIsRemoveUsersConfirmModalOpen(true);
+          } else {
+            onValidationConfirm();
+          }
+        }}
       />
+      <Modal
+        className="common-modal"
+        title="Remove Users from Whitelist"
+        footer={null}
+        centered
+        open={isRemoveUsersConfirmModalOpen}
+        onCancel={() => {
+          setIsRemoveUsersConfirmModalOpen(false);
+        }}>
+        <Flex vertical gap={24}>
+          <Text className="text-center">
+            Upon confirmation, {activeAddressList.length} whitelisted users will be removed.
+          </Text>
+          <Flex className="mobile-flex-vertical-reverse" gap={16}>
+            <Button
+              className="flex-1"
+              onClick={() => {
+                setIsRemoveUsersConfirmModalOpen(false);
+                setIsAddressValidationModalOpen(true);
+              }}>
+              Back
+            </Button>
+            <Button
+              className="flex-1"
+              type="primary"
+              danger
+              onClick={() => {
+                setIsRemoveUsersConfirmModalOpen(false);
+                onValidationConfirm();
+              }}>
+              Confirm
+            </Button>
+          </Flex>
+        </Flex>
+      </Modal>
       <Modal
         wrapClassName="whitelist-users-update-success-modal"
         title={`${updateType === UpdateType.ADD ? 'Added' : 'Removed'} Successfully`}

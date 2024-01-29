@@ -43,12 +43,17 @@ export const WelcomeModal = () => {
       }
     }
 
+    if (wallet.walletType === WalletType.portkey) {
+      caHash = wallet.walletInfo.portkeyInfo?.caInfo?.caHash || '';
+    }
+
     try {
       const plainText = `Nonce:${Date.now()}`;
       const plainTextHex = Buffer.from(plainText).toString('hex');
       const result = await wallet?.getSignature({
         signInfo: AElf.utils.sha256(plainTextHex),
       });
+      if (result.error) throw result.errorMessage;
       const signature = result?.signature || '';
       const pubKey = recoverPubKey(plainTextHex, signature);
 
@@ -80,12 +85,16 @@ export const WelcomeModal = () => {
   useEffect(() => {
     const { remove } = myEvents.AuthAsk.addListener((wallet: IWallet) => {
       walletRef.current = wallet;
-      commonModalRef.current?.show();
+      if (wallet.walletType === WalletType.portkey) {
+        onAccept();
+      } else {
+        commonModalRef.current?.show();
+      }
     });
     return () => {
       remove();
     };
-  }, []);
+  }, [onAccept]);
 
   return (
     <CommonModal

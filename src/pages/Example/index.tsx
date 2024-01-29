@@ -16,7 +16,6 @@ import { Input } from 'aelf-design';
 import { useTokenPrice, useTxFee } from 'contexts/useAssets/hooks';
 import { stringify } from 'query-string';
 import { useLocation } from 'react-router-dom';
-import { LogoutModal } from 'components/LogoutModal';
 
 export default function Example() {
   const { wallet, checkManagerSyncState } = useWallet();

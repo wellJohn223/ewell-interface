@@ -43,27 +43,31 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
   const [isPurchaseButtonDisabled, setIsPurchaseButtonDisabled] = useState(true);
 
   const txFeeAmount = useMemo(() => {
-    return timesDecimals(txFee, projectInfo?.toRaiseToken?.decimals);
+    return timesDecimals(txFee, projectInfo?.toRaiseToken?.decimals).times(2);
   }, [txFee, projectInfo?.toRaiseToken?.decimals]);
 
   const canPurchaseAmount = useMemo(() => {
     return ZERO.plus(balance).minus(txFeeAmount);
   }, [balance, txFeeAmount]);
 
-  const maxCanInvestAmount = useMemo(() => {
+  const maxAllocation = useMemo(() => {
     const remainingToRaisedAmount = ZERO.plus(projectInfo?.toRaisedAmount ?? 0).minus(
       projectInfo?.currentRaisedAmount ?? 0,
     );
     const currentMaxSubscription = ZERO.plus(projectInfo?.maxSubscription ?? 0).minus(projectInfo?.investAmount ?? 0);
-    const arr = [remainingToRaisedAmount, currentMaxSubscription, canPurchaseAmount];
+    const arr = [remainingToRaisedAmount, currentMaxSubscription];
     return BigNumber.min.apply(null, arr);
   }, [
-    canPurchaseAmount,
     projectInfo?.currentRaisedAmount,
     projectInfo?.investAmount,
     projectInfo?.maxSubscription,
     projectInfo?.toRaisedAmount,
   ]);
+
+  const maxCanInvestAmount = useMemo(() => {
+    const arr = [maxAllocation, canPurchaseAmount];
+    return BigNumber.min.apply(null, arr);
+  }, [canPurchaseAmount, maxAllocation]);
 
   const minCanInvestAmount = useMemo(() => {
     return new BigNumber(projectInfo?.minSubscription ?? 0);
@@ -176,28 +180,21 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
     const bigValue = new BigNumber(value || 0);
     if (!value) {
       setPurchaseInputErrorMessage('');
-    } else if (bigValue.gt(divDecimals(maxCanInvestAmount, projectInfo?.toRaiseToken?.decimals))) {
+    } else if (bigValue.gt(divDecimals(canPurchaseAmount, projectInfo?.toRaiseToken?.decimals))) {
       setPurchaseInputErrorMessage(
-        `Max Amount ${divDecimalsStr(maxCanInvestAmount, projectInfo?.toRaiseToken?.decimals)}`,
+        'Insufficient balance. Please consider purchasing a smaller amount or transferring some ELF to your address before you try again.',
       );
+    } else if (bigValue.gt(divDecimals(maxAllocation, projectInfo?.toRaiseToken?.decimals))) {
+      setPurchaseInputErrorMessage('Please enter a number not exceeding the maximum allocation.');
     } else if (bigValue.lt(divDecimals(minCanInvestAmount, projectInfo?.toRaiseToken?.decimals))) {
-      setPurchaseInputErrorMessage(
-        `Min Amount ${divDecimalsStr(minCanInvestAmount, projectInfo?.toRaiseToken?.decimals)}`,
-      );
+      setPurchaseInputErrorMessage('Please enter a number no smaller than the minimum allocation.');
     } else {
       setPurchaseInputErrorMessage('');
     }
   };
 
   const renderRemainder = () => {
-    if (isPreview) {
-      return (
-        <>
-          <Text>Ends in</Text>
-          <Text fontWeight={FontWeightEnum.Medium}>23:50:45</Text>
-        </>
-      );
-    } else if (projectInfo?.status === ProjectStatus.UPCOMING) {
+    if (projectInfo?.status === ProjectStatus.UPCOMING) {
       return (
         <>
           <Text>Ends in</Text>
@@ -352,7 +349,14 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
         {showWhitelistJoined && (
           <Flex gap={16} align="center" justify="space-between">
             <Text>Whitelist</Text>
-            <Text className="purple-text" fontWeight={FontWeightEnum.Medium}>
+            <Text
+              className="purple-text cursor-pointer"
+              fontWeight={FontWeightEnum.Medium}
+              onClick={() => {
+                if (projectInfo?.whitelistInfo?.url) {
+                  window.open(getHref(projectInfo.whitelistInfo.url), '_blank');
+                }
+              }}>
               Joined
             </Text>
           </Flex>

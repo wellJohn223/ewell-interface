@@ -66,7 +66,7 @@ export default function Header() {
           if (loginState === WebLoginState.logined) {
             navigate('/create-project', { replace: true });
           }
-          if (loginState === WebLoginState.initial) return login();
+          if (loginState === WebLoginState.initial || loginState === WebLoginState.lock) return login();
         },
       },
     ],

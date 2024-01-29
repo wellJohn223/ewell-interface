@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useParams, useLocation, NavLink } from 'react-router-dom';
+import axios from 'axios';
 import { request } from 'api';
 import { Breadcrumb, message } from 'antd';
 import { WebLoginEvents, useWebLoginEvent } from 'aelf-web-login';
@@ -14,6 +15,7 @@ import { ScreenSize } from 'constants/theme';
 import { IProjectInfo, ProjectListType } from 'types/project';
 import myEvents from 'utils/myEvent';
 import { emitLoading } from 'utils/events';
+import { CancelTokenSourceKey } from 'api/types';
 import './styles.less';
 
 interface IProjectInfoProps {
@@ -44,6 +46,7 @@ export default function ProjectInfo({ previewData, style }: IProjectInfoProps) {
           chainId: DEFAULT_CHAIN_ID,
           projectId,
         },
+        cancelTokenSourceKey: CancelTokenSourceKey.GET_PROJECT_DETAIL,
       });
 
       const detail = result?.data?.detail;
@@ -54,9 +57,18 @@ export default function ProjectInfo({ previewData, style }: IProjectInfoProps) {
 
       console.log('isCreator', isCreator);
       let whitelistInfo;
-      if (whitelistId) {
-        const whitelistContract = await getWhitelistContract();
-        whitelistInfo = await whitelistContract.GetWhitelist.call(whitelistId);
+
+      try {
+        if (whitelistId) {
+          const whitelistContract = await getWhitelistContract();
+          whitelistInfo = await whitelistContract.GetWhitelist.call(whitelistId);
+        }
+      } catch (error: any) {
+        console.log('GetWhitelist error', error);
+        messageApi.open({
+          type: 'error',
+          content: error?.message || 'Get whitelist failed',
+        });
       }
 
       const whitelistAddressList =
@@ -78,14 +90,16 @@ export default function ProjectInfo({ previewData, style }: IProjectInfoProps) {
       }
       console.log('newProjectInfo: ', newProjectInfo);
       setProjectInfo(newProjectInfo);
-    } catch (error: any) {
-      console.log('getDetail error', error);
-      messageApi.open({
-        type: 'error',
-        content: error?.message || 'Get detail failed',
-      });
-    } finally {
       emitLoading(false);
+    } catch (error: any) {
+      if (!axios.isCancel(error)) {
+        console.log('getDetail error', error);
+        messageApi.open({
+          type: 'error',
+          content: error?.message || 'Get detail failed',
+        });
+        emitLoading(false);
+      }
     }
   }, [getWhitelistContract, messageApi, projectId]);
 
@@ -134,6 +148,13 @@ export default function ProjectInfo({ previewData, style }: IProjectInfoProps) {
 
   useWebLoginEvent(WebLoginEvents.LOGOUT, onLogout);
 
+  const handleRefresh = useCallback(() => {
+    if (isPreview) {
+      return;
+    }
+    getProjectInfo();
+  }, [getProjectInfo, isPreview]);
+
   return (
     <>
       {contextHolder}
@@ -147,7 +168,7 @@ export default function ProjectInfo({ previewData, style }: IProjectInfoProps) {
               isLogin={isLogin}
               canEdit={canEdit}
               isMobileStyle={isMobileStyle}
-              handleRefresh={getProjectInfo}
+              handleRefresh={handleRefresh}
             />
             {!isMobileStyle && (
               <ActionCard
@@ -156,7 +177,7 @@ export default function ProjectInfo({ previewData, style }: IProjectInfoProps) {
                 isLogin={isLogin}
                 canEdit={canEdit}
                 isMobileStyle={isMobileStyle}
-                handleRefresh={getProjectInfo}
+                handleRefresh={handleRefresh}
               />
             )}
           </div>

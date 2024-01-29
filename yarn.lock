@@ -5001,10 +5001,10 @@ aelf-bridge@^0.0.10:
     socket.io-client "^2.3.0"
     uuid "^3.3.3"
 
-aelf-design@^0.1.43-alpha.0:
-  version "0.1.43-alpha.0"
-  resolved "https://registry.yarnpkg.com/aelf-design/-/aelf-design-0.1.43-alpha.0.tgz#5a4e1f4597f2bebd0ad11fe7f72d50e1cad53e99"
-  integrity sha512-cWKuoYLoJIZZsqQlm9lvZ/u7AAW9TdShPuTeY2n8tkvBN3EpXkKVcXvoFJtYoPxx+XshhCdQboFgmDnNXhmidQ==
+aelf-design@^0.1.47-alpha.0:
+  version "0.1.47-alpha.0"
+  resolved "https://registry.yarnpkg.com/aelf-design/-/aelf-design-0.1.47-alpha.0.tgz#af7532ef2e54fbbd38bac680f0e1d421f0143d5d"
+  integrity sha512-Gqd7OhjMnNB8PMK4Nz97UCJ/hK0w+164QhH9WBl71Q0uE1TBrb3CBkO3YOSNPoqnthZkb7rFueWqIiWI1FFhTA==
   dependencies:
     "@svgr/babel-plugin-transform-svg-component" "^8.0.0"
     "@svgr/plugin-jsx" "^8.1.0"
@@ -5059,10 +5059,10 @@ aelf-sdk@^3.3.0:
     scryptsy "^2.1.0"
     xmlhttprequest "^1.8.0"
 
-aelf-web-login@^2.0.0-beta.7:
-  version "2.0.0-beta.7"
-  resolved "https://registry.yarnpkg.com/aelf-web-login/-/aelf-web-login-2.0.0-beta.7.tgz#60a4f19595ab68631ae5bf31d9482d0ecddc6911"
-  integrity sha512-8B+2HfA376ONct6leUzKgRVVAYnyLVZNFvFwfyMCEWZvOLbexigXmZSiT6W/qgKR75pE2QTlo/U/Co8E2SAUWA==
+aelf-web-login@^2.0.0-beta.9:
+  version "2.0.0-beta.9"
+  resolved "https://registry.yarnpkg.com/aelf-web-login/-/aelf-web-login-2.0.0-beta.9.tgz#add01764267f68c1c27db80f4cbbbc6bc66bf327"
+  integrity sha512-ottqalkrUCyAAUbetvVasmgwhFWbNxhJgxGKSrqtWvJAvX/Swy0C8RZX/g1tgMLaHzVpUBKpm8asi6D8zoPGAA==
   dependencies:
     "@aelf-react/core" "^0.1.19"
     "@portkey/detect-provider" "2.0.0-alpha.5"

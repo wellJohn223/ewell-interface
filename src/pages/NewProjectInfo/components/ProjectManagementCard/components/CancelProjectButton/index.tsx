@@ -10,6 +10,7 @@ import { divDecimalsStr } from 'utils/calculate';
 import { DEFAULT_CHAIN_ID, NETWORK_CONFIG } from 'constants/network';
 import { useTokenPrice, useTxFee } from 'contexts/useAssets/hooks';
 import { renderTokenPrice } from 'utils/project';
+import { getExploreLink } from 'utils';
 
 const { Text, Title } = Typography;
 
@@ -119,6 +120,12 @@ export default function CancelProjectButton({ projectInfo }: ICancelProjectButto
               endLen={9}
               chain={DEFAULT_CHAIN_ID}
               address={wallet?.walletInfo.address || ''}
+              addressClickCallback={(_, address) => {
+                const exploreLink = address ? getExploreLink(address) : '';
+                if (exploreLink) {
+                  window.open(exploreLink, '_blank');
+                }
+              }}
             />
           </Flex>
           <Flex justify="space-between" align="center">
