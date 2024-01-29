@@ -1,4 +1,4 @@
-import { StepProps } from 'antd';
+import { StepProps, message } from 'antd';
 import { getInputOptions, normFile } from 'components/FormItem/utils';
 import { FormItemProps } from 'components/FormItem';
 import {
@@ -15,7 +15,7 @@ import { formatInputNumberString } from 'utils/calculate';
 import { TIdoInfo } from './IDOInfo';
 import { Rule } from 'antd/es/form';
 
-export const stepTitle = ['Trading Pair', 'Project Information', 'IDO Information', 'Preview & Transfer'];
+export const stepTitle = ['Select Token', 'Describe Project', 'Customise Sale', 'Review & Transfer'];
 
 export const stepsItems: StepProps[] = [
   {
@@ -46,7 +46,7 @@ export const ProjectInfoFromJson: FormItemProps[] = [
   }),
   {
     type: 'textArea',
-    label: 'Summary Project Description (20-500 character):',
+    label: 'Description (20-500 character):',
     name: 'projectSummary',
     rules: [
       { required: true, message: 'Please enter the necessary information' },
@@ -59,7 +59,7 @@ export const ProjectInfoFromJson: FormItemProps[] = [
   },
   {
     type: 'textArea',
-    label: 'Project Description (300-20000 character):',
+    label: 'Project Details (300-20000 character):',
     name: 'projectDescription',
     rules: [
       { required: true, message: 'Please enter the necessary information' },
@@ -78,6 +78,7 @@ export const ProjectInfoFromJson: FormItemProps[] = [
     valuePropName: 'fileList',
     getValueFromEvent: normFile,
     childrenProps: {
+      tips: 'Fomats supported: JPG, JPEG, and PNG. Max size: 10 MB. Recommended ratio: 1:1.',
       maxFileCount: 1,
       fileLimit: '10M',
       accept: '.jpg,.jpeg.,.png',
@@ -85,12 +86,13 @@ export const ProjectInfoFromJson: FormItemProps[] = [
   },
   {
     type: 'fileUpload',
-    label: 'Project Images:',
+    label: 'Featured Images:',
     name: 'projectImgs',
     required: true,
     valuePropName: 'fileList',
     getValueFromEvent: normFile,
     childrenProps: {
+      tips: 'Please upload 3-5 featured images. Fomats supported: JPG, JPEG, and PNG. Max size: 10 MB. Recommended ratio: 16:9.',
       maxFileCount: 5,
       fileLimit: '10M',
       accept: '.jpg,.jpeg.,.png',
@@ -110,7 +112,7 @@ export const ProjectInfoFromJson: FormItemProps[] = [
   }),
   {
     type: 'fieldsGroup',
-    label: 'Other Community',
+    label: 'Socials',
     fieldsList: [
       getInputOptions({
         label: 'Medium:',
@@ -164,7 +166,7 @@ export const formWhitelist: FormItemProps[] = [
     label: 'Whitelist Tasks:',
     name: 'whitelistUrl',
     tooltip:
-      'Enter an accessible link that the user clicks on and is redirected to a third-party platform to view the whitelisted tasks. We recommend using the official Community.',
+      'A list of tasks that users must complete in order to join the whitelist. Please provide a publicly accessible link that explains the associated tasks.',
     rules: [urlRule],
   },
 ];
@@ -173,11 +175,11 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
   return [
     {
       type: 'select',
-      label: 'IDO Type:',
+      label: 'Sale type:',
       name: 'crowdFundingType',
       initialValue: 'Sell at the set price',
       required: true,
-      tooltip: 'IDO type is a fixed price sale.',
+      tooltip: 'How the tokens will be sold. Currently the only type supported is the fixed price sale.',
       childrenProps: {
         disabled: true,
         list: [{ title: 'Sell at the set price', value: 'Sell at the set price' }],
@@ -185,9 +187,10 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
     },
     {
       type: 'select',
-      label: 'Token Unsold:',
+      label: 'Unsold Tokens:',
       name: 'isBurnRestToken',
-      tooltip: 'Unsold Token returned to the project owner.',
+      tooltip:
+        'How unsold tokens will be handled. Currently the only means supported is to return unsold tokens to the project owner.',
       initialValue: '0',
       required: true,
       childrenProps: {
@@ -200,7 +203,8 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
     {
       type: 'inlineField',
       label: 'Sale Price:',
-      tooltip: 'The Token you set corresponds to the price of the ELF . How many Token can be purchased for one ELF?',
+      tooltip:
+        'The token price relative to ELF. This defines the exchange rate, indicating the amount of ELF needed to buy a token.',
       required: true,
       inlineFieldList: [
         {
@@ -208,7 +212,7 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
           name: 'preSalePrice',
           rules: [
             (form: any) => ({
-              validator: (rule, value) => preSalePriceValidator(form, value),
+              validator: (rule, value) => Validators.preSalePrice(form, value),
             }),
           ],
           childrenProps: {
@@ -229,8 +233,8 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
     },
     {
       type: 'inlineField',
-      label: 'Supply:',
-      tooltip: 'The number of Token(s) you provide that are available for sale.',
+      label: 'Total Amount for Sale:',
+      tooltip: 'The total amount of tokens available for this sale.',
       required: true,
       inlineFieldList: [
         {
@@ -261,8 +265,8 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
     },
     {
       type: 'inlineField',
-      label: 'Purchase Quantity:',
-      tooltip: 'Range of ELFs available for investors to spend.',
+      label: 'Min & Max Allocation:',
+      tooltip: 'The minimum and maximum allocation for individual users. ',
       required: true,
       inlineFieldList: [
         {
@@ -270,7 +274,7 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
           name: 'minSubscription',
           rules: [
             (form: any) => ({
-              validator: (_, value) => minSubscriptionValidator(form, value),
+              validator: (_, value) => Validators.minSubscription(form, value),
             }),
           ],
           childrenProps: {
@@ -299,7 +303,7 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
           name: 'maxSubscription',
           rules: [
             (form: any) => ({
-              validator: (_, value) => maxSubscriptionValidator(form, value),
+              validator: (_, value) => Validators.maxSubscription(form, value),
             }),
           ],
           childrenProps: {
@@ -327,29 +331,41 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
     },
     {
       type: 'datePicker',
-      label: 'IDO Starts At:',
+      label: 'Sale Start Time:',
       name: 'startTime',
       required: true,
-      tooltip: 'IDO start time, users can start participating in the IDO.',
+      tooltip: 'The token sale will start at this time.',
       childrenProps: {
-        showTime: true,
-        showNow: false,
-        disabledDate: disabledDateBefore,
-        disabledTime: (current) => disabledTimeBefore(current),
+        pcProps: {
+          showTime: true,
+          showNow: false,
+          disabledDate: disabledDateBefore,
+          disabledTime: (current) => disabledTimeBefore(current),
+        },
+        mobileProps: {
+          precision: 'second',
+          min: () => new Date(),
+        },
       },
     },
     {
       type: 'datePicker',
-      label: 'IDO Ends At:',
-      tooltip: 'DO end time, end of fundraising.',
+      label: 'Sale End Time:',
+      tooltip: 'The token sale will end at this time.',
       name: 'endTime',
       required: true,
       childrenProps: {
         disabled: !idoInfo?.startTime,
-        showTime: true,
-        showNow: false,
-        disabledDate: (current) => disabledDateBefore(current, idoInfo?.endTime),
-        disabledTime: (current) => disabledTimeBefore(current, idoInfo?.endTime),
+        pcProps: {
+          showTime: true,
+          showNow: false,
+          disabledDate: (current) => disabledDateBefore(current, idoInfo?.endTime),
+          disabledTime: (current) => disabledTimeBefore(current, idoInfo?.endTime),
+        },
+        mobileProps: {
+          precision: 'second',
+          min: () => new Date(idoInfo?.endTime || ''),
+        },
       },
     },
     {
@@ -358,28 +374,34 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
       name: 'tokenReleaseTime',
       required: true,
       tooltip:
-        'Crowdfunded Token will be released to users after this time, and the project owner can also withdraw the fundraising proceeds and unsold Token after this time.',
+        'The time when tokens will be released to users, and you can receive proceeds along with any unsold tokens.',
       childrenProps: {
         disabled: !idoInfo?.startTime || !idoInfo?.endTime,
-        showTime: true,
-        showNow: false,
-        disabledDate: (current) => disabledDateBefore(current, idoInfo?.tokenReleaseTime),
-        disabledTime: (current) => disabledTimeBefore(current, idoInfo?.tokenReleaseTime),
+        pcProps: {
+          showTime: true,
+          showNow: false,
+          disabledDate: (current) => disabledDateBefore(current, idoInfo?.tokenReleaseTime),
+          disabledTime: (current) => disabledTimeBefore(current, idoInfo?.tokenReleaseTime),
+        },
+        mobileProps: {
+          precision: 'second',
+          min: () => new Date(idoInfo?.tokenReleaseTime || ''),
+        },
       },
     },
     {
       type: 'group',
-      label: 'Enable Whitelist:',
+      label: 'Whitelist:',
       name: 'isEnableWhitelist',
       tooltip:
-        'With whitelisting enabled, investors need to be within the whitelist you maintain to participate in crowdfunding.',
+        'If whitelist is enabled, only whitelisted users are eligible to participate in the token sale. You can manually add users to the list.',
       initialValue: true,
       className: 'form-item-width-437',
       required: true,
       childrenProps: {
         radioList: [
           { value: true, children: 'Enable' },
-          { value: false, children: 'Disable' },
+          { value: false, children: 'Not Enable' },
         ],
       },
     },

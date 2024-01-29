@@ -73,13 +73,14 @@ const MyProjects: React.FC<ProjectListProps> = () => {
   const emptyText = useMemo(() => {
     return (
       <div style={{ fontSize: 14, textAlign: 'center', padding: '0 17vw' }}>
-        There are currently no projects. Take a look at
+        You haven't participated in any sales yet. Explore
         <span
           style={{ color: '#863DFF', fontWeight: 500, cursor: 'pointer' }}
           onClick={() => navigate('/projects/all')}>
           {' '}
           Projects
         </span>
+        .
       </div>
     );
   }, [navigate]);
@@ -113,7 +114,7 @@ const MyProjects: React.FC<ProjectListProps> = () => {
           loaded={loadAllParticipateItems}
           loadMoreData={getParticipateProject}
           dataLength={participateItems.length}>
-          {!!participateItems.length && <div className="project-type">Participate</div>}
+          {!!participateItems.length && <div className="project-type">Participated</div>}
           <Row gutter={[24, 24]}>
             {participateItems.map((item) => (
               <Col span={24 / colNum} key={item.id}>

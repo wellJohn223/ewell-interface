@@ -70,18 +70,19 @@ const ConfirmTradingPair: React.FC<CreateStepProps> = ({ onNext }) => {
 
   return (
     <div className="trading-page">
-      <div className="trading-title">Start your new project in EWELL</div>
+      <div className="trading-title">Raise funds for your project in ewell</div>
       <div className="trading-sub-title">
-        The token you choose will be used to sell, and the token from the sale will be ELF.
+        Select the token you want to sell. Currently only ELF can be used to purchase your token.
       </div>
       <TradingPairList list={tokenList} current={select} onChange={onSelect} />
       <div className="trading-footer">
         <div className="footer-text">
-          There is proper token, go to{' '}
+          No token found in your wallet. Note: You can only select tokens for which you are the issuer. You can create a
+          token using SEED which is acquirable through{' '}
           <span className="link-text" onClick={() => window.open(NETWORK_CONFIG.symbolMarketUrl)}>
             Symbol Market
-          </span>{' '}
-          and create a?
+          </span>
+          .
         </div>
       </div>
       <ButtonGroup onNext={onClick} disabledNext={isBtnDisabled} />

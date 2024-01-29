@@ -47,6 +47,10 @@ export const AELFD_THEME_CONFIG: IAelfdThemeProviderProps['theme'] = {
       colorBgContainerDisabled: '#EBEBEE',
       colorTextDisabled: '#C1C2C9',
     },
+    Tooltip: {
+      colorBgSpotlight: '#070A26',
+      colorTextLightSolid: '#FFF',
+    },
   },
 };
 
@@ -97,6 +101,10 @@ export const ANTD_THEME_CONFIG: ThemeConfig = {
       linkColor: '#070A26',
       linkHoverColor: '#070A26',
       separatorColor: '#070A26',
+    },
+    Tooltip: {
+      colorBgSpotlight: '#070A26',
+      colorText: '#FFF',
     },
   },
 };
