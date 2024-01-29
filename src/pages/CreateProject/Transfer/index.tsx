@@ -102,6 +102,7 @@ const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
         previewData={previewData}
         style={{
           minHeight: 'calc(100vh - 64px - 72px - 188px - 96px)',
+          padding: 0,
         }}
       />
       <ButtonGroup
