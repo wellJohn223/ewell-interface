@@ -67,7 +67,13 @@ export const DatePickerMobile: React.FC<IDatePickerMobileProps> = ({
 
   return (
     <>
-      <Input disabled={disabled} suffix={<CalendarOutlined />} value={inputValue} onClick={() => setOpen(true)} />
+      <Input
+        allowClear={false}
+        disabled={disabled}
+        suffix={<CalendarOutlined />}
+        value={inputValue}
+        onClick={() => setOpen(true)}
+      />
       <DatePickerForMobile
         precision="second"
         min={adjustToDate(min)}

@@ -182,7 +182,7 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
       tooltip: 'How the tokens will be sold. Currently the only type supported is the fixed price sale.',
       childrenProps: {
         disabled: true,
-        list: [{ title: 'Sell at the set price', value: 'Sell at the set price' }],
+        list: [{ title: 'Fixed price', value: 'Sell at the set price' }],
       },
     },
     {

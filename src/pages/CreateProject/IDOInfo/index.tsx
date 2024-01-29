@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { useLocalStorage } from 'react-use';
 import { Form, Input } from 'antd';
+import { Input as AFInput } from 'aelf-design';
 import { DatePickerForMobile } from 'aelf-design';
 import { FormItemProps, FormFields } from 'components/FormItem';
 import CustomMark from '../components/CustomMark';
