@@ -50,7 +50,6 @@ export default function InfiniteList<T>({
   }, [scrollToTopShowHeight, showScrollToTop]);
   return (
     <>
-      {/* <div style={style} id={id} className={className}> */}
       <InfiniteScroll
         scrollableTarget={id}
         dataLength={dataSource?.length || dataLength || 0}
@@ -60,11 +59,11 @@ export default function InfiniteList<T>({
         }}
         onScroll={onScroll}
         hasMore={!loaded}
+        style={{ overflow: 'visible' }}
         loader={<Spin className="infinite-loader" tip={'loading...'} />}
         endMessage={showEndMessage && <Divider plain>loaded</Divider>}>
         {children ? children : <List itemLayout={itemLayout} dataSource={dataSource} renderItem={renderItem} />}
       </InfiniteScroll>
-      {/* </div> */}
       {showScrollTo && showScrollToTop && (
         <ToTop onClick={() => e.current?.scrollTo(options)} className="infinite-scroll-to-top" />
       )}

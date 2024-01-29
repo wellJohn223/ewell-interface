@@ -17,6 +17,7 @@ interface ProjectListProps {
 
 const MyProjects: React.FC<ProjectListProps> = () => {
   const [colNum] = useCardCol();
+  const [loading, setLoading] = useState(true);
   const [createdItems, setCreatedItems] = useState<IListData['createdItems']>([]);
   const [participateItems, setParticipateItems] = useState<IListData['participateItems']>([]);
   const [participateListPageNum, setParticipateListPageNum] = useState(0);
@@ -26,29 +27,28 @@ const MyProjects: React.FC<ProjectListProps> = () => {
 
   const getCreatedProjects = useCallback(async () => {
     const { createdItems } = await getList({ types: ProjectType.CREATED });
+    setLoading(false);
     setCreatedItems(createdItems || []);
   }, [getList]);
 
-  const getParticipateProject = useCallback(
-    async (loading: boolean = false) => {
-      if (loading) emitLoading(true, { text: 'loading...' });
+  const getParticipateProject = useCallback(async () => {
+    const list = await getList({
+      types: ProjectType.PARTICIPATE,
+      skipCount: participateItems.length,
+      maxResultCount: colNum * 3,
+    });
 
-      const list = await getList({
-        types: ProjectType.PARTICIPATE,
-        skipCount: participateItems.length,
-        maxResultCount: colNum * 3,
-      });
+    setLoading(false);
+    if (list.participateItems.length === 0) return;
+    const newList = participateItems.concat(list.participateItems);
+    setParticipateItems(newList);
+    setParticipateListPageNum(participateListPageNum + 1);
+    setLoadAllParticipateItems(newList.length >= list.totalCount);
+  }, [colNum, getList, participateItems, participateListPageNum]);
 
-      if (loading) emitLoading(false);
-
-      if (list.participateItems.length === 0) return;
-      const newList = participateItems.concat(list.participateItems);
-      setParticipateItems(newList);
-      setParticipateListPageNum(participateListPageNum + 1);
-      setLoadAllParticipateItems(newList.length >= list.totalCount);
-    },
-    [colNum, getList, participateItems, participateListPageNum],
-  );
+  useEffect(() => {
+    emitLoading(loading);
+  }, [loading]);
 
   const initList = useCallback(() => {
     getCreatedProjects();
@@ -84,7 +84,7 @@ const MyProjects: React.FC<ProjectListProps> = () => {
     );
   }, [navigate]);
 
-  return (
+  return !loading ? (
     <div className="project-page">
       {!createdItems.length && !participateItems.length && (
         <>
@@ -124,7 +124,7 @@ const MyProjects: React.FC<ProjectListProps> = () => {
         </InfiniteList>
       )}
     </div>
-  );
+  ) : null;
 };
 
 export default MyProjects;

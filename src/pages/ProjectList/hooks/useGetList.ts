@@ -41,7 +41,7 @@ export const useGetList = () => {
       if (code === '20000') {
         return data;
       }
-      console.log('getlist-error', message);
+      console.log('geist-error', message);
       return {
         totalCount: 0,
         activeItems: [],
@@ -50,7 +50,7 @@ export const useGetList = () => {
         participateItems: [],
       };
     } catch (error: any) {
-      console.log('getlist-error', error.message);
+      console.log('geist-error', error.message);
       return {
         totalCount: 0,
         activeItems: [],

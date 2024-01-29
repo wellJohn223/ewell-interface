@@ -50,7 +50,7 @@ export default function ClaimTokenButton({ projectInfo }: IClaimTokenButtonProps
 
   const handleSubmit = async () => {
     setIsSubmitModalOpen(false);
-    emitLoading(true, { text: 'Processing on the blockchain...' });
+    emitLoading(true, { text: 'Synchronising data on the blockchain...' });
     const isManagerSynced = await checkManagerSyncState();
     if (!isManagerSynced) {
       emitLoading(false);
@@ -89,11 +89,11 @@ export default function ClaimTokenButton({ projectInfo }: IClaimTokenButtonProps
         onClick={() => {
           setIsSubmitModalOpen(true);
         }}>
-        Claim Token
+        Claim
       </Button>
       <Modal
         className="common-modal"
-        title="Claim Token"
+        title="Claim"
         footer={null}
         centered
         open={isSubmitModalOpen}
@@ -109,7 +109,7 @@ export default function ClaimTokenButton({ projectInfo }: IClaimTokenButtonProps
             <Title fontWeight={FontWeightEnum.Medium}>{projectInfo?.crowdFundingIssueToken?.symbol || '--'}</Title>
           </Flex>
           <Flex className="modal-box-data-wrapper" justify="space-between">
-            <Text>Address</Text>
+            <Text>My address</Text>
             <HashAddress
               className="hash-address-small"
               preLen={8}
@@ -151,7 +151,7 @@ export default function ClaimTokenButton({ projectInfo }: IClaimTokenButtonProps
       </Modal>
       <SuccessModal
         modalProps={{
-          title: 'Claimed Successfully',
+          title: 'Successfully Claimed',
           open: isSuccessModalOpen,
           onCancel: () => {
             setIsSuccessModalOpen(false);
@@ -167,7 +167,7 @@ export default function ClaimTokenButton({ projectInfo }: IClaimTokenButtonProps
               symbol: projectInfo?.crowdFundingIssueToken?.symbol || '--',
             },
           ],
-          description: 'Congratulations, claimed successfully!',
+          description: 'Congratulations! You have received the tokens.',
           boxData: {
             label: 'Transaction ID',
             value: transactionId,
