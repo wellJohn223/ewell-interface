@@ -71,7 +71,11 @@ export function ConfirmModal({ open, info, onCancel, onOk }: ITransferModalProps
           <Flex vertical gap={8}>
             <Flex>
               <InfoCircleOutlined style={{ margin: '4px 4px 0 0' }} />
-              <Text size="small">Confirm the transfer of the following assets to the EWELL contract address:</Text>
+              <Text size="small">
+                Unpon confirmation, tokens will be transferred to the address specified by ewell. Note: Both tokens for
+                sale and funds raised from participants will be stored in this address, and you can claim the funds
+                raised along with any unsold tokens after the sale ends.
+              </Text>
             </Flex>
             <Flex className="modal-box-data-wrapper" justify="space-between">
               <Text fontWeight={FontWeightEnum.Medium}>Contract Address</Text>
@@ -144,7 +148,7 @@ interface ISuccessModalProps extends Omit<ITransferModalProps, 'info'> {
 
 export function SuccessModal({ open, info, onCancel, onOk }: ISuccessModalProps) {
   return (
-    <Modal title="Transfer Successfully" open={open} onCancel={onCancel} footer={null} centered>
+    <Modal title="Successfully Transferred" open={open} onCancel={onCancel} footer={null} centered>
       <Flex vertical gap={24}>
         <Flex vertical gap={8} align="center">
           <img className="success-icon" src={success} alt="success" style={{ width: 48, height: 48 }} />
@@ -157,7 +161,7 @@ export function SuccessModal({ open, info, onCancel, onOk }: ISuccessModalProps)
             </Flex>
           </Flex>
           <Text className="text-center" fontWeight={FontWeightEnum.Bold}>
-            Congratulations, transfer successfully!
+            Congratulations! The tokens have been successfully transferred.
           </Text>
           <Text className="text-center">
             The token has been transferred to the contract, the project has been created, and you can view the project
@@ -182,7 +186,7 @@ export function SuccessModal({ open, info, onCancel, onOk }: ISuccessModalProps)
         </Flex>
         <Flex justify="center">
           <Button className="modal-single-button" type="primary" onClick={onOk}>
-            View Project
+            View My Sale
           </Button>
         </Flex>
       </Flex>

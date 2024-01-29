@@ -1,6 +1,8 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useLocalStorage, useEffectOnce } from 'react-use';
-import { Form } from 'antd';
+import React, { useCallback, useMemo, useState } from 'react';
+import { useLocalStorage } from 'react-use';
+import { Form, Input } from 'antd';
+import { Input as AFInput } from 'aelf-design';
+import { DatePickerForMobile } from 'aelf-design';
 import { FormItemProps, FormFields } from 'components/FormItem';
 import CustomMark from '../components/CustomMark';
 import storages from '../storages';
@@ -10,7 +12,7 @@ import { disabledDateBefore, disabledTimeBefore } from '../utils';
 import dayjs from 'dayjs';
 import { getIDOFormJson, formWhitelist } from '../constants';
 import { ITradingParCard } from '../components/TradingPairList';
-
+import { DatePikerPC } from 'components/FormItem/components/FormDatePicker';
 export interface TIdoInfo {
   crowdFundingIssueAmount?: number;
   crowdFundingType?: string;
@@ -37,10 +39,12 @@ const IDOInfo: React.FC<CreateStepProps> = ({ onNext, onPre }) => {
     Object.keys(_idoInfo).map((key) => {
       if (key.includes('Time')) {
         const value = idoInfo?.[key];
+        console.log(key, value);
+        console.log('dayjs', dayjs(value));
         _idoInfo[key] = dayjs(value);
       }
     });
-
+    console.log('idoInfo', _idoInfo);
     return _idoInfo;
   }, [idoInfo]);
 
@@ -66,11 +70,19 @@ const IDOInfo: React.FC<CreateStepProps> = ({ onNext, onPre }) => {
       form.setFieldsValue({ endTime: null, tokenReleaseTime: null });
       formList.forEach((field) => {
         if (field.name === 'endTime') {
+          const { pcProps, mobileProps, ...props } = field.childrenProps;
           field.childrenProps = {
-            ...field.childrenProps,
+            ...props,
             disabled: !endTimeFrom,
-            disabledDate: (current) => disabledDateBefore(current, endTimeFrom),
-            disabledTime: (current) => disabledTimeBefore(current, endTimeFrom),
+            pcProps: {
+              ...pcProps,
+              disabledDate: (current) => disabledDateBefore(current, endTimeFrom),
+              disabledTime: (current) => disabledTimeBefore(current, endTimeFrom),
+            },
+            mobileProps: {
+              ...mobileProps,
+              min: () => endTimeFrom.toDate(),
+            },
           };
         }
         if (field.name === 'tokenReleaseTime') {
@@ -89,16 +101,29 @@ const IDOInfo: React.FC<CreateStepProps> = ({ onNext, onPre }) => {
       form.setFieldsValue({ tokenReleaseTime: null });
       formList.forEach((field) => {
         if (field.name === 'tokenReleaseTime') {
+          const { pcProps, mobileProps, ...props } = field.childrenProps;
           field.childrenProps = {
-            ...field.childrenProps,
+            ...props,
             disabled: !endTimeFrom,
-            disabledDate: (current) => disabledDateBefore(current, endTimeFrom),
-            disabledTime: (current) => disabledTimeBefore(current, endTimeFrom),
+            pcProps: {
+              ...pcProps,
+              disabledDate: (current) => disabledDateBefore(current, endTimeFrom),
+              disabledTime: (current) => disabledTimeBefore(current, endTimeFrom),
+            },
+            mobileProps: {
+              ...mobileProps,
+              min: () => endTimeFrom.toDate(),
+            },
           };
         }
       });
       return setFormList([...formList]);
     }
+  };
+
+  const [open, setOpen] = useState(false);
+  const onConfirm = (val) => {
+    console.log('from date', dayjs(val).format('YYYY-MM_DD HH:mm:ss [UTC] Z'));
   };
 
   return (

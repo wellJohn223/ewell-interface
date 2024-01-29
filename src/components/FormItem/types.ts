@@ -1,22 +1,11 @@
 import React from 'react';
-import type {
-  CascaderProps,
-  DatePickerProps,
-  // InputProps,
-  // RadioProps,
-  RowProps,
-  SelectProps,
-  // UploadProps,
-  InputNumberProps,
-  FlexProps,
-} from 'antd';
+import type { RowProps, SelectProps, InputNumberProps, FlexProps } from 'antd';
 import type { IInputProps, InputTextAreaProps, InputPasswordProps, IRadioProps } from 'aelf-design';
-// import type { PasswordProps, TextAreaProps } from 'antd/lib/input';
 import type { FormTreeProps } from './components/FormTree';
 import type { CommonSelectItem } from 'components/CommonSelect';
 import { FormItemProps } from './index';
 import { IFUploadProps } from '../AWSUpload';
-import { ReactHTML, ReactHTMLElement } from 'react';
+import { IFormDatePickerProps } from './components/FormDatePicker';
 
 export type inputProps = {
   type: 'input';
@@ -53,7 +42,7 @@ export type selectProps = {
 
 export type datePickerProps = {
   type: 'datePicker';
-  childrenProps?: DatePickerProps;
+  childrenProps?: IFormDatePickerProps;
 };
 export type timePickerProps = {
   type: 'timePicker';

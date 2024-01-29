@@ -96,7 +96,8 @@ const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
         style={{
           padding: '48px 0',
         }}>
-        You are previewing the project. Last Step: Transfer the Token to the smart contract to create the project.
+        Please review the sale details to ensure the accuracy of information. If everything is correct, you can finish
+        the launch by clicking "Transfer" to send your tokens to an address.
       </Title>
       <NewProjectInfo
         previewData={previewData}

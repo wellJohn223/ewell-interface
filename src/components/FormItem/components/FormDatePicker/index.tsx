@@ -1,0 +1,126 @@
+import { CalendarOutlined } from '@ant-design/icons';
+import {
+  DatePickerForMobile,
+  DatePickerForPC,
+  Input,
+  TDatePickerPropsForMobile,
+  TDatePickerPropsForPC,
+} from 'aelf-design';
+import { Button, DatePickerProps, TimePickerProps } from 'antd';
+import { useMobile } from 'contexts/useStore/hooks';
+import dayjs, { Dayjs } from 'dayjs';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+
+const DEFAULT_DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss [UTC] Z';
+
+type TDateFn = () => Date;
+type TDateMobile = string | Date | TDateFn;
+
+interface BaseDatePickerProps {
+  value?: Dayjs | string;
+  disabled?: boolean;
+  onChange?: (current: Dayjs) => void;
+}
+
+type IDatePickerMobileProps = BaseDatePickerProps & {
+  min?: TDateMobile;
+  max?: TDateMobile;
+  format?: string;
+} & Omit<TDatePickerPropsForMobile, 'value' | 'visible' | 'onConfirm' | 'onCancel' | 'min' | 'max'>;
+
+type IDatePickerPCProps = Omit<TDatePickerPropsForPC, 'onChange' | 'value' | 'disabled'> & BaseDatePickerProps;
+
+const adjustToDate = (date?: TDateMobile) => {
+  if (!date) return undefined;
+  if (typeof date === 'string') return new Date(date);
+  if (typeof date === 'function') return date();
+
+  return undefined;
+};
+
+export const DatePickerMobile: React.FC<IDatePickerMobileProps> = ({
+  value,
+  onChange,
+  format,
+  disabled,
+  min,
+  max,
+  ...props
+}) => {
+  const [open, setOpen] = useState(false);
+  const [inputValue, setInputValue] = useState<string>('');
+
+  useEffect(() => {
+    const timeStr = value ? dayjs(value).format(format || DEFAULT_DATE_FORMAT) : '';
+    setInputValue(timeStr);
+  }, [format, value]);
+
+  const onConfirm = useCallback(
+    (current: Date) => {
+      console.log('====current=====confirm', dayjs(current).format('YYYY-MM_DD HH:mm:ss [UTC] Z'));
+      setInputValue(dayjs(current).format(format || DEFAULT_DATE_FORMAT));
+      onChange?.(dayjs(current));
+      setOpen(false);
+    },
+    [format, onChange],
+  );
+
+  return (
+    <>
+      <Input
+        allowClear={false}
+        disabled={disabled}
+        suffix={<CalendarOutlined />}
+        value={inputValue}
+        onClick={() => setOpen(true)}
+      />
+      <DatePickerForMobile
+        precision="second"
+        min={adjustToDate(min)}
+        max={adjustToDate(max)}
+        visible={open}
+        onCancel={() => setOpen(false)}
+        onConfirm={onConfirm}
+        mouseWheel
+        {...props}
+      />
+    </>
+  );
+};
+
+export const DatePikerPC: React.FC<IDatePickerPCProps> = ({ value, disabled, onChange, format, ...props }) => {
+  const _value = useMemo(() => {
+    console.log('init-value', value);
+    return value ? dayjs(value) : null;
+  }, [value]);
+
+  const _onChange = useCallback(
+    (current, dateStr) => {
+      onChange?.(current);
+    },
+    [onChange],
+  );
+  return (
+    <DatePickerForPC
+      disabled={disabled}
+      format={format || DEFAULT_DATE_FORMAT}
+      value={_value}
+      onChange={_onChange}
+      style={{ width: '100%' }}
+      {...props}
+    />
+  );
+};
+
+export interface IFormDatePickerProps extends BaseDatePickerProps {
+  pcProps?: Omit<TDatePickerPropsForPC, 'onChange' | 'value' | 'disabled'> & any;
+  // pcProps?: TDatePickerPropsForPC;
+  mobileProps?: IDatePickerMobileProps;
+}
+
+const FormDatePicker = ({ pcProps, mobileProps, ...baseProps }: IFormDatePickerProps) => {
+  const isMobile = useMobile();
+  return isMobile ? <DatePickerMobile {...baseProps} {...mobileProps} /> : <DatePikerPC {...baseProps} {...pcProps} />;
+};
+
+export default FormDatePicker;

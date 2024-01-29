@@ -56,7 +56,7 @@ const Projects: React.FC = () => {
     return () => remove();
   }, []);
 
-  useEffectOnce(() => initList());
+  useEffectOnce(() => initList);
 
   const render = useMemo(() => {
     if (loading) return null;
@@ -72,7 +72,7 @@ const Projects: React.FC = () => {
 
     return (
       <>
-        <div className="project-type">Active Projects</div>
+        <div className="project-type">Ongoing</div>
         {activeItems.length ? (
           <div className="project-list-wrapper">
             <Row gutter={[24, 24]}>
@@ -93,7 +93,7 @@ const Projects: React.FC = () => {
             loadMoreData={getClosedProject}
             id="project-list-scroll"
             dataLength={closedItems.length}>
-            {!!closedItems.length && <div className="project-type">Closed Projects</div>}
+            {!!closedItems.length && <div className="project-type">Closed</div>}
             <Row gutter={[24, 24]}>
               {closedItems.map((item) => (
                 <Col span={24 / colNum} key={item.id}>
