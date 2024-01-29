@@ -19,7 +19,6 @@ import myEvents from 'utils/myEvent';
 import { useLocation } from 'react-use';
 import { useNavigate } from 'react-router-dom';
 import { checkPathExist } from 'utils/reg';
-import { LogoutModal } from 'components/LogoutModal';
 import { APP_NAME } from 'constants/aelf';
 
 setGlobalConfig({
@@ -195,10 +194,7 @@ export default function Provider({ children }: { children: React.ReactNode }) {
           },
         }}
         extraWallets={['discover', 'elf']}>
-        <WalletProvider>
-          {children}
-          <LogoutModal />
-        </WalletProvider>
+        <WalletProvider>{children}</WalletProvider>
       </WebLoginProvider>
     </PortkeyDid.PortkeyProvider>
   );

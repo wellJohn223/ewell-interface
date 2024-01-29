@@ -6,7 +6,6 @@ const EventList = [
   'AuthToken',
   'AuthorizationExpired',
   'AuthAsk',
-  'LogoutAsk',
   'SetGlobalLoading',
   'SetGlobalSyncTipsModal',
 ] as const;

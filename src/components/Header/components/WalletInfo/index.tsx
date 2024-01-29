@@ -20,8 +20,8 @@ export const WalletInfo = ({ onMyProjectClick }: IWalletInfoProps) => {
   const navigate = useNavigate();
   const isMobile = useMobile();
   const onLogout = useCallback(() => {
-    myEvents.LogoutAsk.emit();
-  }, []);
+    logout();
+  }, [logout]);
 
   return (
     <>
