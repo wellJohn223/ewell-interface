@@ -1,13 +1,7 @@
 import { StepProps, message } from 'antd';
 import { getInputOptions, normFile } from 'components/FormItem/utils';
 import { FormItemProps } from 'components/FormItem';
-import {
-  minSubscriptionValidator,
-  maxSubscriptionValidator,
-  Validators,
-  urlValidator,
-  preSalePriceValidator,
-} from './validate';
+import { Validators } from './validate';
 import { disabledDateBefore, disabledTimeBefore, integerNumberFormat, formatNumberParser } from './utils';
 import { TSteps } from './types';
 import { ITradingParCard } from './components/TradingPairList';
@@ -78,7 +72,7 @@ export const ProjectInfoFromJson: FormItemProps[] = [
     valuePropName: 'fileList',
     getValueFromEvent: normFile,
     childrenProps: {
-      tips: 'Fomats supported: JPG, JPEG, and PNG. Max size: 10 MB. Recommended ratio: 1:1.',
+      tips: 'Formats supported: JPG, JPEG, and PNG. Max size: 10 MB. Recommended ratio: 1:1.',
       maxFileCount: 1,
       fileLimit: '10M',
       accept: '.jpg,.jpeg.,.png',
@@ -92,7 +86,7 @@ export const ProjectInfoFromJson: FormItemProps[] = [
     valuePropName: 'fileList',
     getValueFromEvent: normFile,
     childrenProps: {
-      tips: 'Please upload 3-5 featured images. Fomats supported: JPG, JPEG, and PNG. Max size: 10 MB. Recommended ratio: 16:9.',
+      tips: 'Please upload 3-5 featured images. Formats supported: JPG, JPEG, and PNG. Max size: 10 MB. Recommended ratio: 16:9.',
       maxFileCount: 5,
       fileLimit: '10M',
       accept: '.jpg,.jpeg.,.png',

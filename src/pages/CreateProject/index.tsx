@@ -26,7 +26,6 @@ const CreateProject: React.FC = () => {
   }, [currentStep]);
 
   const onNext = useCallback(() => {
-    console.log('onNext');
     setCurrentStep(currentStep + 1);
   }, [currentStep]);
 
