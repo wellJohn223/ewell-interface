@@ -70,7 +70,7 @@
 
 /** inputNumber **/
 .@{app-prefix}-input-number-wrapper {
-  &:hover {
+  &:hover:not(:has(> .@{app-prefix}-input-number-disabled)) {
     .@{app-prefix}-input-number,
     .@{app-prefix}-input-number-group-addon {
       border-color: #9b5eff;
@@ -96,7 +96,7 @@
 /** input **/
 .@{app-prefix}-input-clear-icon {
   svg path {
-    fill: #22253E !important;
+    fill: #22253e !important;
   }
 }
 
@@ -165,11 +165,12 @@ div.@{app-prefix}-pageNumber-container {
   border-radius: 8px 8px 0 0;
 }
 .adm-picker-header-button {
-  color: #863DFF !important;
+  color: #863dff !important;
   font-size: 16px;
   font-weight: 500;
 }
 
-.@{app-prefix}-select-outlined.@{app-prefix}-select-disabled:not(.@{app-prefix}-select-customize-input) .@{app-prefix}-select-selector {
-  border-color: #DFDFE3;
+.@{app-prefix}-select-outlined.@{app-prefix}-select-disabled:not(.@{app-prefix}-select-customize-input)
+  .@{app-prefix}-select-selector {
+  border-color: #dfdfe3;
 }
