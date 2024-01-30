@@ -1,19 +1,18 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import { Form, message, Flex, Breadcrumb } from 'antd';
 import { Button, Typography, FontWeightEnum } from 'aelf-design';
-import { NavLink, Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ProjectInfoFromJson } from 'pages/CreateProject/constants';
 import { useTransfer } from 'pages/CreateProject/Transfer/useTransfer';
 import { FormFields } from 'components/FormItem';
-import { useEffectOnce, useSetState } from 'react-use';
+import { useEffectOnce } from 'react-use';
 import CustomMark from 'pages/CreateProject/components/CustomMark';
-import { IAdditionalInfo, IProjectInfo } from 'pages/ProjectList/components/Card/types';
 import { urlString2FileList } from 'utils/format';
 import { useUpdateAddition } from './useApi';
 import { parseAdditionalInfo } from 'utils/project';
 import './styles.less';
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 export default function EditInformation() {
   const [form] = Form.useForm();

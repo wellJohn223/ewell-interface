@@ -1,4 +1,4 @@
-import { StepProps, message } from 'antd';
+import { StepProps } from 'antd';
 import { getInputOptions, normFile } from 'components/FormItem/utils';
 import { FormItemProps } from 'components/FormItem';
 import { Validators } from './validate';

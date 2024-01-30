@@ -15,6 +15,7 @@ import { ScreenSize } from 'constants/theme';
 import { IProjectInfo, ProjectListType } from 'types/project';
 import myEvents from 'utils/myEvent';
 import { emitLoading } from 'utils/events';
+import { parseAdditionalInfo } from 'utils/project';
 import { CancelTokenSourceKey } from 'api/types';
 import './styles.less';
 
@@ -81,8 +82,7 @@ export default function ProjectInfo({ previewData, style }: IProjectInfoProps) {
       if (detail) {
         newProjectInfo = {
           ...detail,
-          additionalInfo: detail?.additionalInfo ? JSON.parse(detail.additionalInfo) : {},
-          listMarketInfo: detail?.listMarketInfo ? JSON.parse(detail.listMarketInfo) : [],
+          additionalInfo: parseAdditionalInfo(detail.additionalInfo) || {},
           whitelistInfo,
           isCreator,
           isInWhitelist: whitelistAddressList.includes(addressRef.current),

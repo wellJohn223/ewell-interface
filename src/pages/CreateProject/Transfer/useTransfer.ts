@@ -63,7 +63,6 @@ export const useTransfer = () => {
   );
 
   const getDetail = useCallback(async (projectId) => {
-    console.log('getDetail', projectId);
     const result = await request.project.getProjectList({
       params: {
         chainId: DEFAULT_CHAIN_ID,

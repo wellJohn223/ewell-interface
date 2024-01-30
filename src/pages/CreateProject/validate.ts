@@ -1,21 +1,14 @@
 import { FormInstance } from 'antd';
 import { NamePath } from 'antd/lib/form/interface';
 import { ZERO } from 'constants/misc';
-import dayjs from 'dayjs';
 import { isUrl } from 'utils/reg';
-import {
-  integerGtZEROValidator,
-  integerValidator,
-  numberGtZEROValidator,
-  numberGteZEROValidator,
-} from 'utils/validate';
+import { numberGtZEROValidator, numberGteZEROValidator } from 'utils/validate';
 import { timesDecimals } from 'utils/calculate';
-import { getLocalStorage } from 'utils/localstorage';
-import { formatNumberParser } from './utils';
 import storages from './storages';
 import { ITradingParCard } from './components/TradingPairList';
-import { formatInputNumberString, numberLteZERO } from 'utils/calculate';
+import { numberLteZERO } from 'utils/calculate';
 import BigNumber from 'bignumber.js';
+import { getLocalStorage } from 'utils/format';
 
 type ValidatorFun = (form: FormInstance<any>, v: any) => any;
 
@@ -33,7 +26,7 @@ export const validateFields = async (form: FormInstance<any>, nameList?: NamePat
 
 export const tokenGtTokenBalance = async (value: BigNumber) => {
   await numberGteZEROValidator('', value);
-  const { decimals, balance }: ITradingParCard = getLocalStorage(storages.ConfirmTradingPair);
+  const { decimals, balance }: ITradingParCard = getLocalStorage(storages.ConfirmTradingPair) || {};
   if (!decimals && decimals !== 0 && !balance) {
     return Promise.reject('please go to select token.');
   }

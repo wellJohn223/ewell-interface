@@ -12,7 +12,11 @@ export const LogoUploadTips = () => {
   return (
     <>
       {isMobile ? (
-        tips.split('\r').map((text) => <div className="form-upload-tips">{text}</div>)
+        tips.split('\r').map((text, index) => (
+          <div key={index} className="form-upload-tips">
+            {text}
+          </div>
+        ))
       ) : (
         <div className="form-upload-tips">{tips.replace('\r', '')}</div>
       )}
@@ -28,7 +32,11 @@ export const FeaturedUploadTips = () => {
     <>
       <div className="form-upload-tips">{extraTip}</div>
       {isMobile ? (
-        tips.split('\r').map((text) => <div className="form-upload-tips">{text}</div>)
+        tips.split('\r').map((text, index) => (
+          <div key={index} className="form-upload-tips">
+            {text}
+          </div>
+        ))
       ) : (
         <div className="form-upload-tips">{tips.replace('\r', '')}</div>
       )}
