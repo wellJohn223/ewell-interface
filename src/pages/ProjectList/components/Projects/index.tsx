@@ -56,7 +56,7 @@ const Projects: React.FC = () => {
     return () => remove();
   }, []);
 
-  useEffectOnce(() => initList);
+  useEffectOnce(() => initList());
 
   const render = useMemo(() => {
     if (loading) return null;

@@ -5,7 +5,7 @@ import { InfoCircleOutlined } from '@ant-design/icons';
 import { wallet } from 'assets/images';
 import { NumberFormat } from 'utils/format';
 import { success } from 'assets/images';
-import { DEFAULT_CHAIN_ID, NETWORK_CONFIG } from 'constants/network';
+import { DEFAULT_CHAIN_ID } from 'constants/network';
 import { IProjectInfo } from 'types/project';
 import { divDecimals } from 'utils/calculate';
 import { useTokenPrice, useTxFee } from 'contexts/useAssets/hooks';
@@ -50,13 +50,18 @@ export function ConfirmModal({ open, info, onCancel, onOk }: ITransferModalProps
 
   const isDisabledSubmit = useMemo(() => !isGasEnough || !isTokenEnough, [isGasEnough, isTokenEnough]);
 
+  const crowdFundingIssueAmountStr = useMemo(
+    () => divDecimals(info.crowdFundingIssueAmount, info.crowdFundingIssueToken?.decimals).toFormat(),
+    [info.crowdFundingIssueAmount, info.crowdFundingIssueToken?.decimals],
+  );
+
   return (
     <>
       <Modal title="Confirm Transfer" footer={null} centered open={open} onCancel={onCancel}>
         <Flex vertical gap={24}>
           <Flex gap={8} justify="center" align="baseline">
             <Title fontWeight={FontWeightEnum.Medium} level={4}>
-              {divDecimals(info.crowdFundingIssueAmount, info.crowdFundingIssueToken?.decimals).toFormat()}
+              {crowdFundingIssueAmountStr}
             </Title>
             <Title fontWeight={FontWeightEnum.Medium}>{info.crowdFundingIssueToken?.symbol || '--'}</Title>
           </Flex>

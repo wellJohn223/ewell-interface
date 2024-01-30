@@ -5,7 +5,6 @@ import { Button, Typography, FontWeightEnum, Modal } from 'aelf-design';
 import CommonCard from 'components/CommonCard';
 import WhitelistTasksButton from './components/WhitelistTasksButton';
 import CancelProjectButton from './components/CancelProjectButton';
-// import CreatorClaimTokenButton from '../OperationComponents/CreatorClaimTokenButton';
 import { useWallet } from 'contexts/useWallet/hooks';
 import { IProjectInfo, ProjectListType, ProjectStatus } from 'types/project';
 import { NETWORK_CONFIG } from 'constants/network';
