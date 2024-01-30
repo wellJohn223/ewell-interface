@@ -63,11 +63,15 @@ export function ConfirmModal({ open, info, onCancel, onOk }: ITransferModalProps
           <Flex vertical gap={8}>
             <Flex>
               <InfoCircleOutlined style={{ margin: '4px 4px 0 0' }} />
-              <Text size="small">
-                Unpon confirmation, tokens will be transferred to the address specified by ewell. Note: Both tokens for
-                sale and funds raised from participants will be stored in this address, and you can claim the funds
-                raised along with any unsold tokens after the sale ends.
-              </Text>
+              <Flex vertical>
+                <Text size="small">
+                  Unpon confirmation, tokens will be transferred to the address specified by ewell.
+                </Text>
+                <Text size="small">
+                  Note: Both tokens for sale and funds raised from participants will be stored in this address, and you
+                  can claim the funds raised along with any unsold tokens after the sale ends.
+                </Text>
+              </Flex>
             </Flex>
             {info?.contractAddress && (
               <Flex className="modal-box-data-wrapper" justify="space-between">
@@ -121,7 +125,7 @@ export function ConfirmModal({ open, info, onCancel, onOk }: ITransferModalProps
           )}
           <Flex justify="center">
             <Button className="modal-single-button" type="primary" disabled={isDisabledSubmit} onClick={onOk}>
-              Submit
+              Confirm
             </Button>
           </Flex>
         </Flex>

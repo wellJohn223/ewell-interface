@@ -33,7 +33,7 @@ export default function EditInformation() {
         title: <NavLink to={`/project/${projectId}`}>{projectName}</NavLink>,
       },
       {
-        title: 'Edit Project Information',
+        title: 'Update Project Information',
       },
     ],
     [projectId, projectName],
@@ -86,7 +86,7 @@ export default function EditInformation() {
       <Breadcrumb className="edit-breadcrumb" items={breadList} />
       <div className="edit-form">
         <Title level={5} fontWeight={FontWeightEnum.Medium}>
-          Edit Project Information
+          Update Project Information
         </Title>
         <div className="project-info" style={{ margin: '48px 0 24px' }}>
           <Form
@@ -101,7 +101,7 @@ export default function EditInformation() {
             <Form.Item>
               <Flex justify="center">
                 <Button type="primary" htmlType="submit" style={{ width: 206 }}>
-                  Submit
+                  Update
                 </Button>
               </Flex>
             </Form.Item>

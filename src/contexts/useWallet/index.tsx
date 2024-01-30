@@ -32,13 +32,10 @@ setGlobalConfig({
     useLocalStorage: true,
     graphQLUrl: NETWORK_CONFIG.webLoginGraphqlUrl,
     connectUrl: NETWORK_CONFIG.webLoginConnectUrl,
-    // loginConfig: {
-    //   recommendIndexes: [0, 1],
-    //   loginMethodsOrder: ['Google', 'Telegram', 'Apple', 'Phone', 'Email'],
-    // },
     requestDefaults: {
       baseURL: NETWORK_CONFIG.webLoginRequestDefaultsUrl,
     },
+    serviceUrl: NETWORK_CONFIG.webLoginRequestDefaultsUrl,
     customNetworkType: IS_OFFLINE_NETWORK ? 'Offline' : 'onLine',
   },
   aelfReact: {

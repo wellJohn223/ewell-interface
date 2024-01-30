@@ -63,7 +63,7 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
     toRaiseToken,
     status,
   } = data;
-
+  const [remainderStr, setRemainderStr] = useState('');
   const _additionalInfo = useMemo(() => parseAdditionalInfo(additionalInfo), [additionalInfo]);
 
   const progressPercent = useMemo(() => {
@@ -92,12 +92,14 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
     );
   }, [_additionalInfo?.projectName, data, navigate, type]);
 
-  const remainderStr = useMemo(() => {
-    if (status === ProjectStatus.CANCELED) return 'Canceled Time';
-    if (status === ProjectStatus.ENDED) return 'Ended Time';
+  useEffect(() => {
+    let str = '--';
+    if (status === ProjectStatus.CANCELED) str = 'Canceled Time';
+    if (status === ProjectStatus.ENDED) str = 'Ended on';
     if ([ProjectStatus.UPCOMING, ProjectStatus.PARTICIPATORY, ProjectStatus.UNLOCKED].includes(status as ProjectStatus))
-      return 'Unlock Time';
-    return '--';
+      str = 'Unlock Time';
+
+    setRemainderStr(str);
   }, [status]);
 
   const [remainderTimeStr, setRemainderTimeStr] = useState('');
@@ -125,14 +127,16 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
       let formatValue = '';
       if (remainingTime <= 0) {
         setRemainderTimeStr('00:00:00');
+        setRemainderStr('Ends in');
         console.log(timer, 'timer');
         clearInterval(timer);
         return;
       }
       if (remainingTime <= ONE_DAY_IN_MS) {
         formatValue = timeDuration(remainingTime);
+        setRemainderStr('Ends in');
       } else {
-        formatValue = dayjs(timestamp).format('DD MMM YYYY');
+        formatValue = dayjs(timestamp).format('DD MMMM, YYYY');
       }
       setRemainderTimeStr(formatValue);
     }, 1000);

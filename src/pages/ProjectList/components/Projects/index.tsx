@@ -65,7 +65,7 @@ const Projects: React.FC = () => {
       return (
         <>
           <div className="project-type">All Projects</div>
-          <Empty className="project-empty-full" text="There are currently no projects, please stay tuned" />
+          <Empty className="project-empty-full" text="No sales at the moment. Please stay tuned for updates." />
         </>
       );
     }
@@ -84,7 +84,7 @@ const Projects: React.FC = () => {
             </Row>
           </div>
         ) : (
-          <Empty text="There are currently no active projects, please stay tuned" />
+          <Empty text="No ongoing sales at the moment. Please stay tuned for updates." />
         )}
         {!!closedItems.length && (
           <InfiniteList
