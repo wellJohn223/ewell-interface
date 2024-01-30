@@ -1,19 +1,14 @@
 import { StepProps, message } from 'antd';
 import { getInputOptions, normFile } from 'components/FormItem/utils';
 import { FormItemProps } from 'components/FormItem';
-import {
-  minSubscriptionValidator,
-  maxSubscriptionValidator,
-  Validators,
-  urlValidator,
-  preSalePriceValidator,
-} from './validate';
+import { Validators } from './validate';
 import { disabledDateBefore, disabledTimeBefore, integerNumberFormat, formatNumberParser } from './utils';
 import { TSteps } from './types';
 import { ITradingParCard } from './components/TradingPairList';
 import { formatInputNumberString } from 'utils/calculate';
 import { TIdoInfo } from './IDOInfo';
 import { Rule } from 'antd/es/form';
+import { LogoUploadTips, FeaturedUploadTips } from './components/uploadTips';
 
 export const stepTitle = ['Select Token', 'Describe Project', 'Customise Sale', 'Review & Transfer'];
 
@@ -38,7 +33,7 @@ export const ProjectInfoFromJson: FormItemProps[] = [
   getInputOptions({
     label: 'Project Name:',
     name: 'projectName',
-    tooltip: 'test',
+    tooltip: 'p',
     childrenProps: {
       maxLength: 40,
       showCount: true,
@@ -46,8 +41,9 @@ export const ProjectInfoFromJson: FormItemProps[] = [
   }),
   {
     type: 'textArea',
-    label: 'Description (20-500 character):',
+    label: 'Description (20-500 character）:',
     name: 'projectSummary',
+    tooltip: 'p',
     rules: [
       { required: true, message: 'Please enter the necessary information' },
       { min: 20, message: 'Please enter the necessary information' },
@@ -61,6 +57,7 @@ export const ProjectInfoFromJson: FormItemProps[] = [
     type: 'textArea',
     label: 'Project Details (300-20000 character):',
     name: 'projectDescription',
+    tooltip: 'p',
     rules: [
       { required: true, message: 'Please enter the necessary information' },
       { min: 300, max: 20000, message: '300-20000' },
@@ -74,11 +71,13 @@ export const ProjectInfoFromJson: FormItemProps[] = [
     type: 'fileUpload',
     label: 'Logo:',
     name: 'logoUrl',
+    tooltip: 'p',
     required: true,
     valuePropName: 'fileList',
+    className: 'form-upload',
     getValueFromEvent: normFile,
     childrenProps: {
-      tips: 'Formats supported: JPG, JPEG, and PNG. Max size: 10 MB. Recommended ratio: 1:1.',
+      tips: <LogoUploadTips />,
       maxFileCount: 1,
       fileLimit: '10M',
       accept: '.jpg,.jpeg.,.png',
@@ -90,9 +89,11 @@ export const ProjectInfoFromJson: FormItemProps[] = [
     name: 'projectImgs',
     required: true,
     valuePropName: 'fileList',
+    className: 'form-upload',
+    tooltip: 'p',
     getValueFromEvent: normFile,
     childrenProps: {
-      tips: 'Please upload 3-5 featured images. Formats supported: JPG, JPEG, and PNG. Max size: 10 MB. Recommended ratio: 16:9.',
+      tips: <FeaturedUploadTips />,
       maxFileCount: 5,
       fileLimit: '10M',
       accept: '.jpg,.jpeg.,.png',
@@ -101,7 +102,7 @@ export const ProjectInfoFromJson: FormItemProps[] = [
   getInputOptions({
     label: 'Official Website:',
     name: 'website',
-    tooltip: 'test',
+    tooltip: 'p',
     rules: [
       {
         required: true,
