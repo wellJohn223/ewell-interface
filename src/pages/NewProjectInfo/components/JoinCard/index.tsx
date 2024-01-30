@@ -251,7 +251,7 @@ export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefres
     <CommonCard className="join-card-wrapper">
       <Flex className="swap-progress-wrapper" vertical gap={8}>
         <Flex align="center" justify="space-between" gap={16}>
-          <Title fontWeight={FontWeightEnum.Medium}>Swap Progress</Title>
+          <Title fontWeight={FontWeightEnum.Medium}>Status</Title>
           {!!projectInfo?.status && (
             <div
               className={clsx('status', 'flex-none', {
@@ -338,7 +338,7 @@ export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefres
                     window.open(getHref(projectInfo.whitelistInfo.url), '_blank');
                   }
                 }}>
-                View Whitelist Tasks
+                View
               </Text>
             </Flex>
           </>
