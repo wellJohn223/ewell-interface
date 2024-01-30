@@ -55,7 +55,7 @@ export default function InfoWrapper({
       <Flex justify="space-between" align="flex-start">
         <ProjectLogo src={additionalInfo?.logoUrl} alt="logo" />
         {canEdit && isMobileStyle && (
-          <EditButton size="small" projectId={projectId}>
+          <EditButton size="small" projectId={projectId} projectName={additionalInfo?.projectName}>
             Edit Project
           </EditButton>
         )}

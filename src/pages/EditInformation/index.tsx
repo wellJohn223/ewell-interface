@@ -1,7 +1,7 @@
-import { useCallback } from 'react';
-import { Form, message, Flex } from 'antd';
+import { useCallback, useMemo, useState } from 'react';
+import { Form, message, Flex, Breadcrumb } from 'antd';
 import { Button, Typography, FontWeightEnum } from 'aelf-design';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { NavLink, Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ProjectInfoFromJson } from 'pages/CreateProject/constants';
 import { useTransfer } from 'pages/CreateProject/Transfer/useTransfer';
 import { FormFields } from 'components/FormItem';
@@ -16,11 +16,28 @@ import './styles.less';
 const { Title, Text } = Typography;
 
 export default function EditInformation() {
+  const [form] = Form.useForm();
   const { projectId } = useParams();
   const { getDetail } = useTransfer();
-  const [form] = Form.useForm();
   const { updateAddition } = useUpdateAddition();
   const navigate = useNavigate();
+  const location = useLocation();
+  console.log('location', location);
+  const { projectName } = useMemo(() => location.state as { projectName: string }, [location.state]);
+  const breadList = useMemo(
+    () => [
+      {
+        title: <NavLink to={'/projects/my'}>My Projects</NavLink>,
+      },
+      {
+        title: <NavLink to={`/project/${projectId}`}>{projectName}</NavLink>,
+      },
+      {
+        title: 'Edit Project Information',
+      },
+    ],
+    [projectId, projectName],
+  );
 
   const onFinish = useCallback(
     async ({ logoUrl, projectImgs, ...value }: any) => {
@@ -44,21 +61,20 @@ export default function EditInformation() {
   );
 
   const getProjectInfo = useCallback(async () => {
-    const result = await getDetail(projectId);
+    try {
+      const result = await getDetail(projectId);
+      const additional = parseAdditionalInfo(result.additionalInfo);
 
-    if (result?.errMsg) {
-      console.log('getProject-info-error', result.errMsg);
-      return;
+      additional &&
+        form.setFieldsValue({
+          ...additional,
+          logoUrl: urlString2FileList(additional.logoUrl),
+          projectImgs: urlString2FileList(additional.projectImgs),
+        });
+    } catch (error: any) {
+      console.log('getProject-info-error', error);
+      message.error(error?.message || 'ger project info failed');
     }
-
-    const additional = parseAdditionalInfo(result.additionalInfo);
-
-    additional &&
-      form.setFieldsValue({
-        ...additional,
-        logoUrl: urlString2FileList(additional.logoUrl),
-        projectImgs: urlString2FileList(additional.projectImgs),
-      });
   }, [form, getDetail, projectId]);
 
   useEffectOnce(() => {
@@ -66,28 +82,31 @@ export default function EditInformation() {
   });
 
   return (
-    <div className="common-page-1360 edit-information">
-      <Title level={5} fontWeight={FontWeightEnum.Medium}>
-        Edit Project Information
-      </Title>
-      <div className="project-info" style={{ margin: '48px 0 24px' }}>
-        <Form
-          layout="vertical"
-          name="projectInfo"
-          form={form}
-          requiredMark={CustomMark}
-          scrollToFirstError
-          onFinish={onFinish}
-          validateTrigger="onSubmit">
-          {FormFields(ProjectInfoFromJson)}
-          <Form.Item>
-            <Flex justify="center">
-              <Button type="primary" htmlType="submit" style={{ width: 206 }}>
-                Submit
-              </Button>
-            </Flex>
-          </Form.Item>
-        </Form>
+    <div className=" common-page page-body edit-information">
+      <Breadcrumb className="edit-breadcrumb" items={breadList} />
+      <div className="edit-form">
+        <Title level={5} fontWeight={FontWeightEnum.Medium}>
+          Edit Project Information
+        </Title>
+        <div className="project-info" style={{ margin: '48px 0 24px' }}>
+          <Form
+            layout="vertical"
+            name="projectInfo"
+            form={form}
+            requiredMark={CustomMark}
+            scrollToFirstError
+            onFinish={onFinish}
+            validateTrigger="onSubmit">
+            {FormFields(ProjectInfoFromJson)}
+            <Form.Item>
+              <Flex justify="center">
+                <Button type="primary" htmlType="submit" style={{ width: 206 }}>
+                  Submit
+                </Button>
+              </Flex>
+            </Form.Item>
+          </Form>
+        </div>
       </div>
     </div>
   );

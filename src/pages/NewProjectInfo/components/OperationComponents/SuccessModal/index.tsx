@@ -29,6 +29,7 @@ export default function SuccessModal({ modalProps, data: { amountList, descripti
       {...modalProps}
       className={clsx('project-info-success-modal-wrapper', 'common-modal', modalProps.className)}
       footer={null}
+      destroyOnClose
       centered>
       <Flex vertical gap={24}>
         <Flex vertical gap={8} align="center">
