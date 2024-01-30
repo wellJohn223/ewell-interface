@@ -174,7 +174,7 @@ export default function PurchaseButton({ buttonDisabled, projectInfo, purchaseAm
                 preLen={8}
                 endLen={9}
                 chain={DEFAULT_CHAIN_ID}
-                address={NETWORK_CONFIG.ewellContractAddress}
+                address={projectInfo?.virtualAddress || ''}
                 addressClickCallback={(_, address) => {
                   const exploreLink = address ? getExploreLink(address) : '';
                   if (exploreLink) {
