@@ -39,20 +39,20 @@ const NETWORK_CONFIG_LIST: Record<string, TNetworkConfig> = {
     webLoginConnectUrl: 'https://auth-portkey.portkey.finance',
     ewellContractAddress: '',
     whitelistContractAddress: '',
-    symbolMarketUrl: '',
+    symbolMarketUrl: 'https://www.eforest.finance/symbolmarket',
     mainChainInfo: {
       chainId: 'AELF',
       exploreUrl: 'https://explorer.aelf.io/',
-      endPoint: '',
-      caContractAddress: '',
+      endPoint: 'https://aelf-public-node.aelf.io',
+      caContractAddress: '28PcLvP41ouUd6UNGsNRvKpkFTe6am34nPy4YPsWUJnZNwUvzM',
       tokenContractAddress: 'JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE',
     },
     sideChainInfo: {
       chainId: 'tDVV',
       exploreUrl: 'https://tdvv-explorer.aelf.io/',
-      endPoint: '',
-      caContractAddress: '',
-      tokenContractAddress: '',
+      endPoint: 'https://tdvv-public-node.aelf.io',
+      caContractAddress: '2cLA9kJW3gdHuGoYNY16Qir69J3Nkn6MSsuYxRkUHbz4SG2hZr',
+      tokenContractAddress: '7RzVGiuVWkvL4VfVHdZfQF2Tri3sgLe9U991bohHFfSRZXuGX',
     },
   },
   testnet: {
@@ -60,25 +60,25 @@ const NETWORK_CONFIG_LIST: Record<string, TNetworkConfig> = {
     mainChainId: 'AELF',
     sideChainId: 'tDVW',
     webLoginNetworkType: 'TESTNET',
-    webLoginGraphqlUrl: 'https://dapp-portkey.portkey.finance/Portkey_DID/PortKeyIndexerCASchema/graphql',
-    webLoginRequestDefaultsUrl: '',
-    webLoginConnectUrl: 'https://auth-portkey-test.portkey.finance',
+    webLoginGraphqlUrl: 'https://dapp-aa-portkey-test.portkey.finance/Portkey_V2_DID/PortKeyIndexerCASchema/graphql',
+    webLoginRequestDefaultsUrl: 'https://aa-portkey-test.portkey.finance',
+    webLoginConnectUrl: 'https://auth-aa-portkey-test.portkey.finance',
     ewellContractAddress: '',
     whitelistContractAddress: '',
-    symbolMarketUrl: '',
+    symbolMarketUrl: 'https://test.eforest.finance/symbolmarket',
     mainChainInfo: {
       chainId: 'AELF',
-      exploreUrl: '',
-      endPoint: '',
-      caContractAddress: '',
-      tokenContractAddress: '',
+      exploreUrl: 'https://explorer-test.aelf.io/',
+      endPoint: 'https://aelf-test-node.aelf.io',
+      caContractAddress: '238X6iw1j8YKcHvkDYVtYVbuYk2gJnK8UoNpVCtssynSpVC8hb',
+      tokenContractAddress: 'JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE',
     },
     sideChainInfo: {
       chainId: 'tDVW',
-      exploreUrl: '',
-      endPoint: '',
-      caContractAddress: '',
-      tokenContractAddress: '',
+      exploreUrl: 'https://explorer-test-side02.aelf.io/',
+      endPoint: 'https://tdvw-test-node.aelf.io',
+      caContractAddress: '238X6iw1j8YKcHvkDYVtYVbuYk2gJnK8UoNpVCtssynSpVC8hb',
+      tokenContractAddress: 'ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx',
     },
   },
   test3: {
@@ -111,6 +111,6 @@ const NETWORK_CONFIG_LIST: Record<string, TNetworkConfig> = {
 
 export const NETWORK_CONFIG = NETWORK_CONFIG_LIST[process.env.REACT_APP_NETWORK_KEY || ''];
 
-export const DEFAULT_CHAIN_ID = NETWORK_CONFIG_LIST['test3'].sideChainId as ChainId;
+export const DEFAULT_CHAIN_ID = NETWORK_CONFIG_LIST[process.env.REACT_APP_NETWORK_KEY || ''].sideChainId as ChainId;
 
 export const IS_OFFLINE_NETWORK = process.env.REACT_APP_NETWORK_KEY === 'test3';

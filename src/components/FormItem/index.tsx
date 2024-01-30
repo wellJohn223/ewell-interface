@@ -1,5 +1,5 @@
 import { Form, Select, FormItemProps as antFormItemProps, TimePicker, Flex, InputNumber } from 'antd';
-import { DatePickerForPC, Input } from 'aelf-design';
+import { Input } from 'aelf-design';
 import { memo } from 'react';
 import FormGroup from './components/FormGroup';
 import FormTree from './components/FormTree';

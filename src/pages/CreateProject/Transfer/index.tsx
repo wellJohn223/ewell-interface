@@ -17,7 +17,7 @@ import BigNumber from 'bignumber.js';
 import { ProjectStatus } from 'types/project';
 import { resetCreateProjectInfo } from '../utils';
 import { timesDecimals } from 'utils/calculate';
-import { useTokenPrice, useTxFee } from 'contexts/useAssets/hooks';
+import { useMobile } from 'contexts/useStore/hooks';
 
 interface SuccessInfo {
   supply?: number;
@@ -112,6 +112,12 @@ const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
     getContractAddress();
   });
 
+  const isMobile = useMobile();
+  const newProjectInfoMinHeight = useMemo(
+    () => (isMobile ? 'calc(100vh - 64px - 120px - 188px - 96px)' : 'calc(100vh - 64px - 72px - 188px - 96px)'),
+    [isMobile],
+  );
+
   return (
     <div className="transfer-page">
       <Title
@@ -126,7 +132,7 @@ const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
       <NewProjectInfo
         previewData={previewData}
         style={{
-          minHeight: 'calc(100vh - 64px - 72px - 188px - 96px)',
+          minHeight: newProjectInfoMinHeight,
           padding: 0,
         }}
       />
