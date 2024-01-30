@@ -247,6 +247,21 @@ export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefres
     }
   };
 
+  const renderViewWhitelistTasks = (text: string) => {
+    return (
+      <Text
+        className="purple-text cursor-pointer"
+        fontWeight={FontWeightEnum.Medium}
+        onClick={() => {
+          if (projectInfo?.whitelistInfo?.url) {
+            window.open(getHref(projectInfo.whitelistInfo.url), '_blank');
+          }
+        }}>
+        {text}
+      </Text>
+    );
+  };
+
   return (
     <CommonCard className="join-card-wrapper">
       <Flex className="swap-progress-wrapper" vertical gap={8}>
@@ -329,33 +344,13 @@ export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefres
                 whitelist tasks beforehand.
               </Text>
             )}
-            <Flex justify="flex-end">
-              <Text
-                className="purple-text cursor-pointer"
-                fontWeight={FontWeightEnum.Medium}
-                onClick={() => {
-                  if (projectInfo?.whitelistInfo?.url) {
-                    window.open(getHref(projectInfo.whitelistInfo.url), '_blank');
-                  }
-                }}>
-                View
-              </Text>
-            </Flex>
+            <Flex justify="flex-end">{renderViewWhitelistTasks('View Whitelist Tasks')}</Flex>
           </>
         )}
         {showWhitelistJoined && (
           <Flex gap={16} align="center" justify="space-between">
             <Text>Whitelist</Text>
-            <Text
-              className="purple-text cursor-pointer"
-              fontWeight={FontWeightEnum.Medium}
-              onClick={() => {
-                if (projectInfo?.whitelistInfo?.url) {
-                  window.open(getHref(projectInfo.whitelistInfo.url), '_blank');
-                }
-              }}>
-              Joined
-            </Text>
+            {renderViewWhitelistTasks('Joined')}
           </Flex>
         )}
         {canOperate && (
