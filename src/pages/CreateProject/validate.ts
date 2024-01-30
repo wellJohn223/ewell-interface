@@ -26,7 +26,7 @@ export const validateFields = async (form: FormInstance<any>, nameList?: NamePat
 
 export const tokenGtTokenBalance = async (value: BigNumber) => {
   await numberGteZEROValidator('', value);
-  const { decimals, balance }: ITradingParCard = getLocalStorage(storages.ConfirmTradingPair);
+  const { decimals, balance }: ITradingParCard = getLocalStorage(storages.ConfirmTradingPair) || {};
   if (!decimals && decimals !== 0 && !balance) {
     return Promise.reject('please go to select token.');
   }

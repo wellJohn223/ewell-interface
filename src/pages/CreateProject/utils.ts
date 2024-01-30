@@ -54,27 +54,27 @@ export function getInfo(confirmTradingPair: any, projectPanel: any, additionalIn
 
   return {
     ...projectPanel,
-    acceptedCurrency: AELF_TOKEN_INFO.symbol,
-    projectCurrency: confirmTradingPair.symbol,
-    crowdFundingType: projectPanel.crowdFundingType,
-    crowdFundingIssueAmount,
     preSalePrice,
-    startTime: getProtobufTime(projectPanel.startTime),
-    endTime: getProtobufTime(projectPanel.endTime),
-    tokenReleaseTime: getProtobufTime(projectPanel.tokenReleaseTime),
-    minSubscription,
+    totalPeriod: 1, // fixed
+    periodDuration: 0,
     maxSubscription,
     publicSalePrice,
     listMarketInfo: [],
+    crowdFundingIssueAmount,
     liquidityLockProportion: 0, // fixed
+    restDistributeProportion: 0,
+    additionalInfo: _additionalInfo,
+    firstDistributeProportion: '100000000',
+    acceptedCurrency: AELF_TOKEN_INFO.symbol,
+    projectCurrency: confirmTradingPair.symbol,
+    crowdFundingType: projectPanel.crowdFundingType,
+    startTime: getProtobufTime(projectPanel.startTime),
+    endTime: getProtobufTime(projectPanel.endTime),
+    tokenReleaseTime: getProtobufTime(projectPanel.tokenReleaseTime),
+    minSubscription: minSubscription === '0' ? 1 : minSubscription,
     unlockTime: getProtobufTime(projectPanel.tokenReleaseTime), // fixed
     isEnableWhitelist: projectPanel.isEnableWhitelist,
     isBurnRestToken: projectPanel.isBurnRestToken === '1' ? true : false,
-    totalPeriod: 1, // fixed
-    additionalInfo: _additionalInfo,
-    firstDistributeProportion: '100000000',
-    restDistributeProportion: 0,
-    periodDuration: 0,
   };
 }
 

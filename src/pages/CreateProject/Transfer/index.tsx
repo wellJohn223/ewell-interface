@@ -136,7 +136,7 @@ const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
           padding: 0,
         }}
       />
-      <ButtonGroup onPre={onPre} onNext={onNext} nextText="Transfer" style={{ marginTop: 24 }} />
+      <ButtonGroup onPre={onPre} onNext={onNext} nextText="Transfer" style={{ margin: '24px 0 48px 0' }} />
       <ConfirmModal
         info={previewData}
         open={openConfirmModal}

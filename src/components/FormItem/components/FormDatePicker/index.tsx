@@ -66,6 +66,7 @@ export const DatePickerMobile: React.FC<IDatePickerMobileProps> = ({
   return (
     <>
       <Input
+        readOnly
         allowClear={false}
         disabled={disabled}
         suffix={<CalendarOutlined />}
