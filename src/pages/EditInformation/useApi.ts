@@ -1,7 +1,6 @@
 import { useWallet } from 'contexts/useWallet/hooks';
 import { useCallback } from 'react';
 import { NETWORK_CONFIG } from 'constants/network';
-import { message } from 'antd';
 
 export const useUpdateAddition = () => {
   const { wallet } = useWallet();
@@ -9,7 +8,7 @@ export const useUpdateAddition = () => {
   const updateAddition = useCallback(
     async function (projectId?: string, data?: { [key: string]: string }) {
       try {
-        if (!projectId) return;
+        if (!projectId) return false;
         console.log('addition-data', data);
         const result = await wallet?.callContract<any, any>({
           contractAddress: NETWORK_CONFIG.ewellContractAddress,
