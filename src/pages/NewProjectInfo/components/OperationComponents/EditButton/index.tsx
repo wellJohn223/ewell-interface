@@ -6,10 +6,11 @@ import './styles.less';
 
 interface IEditButtonProps extends IButtonProps {
   projectId?: string;
+  projectName?: string;
   size?: 'large' | 'small';
 }
 
-export default function EditButton({ projectId, size = 'large', ...buttonProps }: IEditButtonProps) {
+export default function EditButton({ projectId, projectName, size = 'large', ...buttonProps }: IEditButtonProps) {
   const navigate = useNavigate();
 
   return (
@@ -20,7 +21,8 @@ export default function EditButton({ projectId, size = 'large', ...buttonProps }
       icon={<img className={`${size}-icon`} src={edit} alt="edit" />}
       onClick={() => {
         if (projectId) {
-          navigate(`/edit-information/${projectId}`);
+          console.log('button', projectName);
+          navigate(`/edit-information/${projectId}`, { state: { projectName } });
         }
       }}
     />

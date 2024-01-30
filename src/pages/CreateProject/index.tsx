@@ -17,7 +17,7 @@ const CreateProject: React.FC = () => {
   const breadTitles = useMemo(() => {
     return [
       {
-        title: 'Launch with EWELL',
+        title: 'Launch with ewell',
       },
       {
         title: stepTitle[currentStep],

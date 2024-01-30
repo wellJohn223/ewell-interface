@@ -32,7 +32,10 @@ export default function ActionCard({
   return (
     <Flex className="action-card-wrapper" vertical gap={24}>
       {canEdit && !isMobileStyle && (
-        <EditButton className="edit-button" projectId={projectId}>
+        <EditButton
+          className="edit-button"
+          projectId={projectId}
+          projectName={projectInfo?.additionalInfo?.projectName || '--'}>
           Edit Project Information
         </EditButton>
       )}
