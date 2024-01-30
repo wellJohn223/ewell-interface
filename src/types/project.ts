@@ -91,6 +91,7 @@ export interface IProjectInfo {
   isWithdraw?: boolean;
   tokenReleaseTime?: string;
   actualClaimAmount?: string;
+  virtualAddress?: string;
 }
 
 export interface ProjectItem {
