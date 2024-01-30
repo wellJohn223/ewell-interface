@@ -26,7 +26,7 @@ export default function PageSyncTipsModal() {
   }, [setModalHandler]);
 
   return (
-    <Modal title="Tips" footer={null} centered open={isModalOpen} onCancel={() => setIsModalOpen(false)}>
+    <Modal title="Tips" footer={null} centered destroyOnClose open={isModalOpen} onCancel={() => setIsModalOpen(false)}>
       <Flex vertical gap={24} align="center">
         <Text className="text-center">Synchronizing on-chain account information...</Text>
         <Button className="modal-single-button" type="primary" onClick={() => setIsModalOpen(false)}>

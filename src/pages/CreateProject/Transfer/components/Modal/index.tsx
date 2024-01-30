@@ -15,17 +15,9 @@ import { getExploreLink } from 'utils';
 import { ExplorerLinkType } from 'types/aelf';
 
 const { Text, Title } = Typography;
-
-interface ConfirmInfo {
-  supply?: number;
-  contractAddress?: string;
-  balance?: number;
-  transactionFee?: number;
-}
-
 interface ITransferModalProps {
   open: boolean;
-  info: IProjectInfo;
+  info: IProjectInfo & { contractAddress: string };
   onCancel: () => void;
   onOk: () => void;
 }
@@ -77,22 +69,24 @@ export function ConfirmModal({ open, info, onCancel, onOk }: ITransferModalProps
                 raised along with any unsold tokens after the sale ends.
               </Text>
             </Flex>
-            <Flex className="modal-box-data-wrapper" justify="space-between">
-              <Text fontWeight={FontWeightEnum.Medium}>Contract Address</Text>
-              <HashAddress
-                className="hash-address-small"
-                preLen={8}
-                endLen={9}
-                chain={DEFAULT_CHAIN_ID}
-                address={NETWORK_CONFIG.ewellContractAddress}
-                addressClickCallback={(_, address) => {
-                  const exploreLink = address ? getExploreLink(address) : '';
-                  if (exploreLink) {
-                    window.open(exploreLink, '_blank');
-                  }
-                }}
-              />
-            </Flex>
+            {info?.contractAddress && (
+              <Flex className="modal-box-data-wrapper" justify="space-between">
+                <Text fontWeight={FontWeightEnum.Medium}>Contract Address</Text>
+                <HashAddress
+                  className="hash-address-small"
+                  preLen={8}
+                  endLen={9}
+                  chain={DEFAULT_CHAIN_ID}
+                  address={info?.contractAddress}
+                  addressClickCallback={(_, address) => {
+                    const exploreLink = address ? getExploreLink(address) : '';
+                    if (exploreLink) {
+                      window.open(exploreLink, '_blank');
+                    }
+                  }}
+                />
+              </Flex>
+            )}
           </Flex>
           <Flex vertical gap={8}>
             <Flex justify="space-between">
@@ -119,7 +113,7 @@ export function ConfirmModal({ open, info, onCancel, onOk }: ITransferModalProps
           </Flex>
           {isDisabledSubmit && (
             <Flex gap={24} justify="center">
-              <Text fontWeight={FontWeightEnum.Bold} style={{ color: '#F53F3F' }}>
+              <Text fontWeight={FontWeightEnum.Bold} style={{ color: '#F53F3F', textAlign: 'center' }}>
                 Insufficient balance to cover the transaction fee. Please transfer some ELF to this address before you
                 try again.
               </Text>

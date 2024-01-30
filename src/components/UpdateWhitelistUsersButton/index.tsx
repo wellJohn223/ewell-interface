@@ -124,7 +124,7 @@ export default function UpdateWhitelistUsers({
 
   return (
     <>
-      <Web3Button {...buttonProps} onClick={init} />
+      <Button {...buttonProps} onClick={init} />
       <UpdateModal
         ref={updateModalRef}
         updateType={updateType}
@@ -155,6 +155,7 @@ export default function UpdateWhitelistUsers({
         title="Remove Users from Whitelist"
         footer={null}
         centered
+        destroyOnClose
         open={isRemoveUsersConfirmModalOpen}
         onCancel={() => {
           setIsRemoveUsersConfirmModalOpen(false);
@@ -190,6 +191,7 @@ export default function UpdateWhitelistUsers({
         title={`${updateType === UpdateType.ADD ? 'Added' : 'Removed'} Successfully`}
         footer={null}
         centered
+        destroyOnClose
         open={isUpdateSuccessModalOpen}
         onCancel={() => setIsUpdateSuccessModalOpen(false)}>
         <Flex vertical gap={24} align="center">

@@ -17,20 +17,29 @@
   }
 
   &.active {
-    background-color: #070A26;
+    background-color: #070a26;
     color: #fff;
   }
 
   .card-left {
     display: flex;
     align-items: center;
-    
+
     .token-icon {
       width: 32px;
       height: 32px;
       border-radius: 16px;
       margin-right: 8px;
     }
+    .token-img-bg {
+      color: #fff;
+      background-color: #070a26;
+      text-align: center;
+      line-height: 32px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
     .token-name {
       font-size: 16px;
       line-height: 24px;
@@ -47,7 +56,6 @@
       font-size: 16px;
       line-height: 24px;
       font-weight: 500;
-      
     }
     .token-value {
       text-align: right;
@@ -55,5 +63,4 @@
       line-height: 20px;
     }
   }
-  
 }

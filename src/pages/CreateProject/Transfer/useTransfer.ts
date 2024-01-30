@@ -6,9 +6,21 @@ import { request } from 'api';
 import { divDecimals } from 'utils/calculate';
 import { getInfo } from '../utils';
 import { handleLoopFetch } from 'utils';
+import dayjs from 'dayjs';
+import { useViewContract } from 'contexts/useViewContract/hooks';
 
 export const useTransfer = () => {
   const { wallet, checkManagerSyncState } = useWallet();
+  const { getEwellContract } = useViewContract();
+
+  const isStartTimeBeforeNow = useCallback((startTime: string) => dayjs(startTime).isBefore(dayjs()), []);
+
+  const getProjectAddress = useCallback(async () => {
+    const ewellContract = await getEwellContract();
+    const addressData = await ewellContract.GetPendingProjectAddress.call(wallet?.walletInfo.address);
+    console.log('address data', addressData);
+    return addressData;
+  }, [getEwellContract, wallet?.walletInfo.address]);
 
   const preCreate = useCallback(
     async (params: { amount: string; symbol: string }) => {
@@ -86,5 +98,13 @@ export const useTransfer = () => {
     [create, getDetail, preCreate],
   );
 
-  return { register, preCreate, create, getDetail, checkManagerSyncState };
+  return {
+    isStartTimeBeforeNow,
+    register,
+    preCreate,
+    create,
+    getDetail,
+    checkManagerSyncState,
+    getProjectAddress,
+  };
 };

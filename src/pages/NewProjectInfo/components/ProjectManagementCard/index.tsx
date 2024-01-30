@@ -190,6 +190,7 @@ export default function ProjectManagementCard({ projectInfo }: IProjectManagemen
         title="Disable Whitelist"
         footer={null}
         centered
+        destroyOnClose
         open={isDisableWhitelistConfirmModalOpen}
         onCancel={() => setIsDisableWhitelistConfirmModalOpen(false)}>
         <Flex vertical gap={24}>

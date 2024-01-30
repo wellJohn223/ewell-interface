@@ -157,6 +157,7 @@ export default function PurchaseButton({ buttonDisabled, projectInfo, purchaseAm
         title="Confirm Purchase"
         footer={null}
         centered
+        destroyOnClose
         open={isSubmitModalOpen}
         onCancel={() => {
           setIsSubmitModalOpen(false);

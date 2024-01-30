@@ -36,12 +36,9 @@ const IDOInfo: React.FC<CreateStepProps> = ({ onNext, onPre }) => {
     Object.keys(_idoInfo).map((key) => {
       if (key.includes('Time')) {
         const value = idoInfo?.[key];
-        console.log(key, value);
-        console.log('dayjs', dayjs(value));
         _idoInfo[key] = dayjs(value);
       }
     });
-    console.log('idoInfo', _idoInfo);
     return _idoInfo;
   }, [idoInfo]);
 

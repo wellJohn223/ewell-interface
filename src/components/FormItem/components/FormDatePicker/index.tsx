@@ -57,7 +57,6 @@ export const DatePickerMobile: React.FC<IDatePickerMobileProps> = ({
 
   const onConfirm = useCallback(
     (current: Date) => {
-      console.log('====current=====confirm', dayjs(current).format('YYYY-MM_DD HH:mm:ss [UTC] Z'));
       setInputValue(dayjs(current).format(format || DEFAULT_DATE_FORMAT));
       onChange?.(dayjs(current));
       setOpen(false);
@@ -90,7 +89,6 @@ export const DatePickerMobile: React.FC<IDatePickerMobileProps> = ({
 
 export const DatePikerPC: React.FC<IDatePickerPCProps> = ({ value, disabled, onChange, format, ...props }) => {
   const _value = useMemo(() => {
-    console.log('init-value', value);
     return value ? dayjs(value) : null;
   }, [value]);
 
