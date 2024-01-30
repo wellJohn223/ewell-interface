@@ -36,7 +36,6 @@ export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefres
 
   const [purchaseInputValue, setPurchaseInputValue] = useState('');
   const [purchaseInputErrorMessage, setPurchaseInputErrorMessage] = useState('');
-  const [isPurchaseInputting, setIsPurchaseInputting] = useState(false);
   const [isPurchaseButtonDisabled, setIsPurchaseButtonDisabled] = useState(true);
 
   const txFeeAmount = useMemo(() => {
@@ -44,7 +43,11 @@ export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefres
   }, [txFee, projectInfo?.toRaiseToken?.decimals]);
 
   const canPurchaseAmount = useMemo(() => {
-    return ZERO.plus(balance).minus(txFeeAmount);
+    let result = ZERO.plus(balance).minus(txFeeAmount);
+    if (result.lt(0)) {
+      result = ZERO;
+    }
+    return result;
   }, [balance, txFeeAmount]);
 
   const maxAllocation = useMemo(() => {
@@ -162,16 +165,14 @@ export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefres
   }, [projectInfo?.investAmount, projectInfo?.status, projectInfo?.toClaimAmount]);
 
   useEffect(() => {
-    setIsPurchaseButtonDisabled((pre) => {
+    setIsPurchaseButtonDisabled(() => {
       if (isPreview) {
         return true;
-      } else if (isPurchaseInputting) {
-        return pre;
       } else {
         return !!purchaseInputErrorMessage || !purchaseInputValue || new BigNumber(purchaseInputValue).lte(0);
       }
     });
-  }, [isPreview, isPurchaseInputting, purchaseInputErrorMessage, purchaseInputValue]);
+  }, [isPreview, purchaseInputErrorMessage, purchaseInputValue]);
 
   const handleValidatePurchaseInput = (value?: string) => {
     const bigValue = new BigNumber(value || 0);
@@ -413,14 +414,9 @@ export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefres
                     min="0"
                     value={purchaseInputValue}
                     onChange={(value) => {
-                      setPurchaseInputValue(parseInputNumberChange(value || '', projectInfo?.toRaiseToken?.decimals));
-                    }}
-                    onFocus={() => {
-                      setIsPurchaseInputting(true);
-                    }}
-                    onBlur={(e) => {
-                      handleValidatePurchaseInput(e.target.value);
-                      setIsPurchaseInputting(false);
+                      const newValue = parseInputNumberChange(value || '', projectInfo?.toRaiseToken?.decimals);
+                      setPurchaseInputValue(newValue);
+                      handleValidatePurchaseInput(newValue);
                     }}
                   />
                 </Form.Item>
