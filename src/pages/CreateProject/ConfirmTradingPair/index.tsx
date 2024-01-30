@@ -51,10 +51,9 @@ const ConfirmTradingPair: React.FC<CreateStepProps> = ({ onNext }) => {
         setTokenList(data);
         return;
       }
-      msg && message.error(msg);
+      console.log('getTokenList-error:', msg);
     } catch (error: any) {
       console.log('error', error);
-      message.error(error?.message || 'get token list failed');
     } finally {
       emitLoading(false);
     }

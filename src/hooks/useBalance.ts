@@ -11,15 +11,19 @@ export const useBalance = (symbol?: string) => {
   const owner = useMemo(() => wallet?.walletInfo.address, [wallet?.walletInfo.address]);
 
   const updateBalance = useCallback(async () => {
-    if (!symbol || !owner) {
-      return;
+    try {
+      if (!symbol || !owner) {
+        return;
+      }
+      const tokenContract = await getTokenContract();
+      const result = await tokenContract.GetBalance.call({
+        symbol,
+        owner,
+      });
+      setBalance(result.balance);
+    } catch (error) {
+      console.log('updateBalance error', error);
     }
-    const tokenContract = await getTokenContract();
-    const result = await tokenContract.GetBalance.call({
-      symbol,
-      owner,
-    });
-    setBalance(result.balance);
   }, [getTokenContract, owner, symbol]);
 
   useEffect(() => {

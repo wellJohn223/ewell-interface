@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { useLocalStorage } from 'react-use';
+import { useEffectOnce, useLocalStorage } from 'react-use';
 import storages from '../storages';
 import ButtonGroup from '../components/ButtonGroup';
 import { CreateStepProps } from '../types';
@@ -34,8 +34,9 @@ const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
   const [successInfo, setSuccessInfo] = useState<SuccessInfo>();
-  const { register, checkManagerSyncState } = useTransfer();
+  const [contractAddress, setContractAddress] = useState('');
   const navigate = useNavigate();
+  const { register, checkManagerSyncState, isStartTimeBeforeNow, getProjectAddress } = useTransfer();
 
   const previewData = useMemo(() => {
     const { additionalInfo, ...data } = getInfo(tradingPair, idoInfo, additional);
@@ -44,6 +45,7 @@ const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
       ...data,
       startTime,
       endTime,
+      contractAddress,
       tokenReleaseTime,
       additionalInfo: additionalInfo.data,
       toRaiseToken: AELF_TOKEN_INFO,
@@ -58,7 +60,7 @@ const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
         AELF_TOKEN_INFO.decimals,
       ).toString(),
     } as any;
-  }, [additional, idoInfo, tradingPair]);
+  }, [additional, contractAddress, idoInfo, tradingPair]);
 
   const onTransfer = useCallback(async () => {
     try {
@@ -88,6 +90,28 @@ const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
     navigate(`/project/${successInfo?.projectId}`, { replace: true });
   }, [navigate, successInfo?.projectId]);
 
+  const onNext = useCallback(() => {
+    const isBefore = isStartTimeBeforeNow(idoInfo?.startTime);
+    if (isBefore) {
+      message.error('The sale start time has already passed. Please revise the sale information in step 3.');
+      return;
+    }
+    setOpenConfirmModal(true);
+  }, [idoInfo?.startTime, isStartTimeBeforeNow]);
+
+  const getContractAddress = useCallback(async () => {
+    try {
+      const contractAddress = await getProjectAddress();
+      setContractAddress(contractAddress);
+    } catch (error) {
+      console.log('getContractAddress error', error);
+    }
+  }, [getProjectAddress]);
+
+  useEffectOnce(() => {
+    getContractAddress();
+  });
+
   return (
     <div className="transfer-page">
       <Title
@@ -106,12 +130,7 @@ const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
           padding: 0,
         }}
       />
-      <ButtonGroup
-        onPre={onPre}
-        onNext={() => setOpenConfirmModal(true)}
-        nextText="Transfer Now"
-        style={{ marginTop: 24 }}
-      />
+      <ButtonGroup onPre={onPre} onNext={onNext} nextText="Transfer" style={{ marginTop: 24 }} />
       <ConfirmModal
         info={previewData}
         open={openConfirmModal}

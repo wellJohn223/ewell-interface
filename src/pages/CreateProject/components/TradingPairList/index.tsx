@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import clsx from 'clsx';
 import './styles.less';
 import { divDecimalsStr } from 'utils/calculate';
+import ImgLoading from 'components/ImgLoading';
 
 export interface ITradingParCard {
   chainId: string;
@@ -17,6 +18,19 @@ interface TradingParCardProps {
   current?: ITradingParCard;
   onChange?: (value: ITradingParCard) => void;
 }
+
+const TokenImg = ({ src, symbol }: { src: string; symbol: string }) => {
+  const [imgLoadErr, setImgLoadErr] = useState(false);
+  return (
+    <>
+      {imgLoadErr ? (
+        <div className="token-icon token-img-bg">{symbol[0]}</div>
+      ) : (
+        <img className="token-icon" src={src} onError={() => setImgLoadErr(true)} />
+      )}
+    </>
+  );
+};
 
 const TradingPairList: React.FC<TradingParCardProps> = ({ list = [], current, onChange }) => {
   const onClick = useCallback(
@@ -34,7 +48,7 @@ const TradingPairList: React.FC<TradingParCardProps> = ({ list = [], current, on
           key={item.symbol}
           onClick={() => onClick(item)}>
           <div className="card-left">
-            <img className="token-icon" src={item.imageUrl} />
+            <TokenImg src={item.imageUrl} symbol={item.symbol} />
             <div>
               <div className="token-name">{item.symbol}</div>
               <div className="chain-info">{item.chainId === 'AELF' ? 'MainChain AELF' : 'SideChain tDVV'}</div>
