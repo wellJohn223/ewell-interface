@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js';
+import { DEFAULT_CHAIN_ID, NETWORK_CONFIG } from './network';
 
 export enum REQ_CODE {
   UserDenied = -1,
@@ -19,10 +20,10 @@ export const isEffectiveNumber = (v: any) => {
 export const AELF_TOKEN_INFO = {
   symbol: 'ELF',
   decimals: 8,
-  chainId: 'tDVV',
+  chainId: DEFAULT_CHAIN_ID,
   name: 'Native Token',
-  address: '7RzVGiuVWkvL4VfVHdZfQF2Tri3sgLe9U991bohHFfSRZXuGX',
-  id: 'tDVV-ELF',
+  address: NETWORK_CONFIG.sideChainInfo.tokenContractAddress,
+  id: `${DEFAULT_CHAIN_ID}-ELF`,
 };
 
 export const PriceDecimal = 8;
