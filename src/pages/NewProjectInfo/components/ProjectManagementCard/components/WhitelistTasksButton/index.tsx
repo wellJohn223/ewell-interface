@@ -77,7 +77,7 @@ export default function WhitelistTasksButton({ whitelistId, whitelistTasksUrl, d
               Whitelist tasks are required when whitelist is enabled. Please provide a publicly accessible link that
               explains the associated tasks.
             </Text>
-            <Input placeholder="placeholder" value={urlInputValue} onChange={(e) => setUrlInputValue(e.target.value)} />
+            <Input placeholder="https://" value={urlInputValue} onChange={(e) => setUrlInputValue(e.target.value)} />
           </Flex>
           <Flex gap={16}>
             <Button className="flex-1" onClick={() => setIsWhitelistTasksModalOpen(false)}>
