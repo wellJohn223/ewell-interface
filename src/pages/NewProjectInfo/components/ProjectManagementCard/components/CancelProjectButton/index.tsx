@@ -71,6 +71,7 @@ export default function CancelProjectButton({ projectInfo }: ICancelProjectButto
         title="Cancel Sale"
         footer={null}
         centered
+        destroyOnClose
         open={isConfirmModalOpen}
         onCancel={() => setIsConfirmModalOpen(false)}>
         <Flex vertical gap={24}>
@@ -100,6 +101,7 @@ export default function CancelProjectButton({ projectInfo }: ICancelProjectButto
         title="Claim Token"
         footer={null}
         centered
+        destroyOnClose
         open={isSubmitModalOpen}
         onCancel={() => setIsSubmitModalOpen(false)}>
         <Flex vertical gap={24}>

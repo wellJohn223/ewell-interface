@@ -95,6 +95,7 @@ export default function CreatorClaimTokenButton({ projectInfo }: ICreatorClaimTo
         title="Claim"
         footer={null}
         centered
+        destroyOnClose
         open={isSubmitModalOpen}
         onCancel={() => {
           setIsSubmitModalOpen(false);

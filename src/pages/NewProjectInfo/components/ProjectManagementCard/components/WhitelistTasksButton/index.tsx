@@ -94,6 +94,7 @@ export default function WhitelistTasksButton({ whitelistId, whitelistTasksUrl, d
         title={`${isEdit ? 'Edited' : 'Opened'} Successfully`}
         footer={null}
         centered
+        destroyOnClose
         open={isSuccessModalOpen}
         onCancel={() => setIsSuccessModalOpen(false)}>
         <Flex vertical gap={24} align="center">
