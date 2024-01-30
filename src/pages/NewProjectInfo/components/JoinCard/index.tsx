@@ -13,7 +13,6 @@ import ClaimTokenButton from '../OperationComponents/ClaimTokenButton';
 import RevokeFineButton from '../OperationComponents/RevokeFineButton';
 import { IProjectInfo, ProjectStatus } from 'types/project';
 import { PROJECT_STATUS_TEXT_MAP } from 'constants/project';
-import { useWallet } from 'contexts/useWallet/hooks';
 import { ZERO } from 'constants/misc';
 import { divDecimals, divDecimalsStr, timesDecimals } from 'utils/calculate';
 import { getHref, getPriceDecimal } from 'utils';
@@ -27,13 +26,11 @@ const { Title, Text } = Typography;
 interface IJoinCardProps {
   projectInfo?: IProjectInfo;
   isPreview?: boolean;
+  isLogin: boolean;
   handleRefresh?: () => void;
 }
 
-export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoinCardProps) {
-  const { wallet } = useWallet();
-  const isLogin = !!wallet;
-
+export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefresh }: IJoinCardProps) {
   const { txFee } = useTxFee();
   const { balance } = useBalance(projectInfo?.toRaiseToken?.symbol);
 
