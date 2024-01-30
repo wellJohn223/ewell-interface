@@ -54,7 +54,10 @@ export const useTransfer = () => {
       const projectRegisteredInfo = getLog(createResult.Logs, 'ProjectRegistered');
       console.log('projectRegisteredInfo', projectRegisteredInfo);
       console.log('projectId', projectRegisteredInfo.ProjectRegistered.projectId);
-      return { projectId: projectRegisteredInfo.ProjectRegistered.projectId };
+      return {
+        projectId: projectRegisteredInfo.ProjectRegistered.projectId,
+        transactionId: createResult.TransactionId,
+      };
     },
     [wallet],
   );
@@ -75,11 +78,11 @@ export const useTransfer = () => {
     async ({ tradingPair, idoInfo, additional }: { tradingPair: any; idoInfo: any; additional: any }) => {
       const info = getInfo(tradingPair, idoInfo, additional);
       console.log('create-params', info);
-      const { TransactionId: transactionId }: any = await preCreate({
+      await preCreate({
         amount: info.crowdFundingIssueAmount,
         symbol: info.projectCurrency,
       });
-      const { projectId } = await create(info);
+      const { projectId, transactionId } = await create(info);
       const { crowdFundingIssueToken, crowdFundingIssueAmount } = await handleLoopFetch({
         fetch: () => getDetail(projectId),
         times: 30,

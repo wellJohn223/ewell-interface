@@ -1,4 +1,3 @@
-import BigNumber from 'bignumber.js';
 import type { FormItemProps } from '..';
 import type { inputProps, textAreaProps } from '../types';
 import type { FormItemProps as antFormItemProps } from 'antd';

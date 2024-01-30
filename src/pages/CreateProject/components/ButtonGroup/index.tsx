@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, IButtonProps } from 'aelf-design';
 import { Flex } from 'antd';
 import { whiteArrow, arrow, grayArrow } from 'assets/images/project';
-import './index.less';
+import './styles.less';
 import clsx from 'clsx';
 
 export interface IButtonGroup {

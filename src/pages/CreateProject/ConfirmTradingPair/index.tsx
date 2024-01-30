@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import TradingPairList, { ITradingParCard } from '../components/TradingPairList';
 import './styles.less';
-import { Button, message } from 'antd';
 import { CreateStepProps } from '../types';
 import { useLocalStorage } from 'react-use';
 import storages from '../storages';
@@ -12,7 +11,6 @@ import { useWallet } from 'contexts/useWallet/hooks';
 import { WebLoginState } from 'aelf-web-login';
 import myEvents from 'utils/myEvent';
 import { emitLoading } from 'utils/events';
-import { mockTokenList } from './mock';
 
 const ConfirmTradingPair: React.FC<CreateStepProps> = ({ onNext }) => {
   const [tradingPair, setTradingPair] = useLocalStorage(storages.ConfirmTradingPair);
