@@ -21,3 +21,12 @@ export const urlString2FileList = (urlString: string) => {
 
   return fileList;
 };
+
+export function getLocalStorage(key: string) {
+  try {
+    if (!key) return '';
+    return JSON.parse(localStorage.getItem(key) || '{}');
+  } catch (error) {
+    return undefined;
+  }
+}

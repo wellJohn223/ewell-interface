@@ -61,7 +61,7 @@ export interface IProjectInfo {
   isCanceled?: boolean;
   lastModificationTime?: string;
   liquidityLockProportion?: number;
-  listMarketInfo?: ListMarketInfo[];
+  listMarketInfo?: string;
   maxSubscription?: string;
   minSubscription?: string;
   participantCount?: number;
