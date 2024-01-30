@@ -39,7 +39,7 @@ export default function ActionCard({
           Edit Project Information
         </EditButton>
       )}
-      <JoinCard projectInfo={projectInfo} isPreview={isPreview} handleRefresh={handleRefresh} />
+      <JoinCard projectInfo={projectInfo} isPreview={isPreview} isLogin={isLogin} handleRefresh={handleRefresh} />
       {!isLogin && (
         <Button
           className="login-button"

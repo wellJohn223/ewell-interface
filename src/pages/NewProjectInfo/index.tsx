@@ -77,7 +77,7 @@ export default function ProjectInfo({ previewData, style }: IProjectInfoProps) {
           .filter((item) => !!item) || [];
 
       console.log('whitelistInfo', whitelistInfo);
-      let newProjectInfo = {};
+      let newProjectInfo: IProjectInfo = {};
       if (detail) {
         newProjectInfo = {
           ...detail,

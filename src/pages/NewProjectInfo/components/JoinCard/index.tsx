@@ -13,7 +13,6 @@ import ClaimTokenButton from '../OperationComponents/ClaimTokenButton';
 import RevokeFineButton from '../OperationComponents/RevokeFineButton';
 import { IProjectInfo, ProjectStatus } from 'types/project';
 import { PROJECT_STATUS_TEXT_MAP } from 'constants/project';
-import { useWallet } from 'contexts/useWallet/hooks';
 import { ZERO } from 'constants/misc';
 import { divDecimals, divDecimalsStr, timesDecimals } from 'utils/calculate';
 import { getHref, getPriceDecimal } from 'utils';
@@ -27,19 +26,16 @@ const { Title, Text } = Typography;
 interface IJoinCardProps {
   projectInfo?: IProjectInfo;
   isPreview?: boolean;
+  isLogin: boolean;
   handleRefresh?: () => void;
 }
 
-export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoinCardProps) {
-  const { wallet } = useWallet();
-  const isLogin = !!wallet;
-
+export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefresh }: IJoinCardProps) {
   const { txFee } = useTxFee();
   const { balance } = useBalance(projectInfo?.toRaiseToken?.symbol);
 
   const [purchaseInputValue, setPurchaseInputValue] = useState('');
   const [purchaseInputErrorMessage, setPurchaseInputErrorMessage] = useState('');
-  const [isPurchaseInputting, setIsPurchaseInputting] = useState(false);
   const [isPurchaseButtonDisabled, setIsPurchaseButtonDisabled] = useState(true);
 
   const txFeeAmount = useMemo(() => {
@@ -47,7 +43,11 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
   }, [txFee, projectInfo?.toRaiseToken?.decimals]);
 
   const canPurchaseAmount = useMemo(() => {
-    return ZERO.plus(balance).minus(txFeeAmount);
+    let result = ZERO.plus(balance).minus(txFeeAmount);
+    if (result.lt(0)) {
+      result = ZERO;
+    }
+    return result;
   }, [balance, txFeeAmount]);
 
   const maxAllocation = useMemo(() => {
@@ -165,16 +165,14 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
   }, [projectInfo?.investAmount, projectInfo?.status, projectInfo?.toClaimAmount]);
 
   useEffect(() => {
-    setIsPurchaseButtonDisabled((pre) => {
+    setIsPurchaseButtonDisabled(() => {
       if (isPreview) {
         return true;
-      } else if (isPurchaseInputting) {
-        return pre;
       } else {
         return !!purchaseInputErrorMessage || !purchaseInputValue || new BigNumber(purchaseInputValue).lte(0);
       }
     });
-  }, [isPreview, isPurchaseInputting, purchaseInputErrorMessage, purchaseInputValue]);
+  }, [isPreview, purchaseInputErrorMessage, purchaseInputValue]);
 
   const handleValidatePurchaseInput = (value?: string) => {
     const bigValue = new BigNumber(value || 0);
@@ -250,11 +248,26 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
     }
   };
 
+  const renderViewWhitelistTasks = (text: string) => {
+    return (
+      <Text
+        className="purple-text cursor-pointer"
+        fontWeight={FontWeightEnum.Medium}
+        onClick={() => {
+          if (projectInfo?.whitelistInfo?.url) {
+            window.open(getHref(projectInfo.whitelistInfo.url), '_blank');
+          }
+        }}>
+        {text}
+      </Text>
+    );
+  };
+
   return (
     <CommonCard className="join-card-wrapper">
       <Flex className="swap-progress-wrapper" vertical gap={8}>
         <Flex align="center" justify="space-between" gap={16}>
-          <Title fontWeight={FontWeightEnum.Medium}>Swap Progress</Title>
+          <Title fontWeight={FontWeightEnum.Medium}>Status</Title>
           {!!projectInfo?.status && (
             <div
               className={clsx('status', 'flex-none', {
@@ -332,33 +345,13 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
                 whitelist tasks beforehand.
               </Text>
             )}
-            <Flex justify="flex-end">
-              <Text
-                className="purple-text cursor-pointer"
-                fontWeight={FontWeightEnum.Medium}
-                onClick={() => {
-                  if (projectInfo?.whitelistInfo?.url) {
-                    window.open(getHref(projectInfo.whitelistInfo.url), '_blank');
-                  }
-                }}>
-                View Whitelist Tasks
-              </Text>
-            </Flex>
+            <Flex justify="flex-end">{renderViewWhitelistTasks('View Whitelist Tasks')}</Flex>
           </>
         )}
         {showWhitelistJoined && (
           <Flex gap={16} align="center" justify="space-between">
             <Text>Whitelist</Text>
-            <Text
-              className="purple-text cursor-pointer"
-              fontWeight={FontWeightEnum.Medium}
-              onClick={() => {
-                if (projectInfo?.whitelistInfo?.url) {
-                  window.open(getHref(projectInfo.whitelistInfo.url), '_blank');
-                }
-              }}>
-              Joined
-            </Text>
+            {renderViewWhitelistTasks('Joined')}
           </Flex>
         )}
         {canOperate && (
@@ -421,14 +414,9 @@ export default function JoinCard({ projectInfo, isPreview, handleRefresh }: IJoi
                     min="0"
                     value={purchaseInputValue}
                     onChange={(value) => {
-                      setPurchaseInputValue(parseInputNumberChange(value || '', projectInfo?.toRaiseToken?.decimals));
-                    }}
-                    onFocus={() => {
-                      setIsPurchaseInputting(true);
-                    }}
-                    onBlur={(e) => {
-                      handleValidatePurchaseInput(e.target.value);
-                      setIsPurchaseInputting(false);
+                      const newValue = parseInputNumberChange(value || '', projectInfo?.toRaiseToken?.decimals);
+                      setPurchaseInputValue(newValue);
+                      handleValidatePurchaseInput(newValue);
                     }}
                   />
                 </Form.Item>

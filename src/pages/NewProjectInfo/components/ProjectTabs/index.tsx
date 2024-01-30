@@ -120,12 +120,12 @@ export default function ProjectTabs({ projectInfo }: IProjectTabsProps) {
       data: [
         {
           key: 'Sale Start Time',
-          label: <CommonWrapText rowTextList={['IDO', 'Starts At']} />,
+          label: <CommonWrapText rowTextList={['Sale', 'Start Time']} />,
           value: renderCardRowTimeWrapText(projectInfo?.startTime),
         },
         {
           key: 'Sale End Time',
-          label: <CommonWrapText rowTextList={['IDO', 'Ends At']} />,
+          label: <CommonWrapText rowTextList={['Sale', 'End Time']} />,
           value: renderCardRowTimeWrapText(projectInfo?.endTime),
         },
         {

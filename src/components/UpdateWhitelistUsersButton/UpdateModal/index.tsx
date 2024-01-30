@@ -137,12 +137,7 @@ const UpdateModal = forwardRef(function (
           />
         )}
         {currentUpdateWay === UpdateWay.PASTE && (
-          <TextArea
-            value={addressInput}
-            className="paste-address-textarea"
-            placeholder="placeholder"
-            onChange={handleAddressInputChange}
-          />
+          <TextArea value={addressInput} className="paste-address-textarea" onChange={handleAddressInputChange} />
         )}
         <Flex
           className={clsx('footer-wrapper', { ['flex-1']: currentUpdateWay === UpdateWay.UPLOAD })}

@@ -97,6 +97,7 @@ export default function ClaimTokenButton({ projectInfo }: IClaimTokenButtonProps
         title="Claim"
         footer={null}
         centered
+        destroyOnClose
         open={isSubmitModalOpen}
         onCancel={() => {
           setIsSubmitModalOpen(false);

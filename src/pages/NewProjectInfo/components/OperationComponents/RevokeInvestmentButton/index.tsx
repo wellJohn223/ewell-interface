@@ -107,6 +107,7 @@ export default function RevokeInvestmentButton({ projectInfo }: IRevokeInvestmen
         title="Cancel Investment"
         footer={null}
         centered
+        destroyOnClose
         open={isConfirmModalOpen}
         onCancel={() => {
           setIsConfirmModalOpen(false);
@@ -137,6 +138,7 @@ export default function RevokeInvestmentButton({ projectInfo }: IRevokeInvestmen
         title="Cancel Investment"
         footer={null}
         centered
+        destroyOnClose
         open={isSubmitModalOpen}
         onCancel={() => {
           setIsSubmitModalOpen(false);
