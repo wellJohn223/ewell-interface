@@ -64,8 +64,9 @@ export default function RevokeFineButton({ projectInfo }: IClaimTokenButtonProps
     <>
       {contextHolder}
       <Button type="primary" onClick={() => setIsConfirmModalOpen(true)}>
-        Revoke Token
+        Redeem
       </Button>
+      {/* TODO: adjust text */}
       <Modal
         className="common-modal"
         title="Revoke Token"

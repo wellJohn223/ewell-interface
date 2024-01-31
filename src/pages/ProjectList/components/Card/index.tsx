@@ -94,10 +94,10 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
 
   useEffect(() => {
     let str = '--';
-    if (status === ProjectStatus.CANCELED) str = 'Canceled Time';
+    if (status === ProjectStatus.CANCELED) str = 'Cancelled on';
     if (status === ProjectStatus.ENDED) str = 'Ended on';
-    if ([ProjectStatus.UPCOMING, ProjectStatus.PARTICIPATORY, ProjectStatus.UNLOCKED].includes(status as ProjectStatus))
-      str = 'Unlock Time';
+    if (status === ProjectStatus.UNLOCKED) str = 'Token Distribution Time';
+    if ([ProjectStatus.UPCOMING, ProjectStatus.PARTICIPATORY].includes(status as ProjectStatus)) str = 'Ends in';
 
     setRemainderStr(str);
   }, [status]);
@@ -127,14 +127,12 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
       let formatValue = '';
       if (remainingTime <= 0) {
         setRemainderTimeStr('00:00:00');
-        setRemainderStr('Ends in');
         console.log(timer, 'timer');
         clearInterval(timer);
         return;
       }
       if (remainingTime <= ONE_DAY_IN_MS) {
         formatValue = timeDuration(remainingTime);
-        setRemainderStr('Ends in');
       } else {
         formatValue = dayjs(timestamp).format('DD MMMM, YYYY');
       }

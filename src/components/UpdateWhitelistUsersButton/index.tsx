@@ -124,7 +124,7 @@ export default function UpdateWhitelistUsers({
 
   return (
     <>
-      <Button {...buttonProps} onClick={init} />
+      <Web3Button {...buttonProps} onClick={init} />
       <UpdateModal
         ref={updateModalRef}
         updateType={updateType}
@@ -198,8 +198,8 @@ export default function UpdateWhitelistUsers({
           <Flex vertical gap={8} align="center">
             <img className="success-icon" src={success} alt="success" />
             <Text className="text-center">
-              {activeAddressList.length} Address{activeAddressList.length > 1 ? 'es' : ''} Successfully{' '}
-              {updateType === UpdateType.ADD ? 'Added' : 'Removed'}
+              {activeAddressList.length} address{activeAddressList.length > 1 ? 'es' : ''}{' '}
+              {updateType === UpdateType.ADD ? 'added to' : 'removed from'} the whitelist
             </Text>
           </Flex>
           <Button className="modal-single-button" type="primary" onClick={() => setIsUpdateSuccessModalOpen(false)}>

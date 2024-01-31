@@ -114,7 +114,7 @@ export const ProjectInfoFromJson: FormItemProps[] = [
   }),
   {
     type: 'fieldsGroup',
-    label: 'Socials',
+    label: 'Socials:',
     tooltip: "The links to your project's social media or communities.",
     fieldsList: [
       getInputOptions({
