@@ -1,6 +1,6 @@
 {
   "name": "ewell",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "start": "cross-env REACT_APP_PREFIX=ewell craco start",
