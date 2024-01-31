@@ -124,7 +124,7 @@ export default function UpdateWhitelistUsers({
 
   return (
     <>
-      <Button {...buttonProps} onClick={init} />
+      <Web3Button {...buttonProps} onClick={init} />
       <UpdateModal
         ref={updateModalRef}
         updateType={updateType}
