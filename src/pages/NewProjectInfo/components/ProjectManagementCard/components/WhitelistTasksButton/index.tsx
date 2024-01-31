@@ -68,14 +68,13 @@ export default function WhitelistTasksButton({ whitelistId, whitelistTasksUrl, d
       {contextHolder}
       <Button onClick={() => setIsWhitelistTasksModalOpen(true)}>Whitelist Tasks</Button>
       <CommonModalSwitchDrawer
-        title={`${isEdit ? 'Edit' : 'Open'} Whitelist Tasks`}
+        title="Whitelist Tasks"
         open={isWhitelistTasksModalOpen}
         onCancel={() => setIsWhitelistTasksModalOpen(false)}>
         <Flex vertical gap={24}>
           <Flex vertical gap={12}>
             <Text className="text-center">
-              Whitelist tasks are required when whitelist is enabled. Please provide a publicly accessible link that
-              explains the associated tasks.
+              Please provide a publicly accessible link that explains the whitelist tasks.
             </Text>
             <Input placeholder="https://" value={urlInputValue} onChange={(e) => setUrlInputValue(e.target.value)} />
           </Flex>
@@ -91,7 +90,7 @@ export default function WhitelistTasksButton({ whitelistId, whitelistTasksUrl, d
       </CommonModalSwitchDrawer>
       <Modal
         className="common-modal"
-        title={`${isEdit ? 'Edited' : 'Opened'} Successfully`}
+        title="Whitelist Tasks"
         footer={null}
         centered
         destroyOnClose
@@ -100,7 +99,7 @@ export default function WhitelistTasksButton({ whitelistId, whitelistTasksUrl, d
         <Flex vertical gap={24} align="center">
           <Flex vertical gap={8} align="center">
             <img className="success-icon" src={success} alt="success" />
-            <Text>Whitelist tasks {isEdit ? 'has edited' : 'opened'} successfully</Text>
+            <Text>The whitelist tasks have been successfully updated.</Text>
           </Flex>
           <Button
             className="whitelist-tasks-update-success-button"

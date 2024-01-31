@@ -217,7 +217,7 @@ export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefres
     } else if (projectInfo?.status === ProjectStatus.UNLOCKED) {
       return (
         <>
-          <Text>Ends in</Text>
+          <Text>Token Distribution Time</Text>
           <NewBaseCountdown
             className="countdown-wrapper"
             value={projectInfo?.tokenReleaseTime ? dayjs(projectInfo.tokenReleaseTime).valueOf() : 0}

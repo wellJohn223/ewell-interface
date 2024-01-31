@@ -73,6 +73,13 @@ const UpdateModal = forwardRef(function (
   }, []);
   useImperativeHandle(ref, () => ({ reset }));
 
+  const handleDownloadTemplate = useCallback(() => {
+    const link = document.createElement('a');
+    link.href = 'https://portkey-im-dev.s3.ap-northeast-1.amazonaws.com/Template.xlsx';
+    link.download = 'Template.xlsx';
+    link.click();
+  }, []);
+
   return (
     <CommonModalSwitchDrawer
       className="update-whitelist-users"
@@ -93,7 +100,7 @@ const UpdateModal = forwardRef(function (
           <br />
           Ewell also provides a template for you to fill in addresses and you can download it via the "Download
           Template" button.
-          <Space className="download-template cursor-pointer" size={8} align="center">
+          <Space className="download-template cursor-pointer" size={8} align="center" onClick={handleDownloadTemplate}>
             <img src={download} alt="download" />
             <Text className="purple-text" fontWeight={FontWeightEnum.Medium}>
               Download Template
