@@ -1,5 +1,6 @@
 .create-project {
   width: 100%;
+  caret-color: #863dff;
 
   .project-nav {
     padding: 24px 0;
@@ -14,26 +15,26 @@
     padding-top: 24px;
   }
 
-  .@{app-prefix}-steps .@{app-prefix}-steps-item-wait .@{app-prefix}-steps-item-icon {
-    background-color: transparent;
-    border: 1px solid #888997;
-  }
-
   .form-page {
     margin-top: 48px;
   }
+
   .form-item-width-437 {
     max-width: 437px;
   }
+
   .form-item-width-full {
     width: 100%;
   }
+
   .flex-grow {
     flex-grow: 1;
   }
+
   .margin-left-8 {
     margin-left: 8px;
   }
+
   .form-upload label {
     pointer-events: none;
 
@@ -41,10 +42,42 @@
       pointer-events: all;
     }
   }
+
   .form-upload-tips {
-    color: #070A26;
+    color: #070a26;
     text-align: center;
     font-size: 12px;
     line-height: 18px;
+  }
+
+  .@{app-prefix}-steps .@{app-prefix}-steps-item-wait .@{app-prefix}-steps-item-icon {
+    background-color: transparent;
+    border: 1px solid #888997;
+  }
+
+  .@{app-prefix}-input-outlined:focus-within,
+  .@{app-prefix}-picker-outlined:focus-within,
+  .@{app-prefix}-input-number-outlined:focus-within {
+    border-color: #863dff;
+  }
+
+  .@{app-prefix}-input-outlined.@{app-prefix}-input-disabled,
+  .@{app-prefix}-picker-outlined.@{app-prefix}-picker-disabled:hover:not([disabled]),
+  .@{app-prefix}-picker-outlined.@{app-prefix}-picker-disabled,
+  .@{app-prefix}-select-outlined.@{app-prefix}-select-disabled:not(.@{app-prefix}-select-customize-input)
+    .@{app-prefix}-select-selector {
+    border-color: #dfdfe3;
+  }
+
+  .@{app-prefix}-picker {
+    .@{app-prefix}-picker-suffix {
+      color: #070a26;
+    }
+  }
+
+  .@{app-prefix}-picker-disabled {
+    .@{app-prefix}-picker-suffix {
+      color: #c1c2c9;
+    }
   }
 }

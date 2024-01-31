@@ -27,13 +27,13 @@ export const stepsItems: StepProps[] = [
   },
 ];
 
-const urlRule: Rule = { type: 'url', message: 'please input the correct url' };
+const urlRule: Rule = { type: 'url', message: 'Please enter a valid link.' };
 
 export const ProjectInfoFromJson: FormItemProps[] = [
   getInputOptions({
     label: 'Project Name:',
     name: 'projectName',
-    tooltip: 'p',
+    tooltip: 'The name of your project.',
     childrenProps: {
       maxLength: 40,
       showCount: true,
@@ -41,9 +41,9 @@ export const ProjectInfoFromJson: FormItemProps[] = [
   }),
   {
     type: 'textArea',
-    label: 'Description (20-500 character）:',
+    label: 'Description (20-500 characters):',
     name: 'projectSummary',
-    tooltip: 'p',
+    tooltip: 'A concise overview of your project, like its objectives, target audience, and unique advantages.',
     rules: [
       { required: true, message: 'Please enter the necessary information' },
       { min: 20, message: 'Please enter the necessary information' },
@@ -55,9 +55,10 @@ export const ProjectInfoFromJson: FormItemProps[] = [
   },
   {
     type: 'textArea',
-    label: 'Project Details (300-20000 character):',
+    label: 'Project Details (300-20,000 characters):',
     name: 'projectDescription',
-    tooltip: 'p',
+    tooltip:
+      'An in-depth introduction to your project. You can highlight the issues it aims to tackle, the solutions it offers, the technologies involved, and the potential impact it may have, etc.',
     rules: [
       { required: true, message: 'Please enter the necessary information' },
       { min: 300, max: 20000, message: '300-20000' },
@@ -71,7 +72,7 @@ export const ProjectInfoFromJson: FormItemProps[] = [
     type: 'fileUpload',
     label: 'Logo:',
     name: 'logoUrl',
-    tooltip: 'p',
+    tooltip: 'The logo of your token that can represent your project.',
     required: true,
     valuePropName: 'fileList',
     className: 'form-upload',
@@ -90,7 +91,7 @@ export const ProjectInfoFromJson: FormItemProps[] = [
     required: true,
     valuePropName: 'fileList',
     className: 'form-upload',
-    tooltip: 'p',
+    tooltip: '3-5 additional images for promotional or branding purposes.',
     getValueFromEvent: normFile,
     childrenProps: {
       tips: <FeaturedUploadTips />,
@@ -102,7 +103,7 @@ export const ProjectInfoFromJson: FormItemProps[] = [
   getInputOptions({
     label: 'Official Website:',
     name: 'website',
-    tooltip: 'p',
+    tooltip: "The link to your project's official website.",
     rules: [
       {
         required: true,
@@ -114,6 +115,7 @@ export const ProjectInfoFromJson: FormItemProps[] = [
   {
     type: 'fieldsGroup',
     label: 'Socials',
+    tooltip: "The links to your project's social media or communities.",
     fieldsList: [
       getInputOptions({
         label: 'Medium:',
@@ -341,6 +343,8 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
         pcProps: {
           showTime: true,
           showNow: false,
+          placeholder: '',
+          allowClear: false,
           disabledDate: disabledDateBefore,
           disabledTime: (current) => disabledTimeBefore(current),
         },
@@ -361,6 +365,8 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
         pcProps: {
           showTime: true,
           showNow: false,
+          placeholder: '',
+          allowClear: false,
           disabledDate: (current) => disabledDateBefore(current, idoInfo?.endTime),
           disabledTime: (current) => disabledTimeBefore(current, idoInfo?.endTime),
         },
@@ -382,6 +388,8 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
         pcProps: {
           showTime: true,
           showNow: false,
+          placeholder: '',
+          allowClear: false,
           disabledDate: (current) => disabledDateBefore(current, idoInfo?.tokenReleaseTime),
           disabledTime: (current) => disabledTimeBefore(current, idoInfo?.tokenReleaseTime),
         },
