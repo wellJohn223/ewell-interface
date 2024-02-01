@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import './styles.less';
 import { divDecimalsStr } from 'utils/calculate';
 import ImgLoading from 'components/ImgLoading';
+import { NETWORK_CONFIG } from 'constants/network';
 
 export interface ITradingParCard {
   chainId: string;
@@ -51,7 +52,11 @@ const TradingPairList: React.FC<TradingParCardProps> = ({ list = [], current, on
             <TokenImg src={item.imageUrl} symbol={item.symbol} />
             <div>
               <div className="token-name">{item.symbol}</div>
-              <div className="chain-info">{item.chainId === 'AELF' ? 'MainChain AELF' : 'SideChain tDVV'}</div>
+              <div className="chain-info">
+                {item.chainId === NETWORK_CONFIG.mainChainId
+                  ? `MainChain ${NETWORK_CONFIG.mainChainId}`
+                  : `SideChain ${NETWORK_CONFIG.sideChainId}`}
+              </div>
             </div>
           </div>
           <div className="card-right">

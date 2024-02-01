@@ -19,8 +19,8 @@ const Projects: React.FC = () => {
   const { getList } = useGetList();
 
   const getActiveProjects = useCallback(async () => {
+    console.log('getActiveProjects');
     const { activeItems } = await getList({ types: ProjectType.ACTIVE });
-    setLoading(false);
     setActiveItems(activeItems || []);
   }, [getList]);
 
@@ -31,7 +31,6 @@ const Projects: React.FC = () => {
       skipCount: closedItems.length,
       maxResultCount: colNum * 3,
     });
-    setLoading(false);
     if (list.closedItems.length === 0) return;
     const newList = closedItems.concat(list.closedItems);
     setClosedItems(newList);
@@ -42,9 +41,9 @@ const Projects: React.FC = () => {
     emitLoading(loading);
   }, [loading]);
 
-  const initList = useCallback(() => {
-    getActiveProjects();
-    getClosedProject();
+  const initList = useCallback(async () => {
+    await Promise.all([getActiveProjects(), getClosedProject()]);
+    setLoading(false);
   }, [getActiveProjects, getClosedProject]);
 
   const initListRef = useRef(initList);
@@ -56,7 +55,9 @@ const Projects: React.FC = () => {
     return () => remove();
   }, []);
 
-  useEffectOnce(() => initList());
+  useEffectOnce(() => {
+    initList();
+  });
 
   const render = useMemo(() => {
     if (loading) return null;
