@@ -27,7 +27,9 @@ export const AELFD_THEME_CONFIG: IAelfdThemeProviderProps['theme'] = {
       fontWeightStrong: 500,
     },
     Input: {
-      activeBorderColor: '#863DFF',
+      activeShadow: '',
+      colorBgContainerDisabled: '#FAFAFB',
+      colorTextDisabled: '#C1C2C9',
     },
     Tabs: {
       horizontalItemPaddingSM: '13px 0',
@@ -50,6 +52,15 @@ export const AELFD_THEME_CONFIG: IAelfdThemeProviderProps['theme'] = {
     Tooltip: {
       colorBgSpotlight: '#070A26',
       colorTextLightSolid: '#FFF',
+    },
+    DatePicker: {
+      colorBgContainerDisabled: '#FAFAFB',
+      colorTextDisabled: '#C1C2C9',
+      activeShadow: '',
+    },
+    Select: {
+      colorBgContainerDisabled: '#FAFAFB',
+      colorTextDisabled: '#C1C2C9',
     },
   },
 };

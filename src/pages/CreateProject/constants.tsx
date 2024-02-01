@@ -343,6 +343,8 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
         pcProps: {
           showTime: true,
           showNow: false,
+          placeholder: '',
+          allowClear: false,
           disabledDate: disabledDateBefore,
           disabledTime: (current) => disabledTimeBefore(current),
         },
@@ -363,6 +365,8 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
         pcProps: {
           showTime: true,
           showNow: false,
+          placeholder: '',
+          allowClear: false,
           disabledDate: (current) => disabledDateBefore(current, idoInfo?.endTime),
           disabledTime: (current) => disabledTimeBefore(current, idoInfo?.endTime),
         },
@@ -384,6 +388,8 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
         pcProps: {
           showTime: true,
           showNow: false,
+          placeholder: '',
+          allowClear: false,
           disabledDate: (current) => disabledDateBefore(current, idoInfo?.tokenReleaseTime),
           disabledTime: (current) => disabledTimeBefore(current, idoInfo?.tokenReleaseTime),
         },

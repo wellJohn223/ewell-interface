@@ -27,7 +27,6 @@ const MyProjects: React.FC<ProjectListProps> = () => {
 
   const getCreatedProjects = useCallback(async () => {
     const { createdItems } = await getList({ types: ProjectType.CREATED });
-    setLoading(false);
     setCreatedItems(createdItems || []);
   }, [getList]);
 
@@ -38,7 +37,6 @@ const MyProjects: React.FC<ProjectListProps> = () => {
       maxResultCount: colNum * 3,
     });
 
-    setLoading(false);
     if (list.participateItems.length === 0) return;
     const newList = participateItems.concat(list.participateItems);
     setParticipateItems(newList);
@@ -50,9 +48,9 @@ const MyProjects: React.FC<ProjectListProps> = () => {
     emitLoading(loading);
   }, [loading]);
 
-  const initList = useCallback(() => {
-    getCreatedProjects();
-    getParticipateProject();
+  const initList = useCallback(async () => {
+    await Promise.all([getCreatedProjects(), getParticipateProject()]);
+    setLoading(false);
   }, [getCreatedProjects, getParticipateProject]);
 
   const initListRef = useRef(initList);

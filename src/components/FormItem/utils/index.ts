@@ -36,7 +36,7 @@ export function getInputOptions(
     name: name || label,
     rules: required ? [{ required: true, message: 'Please enter the necessary information' }] : [],
     childrenProps: {
-      placeholder: `Please enter`,
+      // placeholder: `Please enter`,
       ...childrenProps,
     },
     ...props,
@@ -51,7 +51,7 @@ export function getTextAreaOptions(option: string | Options): textAreaProps & Fo
     name: name || label,
     rules: required ? [{ required: true, message: `Please enter ${label}!` }] : [],
     childrenProps: {
-      placeholder: `Please enter ${label}`,
+      // placeholder: `Please enter ${label}`,
     },
   };
 }
