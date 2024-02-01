@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
-import { Flex } from 'antd';
+import { Flex, message } from 'antd';
 import { Button, IButtonProps, Modal, Typography } from 'aelf-design';
 import UpdateModal, { UpdateModalInterface } from './UpdateModal';
 import AddressValidationModal from './AddressValidationModal';
@@ -32,6 +32,7 @@ export default function UpdateWhitelistUsers({
   whitelistId,
   onSuccess,
 }: IUpdateWhitelistUsersButtonProps) {
+  const [messageApi, contextHolder] = message.useMessage();
   const updateModalRef = useRef<UpdateModalInterface>();
 
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
@@ -72,15 +73,18 @@ export default function UpdateWhitelistUsers({
           type: updateType,
         });
         setValidationData(_validationData);
-      } catch (error) {
-        // TODO: toast error
+      } catch (error: any) {
+        messageApi.open({
+          type: 'error',
+          content: error?.message || 'Validate failed',
+        });
         console.log('onUpdateSubmit error', error);
       }
       emitLoading(false);
 
       setIsAddressValidationModalOpen(true);
     },
-    [getWhitelistUserList, updateType, whitelistId],
+    [getWhitelistUserList, messageApi, updateType, whitelistId],
   );
 
   const onValidationConfirm = useCallback(async () => {
@@ -109,12 +113,15 @@ export default function UpdateWhitelistUsers({
 
       setIsUpdateSuccessModalOpen(true);
       onSuccess?.();
-    } catch (error) {
-      // TODO: toast error
+    } catch (error: any) {
+      messageApi.open({
+        type: 'error',
+        content: error?.message || 'Update users failed',
+      });
       console.log('onValidationConfirm error', error);
     }
     emitLoading(false);
-  }, [activeAddressList, onSuccess, updateType, wallet, whitelistId]);
+  }, [activeAddressList, messageApi, onSuccess, updateType, wallet, whitelistId]);
 
   const init = useCallback(() => {
     updateModalRef.current?.reset();
@@ -124,6 +131,7 @@ export default function UpdateWhitelistUsers({
 
   return (
     <>
+      {contextHolder}
       <Web3Button {...buttonProps} onClick={init} />
       <UpdateModal
         ref={updateModalRef}
