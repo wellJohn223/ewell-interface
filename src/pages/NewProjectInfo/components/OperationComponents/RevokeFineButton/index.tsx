@@ -66,10 +66,9 @@ export default function RevokeFineButton({ projectInfo }: IClaimTokenButtonProps
       <Button type="primary" onClick={() => setIsConfirmModalOpen(true)}>
         Redeem
       </Button>
-      {/* TODO: adjust text */}
       <Modal
         className="common-modal"
-        title="Revoke Token"
+        title="Redeem Investment"
         footer={null}
         centered
         destroyOnClose
@@ -78,10 +77,7 @@ export default function RevokeFineButton({ projectInfo }: IClaimTokenButtonProps
           setIsConfirmModalOpen(false);
         }}>
         <Flex vertical gap={24}>
-          <Text>
-            Are you sure you want to cancel your investment? Withdrawal of investment will be charged 10% of your ELF as
-            liquidated damages and the remaining ELF will be refunded after deduction of Gas.
-          </Text>
+          <Text>The sale has been cancelled and you can redeem the remaining investment.</Text>
           <Flex className="mobile-flex-vertical-reverse" gap={16}>
             <Button className="flex-1" onClick={() => setIsConfirmModalOpen(false)}>
               Back
@@ -93,14 +89,14 @@ export default function RevokeFineButton({ projectInfo }: IClaimTokenButtonProps
                 setIsConfirmModalOpen(false);
                 setIsSubmitModalOpen(true);
               }}>
-              Revoke Token
+              Redeem
             </Button>
           </Flex>
         </Flex>
       </Modal>
       <Modal
         className="common-modal"
-        title="Revoke Token"
+        title="Redeem Investment"
         footer={null}
         centered
         destroyOnClose
@@ -109,7 +105,7 @@ export default function RevokeFineButton({ projectInfo }: IClaimTokenButtonProps
           setIsSubmitModalOpen(false);
         }}>
         <Flex vertical gap={24}>
-          <Text>After clicking “Submit”, EWELL transfer ELF to the designated account.</Text>
+          <Text>Upon clicking "Confirm," ELF will be returned to the specified address.</Text>
           <Flex gap={8} justify="center" align="baseline">
             <Title fontWeight={FontWeightEnum.Medium} level={4}>
               {divDecimalsStr(projectInfo?.liquidatedDamageAmount, projectInfo?.toRaiseToken?.decimals)}
@@ -155,14 +151,14 @@ export default function RevokeFineButton({ projectInfo }: IClaimTokenButtonProps
           </Flex>
           <Flex justify="center">
             <Button className="modal-single-button" type="primary" onClick={handleSubmit}>
-              Submit
+              Confirm
             </Button>
           </Flex>
         </Flex>
       </Modal>
       <SuccessModal
         modalProps={{
-          title: 'Revoke Successfully',
+          title: 'Investment Redeemed',
           open: isSuccessModalOpen,
           onCancel: () => {
             setIsSuccessModalOpen(false);
@@ -178,7 +174,7 @@ export default function RevokeFineButton({ projectInfo }: IClaimTokenButtonProps
               symbol: projectInfo?.toRaiseToken?.symbol || '--',
             },
           ],
-          description: 'Congratulations, your token has been revoked successfully!',
+          description: 'Congratulations! Your investment has been successfully redeemed.',
           boxData: {
             label: 'Transaction ID',
             value: transactionId,
