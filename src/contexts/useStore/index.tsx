@@ -40,19 +40,19 @@ export default function Provider({ children }: { children: ReactNode }) {
     const resize = () => {
       const isM = isMobile();
       setMobile(
-        miniScreenPoint.gt(window.innerWidth) ||
+        miniScreenPoint.gte(window.innerWidth) ||
           isM.apple.phone ||
           isM.android.phone ||
           isM.apple.tablet ||
           isM.android.tablet,
       );
-      if (miniScreenPoint.gt(window.innerWidth)) {
+      if (miniScreenPoint.gte(window.innerWidth)) {
         setScreenSize(ScreenSize.MINI);
-      } else if (smallScreenPoint.gt(window.innerWidth)) {
+      } else if (smallScreenPoint.gte(window.innerWidth)) {
         setScreenSize(ScreenSize.SMALL);
-      } else if (mediumScreenPoint.gt(window.innerWidth)) {
+      } else if (mediumScreenPoint.gte(window.innerWidth)) {
         setScreenSize(ScreenSize.MEDIUM);
-      } else if (largeScreenPoint.gt(window.innerWidth)) {
+      } else if (largeScreenPoint.gte(window.innerWidth)) {
         setScreenSize(ScreenSize.LARGE);
       } else {
         setScreenSize(ScreenSize.ULTRA);
