@@ -24,8 +24,6 @@ export default function WhitelistTasksButton({ whitelistId, whitelistTasksUrl, d
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [urlInputValue, setUrlInputValue] = useState('');
 
-  const isEdit = useMemo(() => !!whitelistTasksUrl, [whitelistTasksUrl]);
-
   useEffect(() => {
     if (isWhitelistTasksModalOpen) {
       setUrlInputValue(whitelistTasksUrl || '');

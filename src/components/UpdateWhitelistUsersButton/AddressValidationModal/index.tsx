@@ -41,7 +41,7 @@ export default function AddressValidationModal({
   validationData,
 }: IAddressValidationModalProps) {
   const screenSize = useScreenSize();
-  const isSwitchDrawer = useMemo(() => screenSize === ScreenSize.MINI || screenSize === ScreenSize.SMALL, [screenSize]);
+  const isSwitchDrawer = useMemo(() => screenSize === ScreenSize.MINI, [screenSize]);
 
   const data = useMemo(
     () =>

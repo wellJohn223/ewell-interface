@@ -29,7 +29,7 @@ export default function CommonModalSwitchDrawer({
   ...props
 }: ICommonModalSwitchDrawerProps) {
   const screenSize = useScreenSize();
-  const isSwitchDrawer = useMemo(() => screenSize === ScreenSize.MINI || screenSize === ScreenSize.SMALL, [screenSize]);
+  const isSwitchDrawer = useMemo(() => screenSize === ScreenSize.MINI, [screenSize]);
 
   return isSwitchDrawer ? (
     <Drawer
