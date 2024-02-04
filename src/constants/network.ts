@@ -5,6 +5,8 @@ export type TNetworkConfig = {
   networkType: NetworkType;
   mainChainId: string;
   sideChainId: string;
+  ewellRequestUrl: string;
+  ewellConnectUrl: string;
   webLoginNetworkType: 'MAIN' | 'TESTNET';
   webLoginGraphqlUrl: string;
   webLoginRequestDefaultsUrl: string;
@@ -33,6 +35,8 @@ const NETWORK_CONFIG_LIST: Record<string, TNetworkConfig> = {
     networkType: 'MAINNET',
     mainChainId: 'AELF',
     sideChainId: 'tDVV',
+    ewellRequestUrl: 'https://ewell.finance',
+    ewellConnectUrl: 'https://ewell.finance',
     webLoginNetworkType: 'MAIN',
     webLoginGraphqlUrl: 'https://dapp-portkey.portkey.finance/Portkey_DID/PortKeyIndexerCASchema/graphql',
     webLoginRequestDefaultsUrl: 'https://did-portkey.portkey.finance',
@@ -59,12 +63,14 @@ const NETWORK_CONFIG_LIST: Record<string, TNetworkConfig> = {
     networkType: 'TESTNET',
     mainChainId: 'AELF',
     sideChainId: 'tDVW',
+    ewellRequestUrl: 'https://test.ewell.finance',
+    ewellConnectUrl: 'https://test.ewell.finance',
     webLoginNetworkType: 'TESTNET',
     webLoginGraphqlUrl: 'https://dapp-aa-portkey-test.portkey.finance/Portkey_V2_DID/PortKeyIndexerCASchema/graphql',
     webLoginRequestDefaultsUrl: 'https://aa-portkey-test.portkey.finance',
     webLoginConnectUrl: 'https://auth-aa-portkey-test.portkey.finance',
-    ewellContractAddress: '',
-    whitelistContractAddress: '',
+    ewellContractAddress: '2YEYK4sFBJPXEbX9PKniaoJ72ro6FxJjDLVJANZGyfJq6JLcRQ',
+    whitelistContractAddress: '25VDxYFNxujPnPzqzkHxveegoV9wYm5zY72Hv6L7utD1kKu2jZ',
     symbolMarketUrl: 'https://test.eforest.finance/symbolmarket',
     mainChainInfo: {
       chainId: 'AELF',
@@ -85,6 +91,8 @@ const NETWORK_CONFIG_LIST: Record<string, TNetworkConfig> = {
     networkType: 'TESTNET',
     mainChainId: 'AELF',
     sideChainId: 'tDVV',
+    ewellRequestUrl: '',
+    ewellConnectUrl: '',
     webLoginNetworkType: 'TESTNET',
     webLoginGraphqlUrl: '/AElfIndexer_DApp/PortKeyIndexerCASchema/graphql',
     webLoginRequestDefaultsUrl: '/webLoginRequest',

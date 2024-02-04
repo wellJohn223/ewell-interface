@@ -68,7 +68,7 @@ export const WelcomeModal = () => {
         chain_id: NETWORK_CONFIG.sideChainId,
       };
 
-      const res = await axios.post<any>(`/connect/token`, stringify(apiData), {
+      const res = await axios.post<any>(`${NETWORK_CONFIG.ewellConnectUrl}/connect/token`, stringify(apiData), {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         timeout: 8000,
       });

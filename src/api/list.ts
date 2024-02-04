@@ -1,3 +1,4 @@
+import { NETWORK_CONFIG } from 'constants/network';
 import { API_REQ_FUNCTION, UrlObj } from './types';
 
 export const DEFAULT_METHOD = 'GET';
@@ -16,28 +17,23 @@ export const DEFAULT_METHOD = 'GET';
  * @type {UrlObj}  // The type of this object from UrlObj.
  */
 
-const AuthList = {
-  token: {
-    target: '/connect/token',
-    baseConfig: { method: 'POST' },
-  },
-};
+const BASE_URL = NETWORK_CONFIG.ewellRequestUrl;
 
 const ProjectApiList = {
-  getProjectList: '/api/app/project/list',
-  getTokenList: '/api/app/token/list',
-  getProjectUserList: '/api/app/project/userList',
+  getProjectList: `${BASE_URL}/api/app/project/list`,
+  getTokenList: `${BASE_URL}/api/app/token/list`,
+  getProjectUserList: `${BASE_URL}/api/app/project/userList`,
 };
 
 const AssetsApiList = {
-  getTxFee: '/api/app/project/fee',
-  getTokenPrice: '/api/app/token/price',
+  getTxFee: `${BASE_URL}/api/app/project/fee`,
+  getTokenPrice: `${BASE_URL}/api/app/token/price`,
 };
 /**
  * api request extension configuration directory
  * @description object.key // The type of this object key comes from from @type {UrlObj}
  */
-export const EXPAND_APIS = { project: ProjectApiList, auth: AuthList, assets: AssetsApiList };
+export const EXPAND_APIS = { project: ProjectApiList, assets: AssetsApiList };
 
 export type EXPAND_REQ_TYPES = {
   [X in keyof typeof EXPAND_APIS]: {
