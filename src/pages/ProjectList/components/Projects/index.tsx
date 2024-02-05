@@ -9,8 +9,11 @@ import { ProjectType } from 'types/project';
 import InfiniteList from 'components/InfiniteList';
 import { emitLoading } from 'utils/events';
 import myEvents from 'utils/myEvent';
+import { useMobile } from 'contexts/useStore/hooks';
+import clsx from 'clsx';
 
 const Projects: React.FC = () => {
+  const isMobile = useMobile();
   const [colNum] = useCardCol();
   const [loading, setLoading] = useState(true);
   const [activeItems, setActiveItems] = useState<IListData['activeItems']>([]);
@@ -66,7 +69,10 @@ const Projects: React.FC = () => {
       return (
         <>
           <div className="project-type">All Projects</div>
-          <Empty className="project-empty-full" text="No sales at the moment. Please stay tuned for updates." />
+          <Empty
+            className={clsx(isMobile ? 'mobile-project-empty-full' : 'project-empty-full')}
+            text="No sales at the moment. Please stay tuned for updates."
+          />
         </>
       );
     }
@@ -106,7 +112,7 @@ const Projects: React.FC = () => {
         )}
       </>
     );
-  }, [activeItems, closedItems, colNum, getClosedProject, loadAllClosedItems, loading]);
+  }, [activeItems, closedItems, colNum, getClosedProject, isMobile, loadAllClosedItems, loading]);
 
   return <div className="project-page">{render}</div>;
 };

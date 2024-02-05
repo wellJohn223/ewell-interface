@@ -10,12 +10,15 @@ import { emitLoading } from 'utils/events';
 import InfiniteList from 'components/InfiniteList';
 import myEvents from 'utils/myEvent';
 import { useNavigate } from 'react-router-dom';
+import clsx from 'clsx';
+import { useMobile } from 'contexts/useStore/hooks';
 interface ProjectListProps {
   createdItems?: IProjectCard[];
   participateItems?: IProjectCard[];
 }
 
 const MyProjects: React.FC<ProjectListProps> = () => {
+  const isMobile = useMobile();
   const [colNum] = useCardCol();
   const [loading, setLoading] = useState(true);
   const [createdItems, setCreatedItems] = useState<IListData['createdItems']>([]);
@@ -88,7 +91,7 @@ const MyProjects: React.FC<ProjectListProps> = () => {
       {!createdItems.length && !participateItems.length && (
         <>
           <div className="project-type">No Projects</div>
-          <Empty className="project-empty-full" text={emptyText} />
+          <Empty className={clsx(isMobile ? 'mobile-project-empty-full' : 'project-empty-full')} text={emptyText} />
         </>
       )}
       {!!createdItems.length && (
