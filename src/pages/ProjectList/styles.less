@@ -2,7 +2,6 @@
 
 .project-list {
   width: 100%;
-  padding-bottom: 48px;
 
   .project-page {
     padding-top: 24px;
@@ -19,6 +18,10 @@
       height: calc(100vh - @header-height - @footer-height - 72px);
     }
     
+    .mobile-project-empty-full {
+      height: calc(100vh - @header-height - @mobile-footer-height - 72px);
+    }
+
     .project-list-wrapper {
       margin-bottom: 48px;
       .infinite-scroll-component {
