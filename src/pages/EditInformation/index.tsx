@@ -11,6 +11,7 @@ import { urlString2FileList } from 'utils/format';
 import { useUpdateAddition } from './useApi';
 import { parseAdditionalInfo } from 'utils/project';
 import './styles.less';
+import { emitLoading } from 'utils/events';
 
 const { Title } = Typography;
 
@@ -40,21 +41,38 @@ export default function EditInformation() {
 
   const onFinish = useCallback(
     async ({ logoUrl, projectImgs, ...value }: any) => {
-      console.log('onUpdate-value', value);
+      try {
+        console.log('onUpdate-value', value);
+        console.log('projectInfo', value);
+        if (!logoUrl || logoUrl.length <= 0) {
+          message.warning('Please upload logo image.');
+          return;
+        }
 
-      const isSuccess = await updateAddition(projectId, {
-        ...value,
-        logoUrl: logoUrl.map((file) => file.url).join(),
-        projectImgs: projectImgs.map((file) => file.url).join(),
-      });
+        if (!projectImgs || projectImgs.length < 3) {
+          message.warning('Please upload 3 to 5 project images.');
+          return;
+        }
 
-      if (isSuccess) {
-        message.success('update success!');
-        navigate(`/project/${projectId}`);
-        return;
+        if (!projectId) return message.error('projectId is needed.');
+
+        emitLoading(true);
+        const result = await updateAddition(projectId, {
+          ...value,
+          logoUrl: logoUrl.map((file) => file.url).join(),
+          projectImgs: projectImgs.map((file) => file.url).join(),
+        });
+        emitLoading(false);
+
+        if (result) {
+          message.success('update success!');
+          navigate(`/project/${projectId}`);
+          return;
+        }
+      } catch (error: any) {
+        emitLoading(false);
+        message.error(error.message || 'update failed.');
       }
-
-      message.error('update failed');
     },
     [navigate, projectId, updateAddition],
   );
@@ -95,7 +113,7 @@ export default function EditInformation() {
             requiredMark={CustomMark}
             scrollToFirstError
             onFinish={onFinish}
-            validateTrigger="onSubmit">
+            validateTrigger="onBlur">
             {FormFields(ProjectInfoFromJson)}
             <Form.Item>
               <Flex justify="center">
