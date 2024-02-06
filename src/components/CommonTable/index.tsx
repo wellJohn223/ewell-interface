@@ -29,7 +29,7 @@ export default function CommonTable<T extends AnyObject>(props: ICommonTableProp
         wrapperClassName: 'table-loading-wrapper',
         indicator: (
           <div>
-            <Flex className="table-loading" align="center" gap={8}>
+            <Flex className="table-loading" align="center" justify="center" gap={8}>
               <SandGlassLoading />
               <span>Search is ongoing...</span>
             </Flex>
