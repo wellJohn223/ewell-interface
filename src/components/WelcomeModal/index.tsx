@@ -50,8 +50,9 @@ export const WelcomeModal = () => {
     try {
       const plainText = `Nonce:${Date.now()}`;
       const plainTextHex = Buffer.from(plainText).toString('hex');
+      const signInfo = wallet.walletType === WalletType.portkey ? plainTextHex : AElf.utils.sha256(plainTextHex);
       const result = await wallet?.getSignature({
-        signInfo: AElf.utils.sha256(plainTextHex),
+        signInfo,
       });
       if (result.error) throw result.errorMessage;
       const signature = result?.signature || '';
