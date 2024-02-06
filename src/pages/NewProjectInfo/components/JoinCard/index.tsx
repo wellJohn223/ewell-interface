@@ -424,6 +424,7 @@ export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefres
                   buttonDisabled={isPurchaseButtonDisabled}
                   projectInfo={projectInfo}
                   purchaseAmount={purchaseInputValue}
+                  handleClearInput={() => setPurchaseInputValue('')}
                 />
               </>
             )}

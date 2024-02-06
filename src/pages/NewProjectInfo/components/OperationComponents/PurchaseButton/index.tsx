@@ -25,9 +25,15 @@ export interface IPurchaseButtonProps {
   buttonDisabled?: boolean;
   projectInfo?: IProjectInfo;
   purchaseAmount?: string;
+  handleClearInput: () => void;
 }
 
-export default function PurchaseButton({ buttonDisabled, projectInfo, purchaseAmount }: IPurchaseButtonProps) {
+export default function PurchaseButton({
+  buttonDisabled,
+  projectInfo,
+  purchaseAmount,
+  handleClearInput,
+}: IPurchaseButtonProps) {
   const { projectId } = useParams();
   const { additionalInfo } = projectInfo || {};
   const { wallet, checkManagerSyncState } = useWallet();
@@ -139,6 +145,11 @@ export default function PurchaseButton({ buttonDisabled, projectInfo, purchaseAm
     } finally {
       emitLoading(false);
     }
+  };
+
+  const handleSuccessModalClose = () => {
+    handleClearInput();
+    setIsSuccessModalOpen(false);
   };
 
   return (
@@ -281,12 +292,8 @@ export default function PurchaseButton({ buttonDisabled, projectInfo, purchaseAm
         modalProps={{
           title: 'Successfully Purchased',
           open: isSuccessModalOpen,
-          onCancel: () => {
-            setIsSuccessModalOpen(false);
-          },
-          onOk: () => {
-            setIsSuccessModalOpen(false);
-          },
+          onCancel: handleSuccessModalClose,
+          onOk: handleSuccessModalClose,
         }}
         data={{
           amountList: [
