@@ -49,10 +49,15 @@ export const WelcomeModal = () => {
 
     try {
       const plainTextOrigin = `Nonce:${Date.now()}`;
-      let signInfo = Buffer.from(plainTextOrigin).toString('hex');
+      const plainText: any = Buffer.from(plainTextOrigin).toString('hex').replace('0x', '');
+
+      let signInfo: string;
       if (wallet.walletType !== WalletType.portkey) {
         // nightElf or discover
-        signInfo = AElf.utils.sha256(Buffer.from(signInfo.replace('0x', ''), 'hex'));
+        signInfo = AElf.utils.sha256(plainText);
+      } else {
+        // portkey sdk
+        signInfo = Buffer.from(plainText).toString('hex');
       }
 
       const result = await wallet?.getSignature({
@@ -61,11 +66,6 @@ export const WelcomeModal = () => {
 
       if (result.error) throw result.errorMessage;
       const signature = result?.signature || '';
-
-      let plainText = signInfo;
-      if (wallet.walletType === WalletType.portkey) {
-        plainText = AElf.utils.sha256(Buffer.from(signInfo.replace('0x', ''), 'hex'));
-      }
 
       const pubKey = recoverPubKey(plainText, signature);
       const apiData = {
