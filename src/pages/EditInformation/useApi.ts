@@ -6,26 +6,20 @@ export const useUpdateAddition = () => {
   const { wallet } = useWallet();
 
   const updateAddition = useCallback(
-    async function (projectId?: string, data?: { [key: string]: string }) {
-      try {
-        if (!projectId) return false;
-        console.log('addition-data', data);
-        const result = await wallet?.callContract<any, any>({
-          contractAddress: NETWORK_CONFIG.ewellContractAddress,
-          methodName: 'UpdateAdditionalInfo',
-          args: {
-            projectId: projectId,
-            additionalInfo: {
-              data: data || {},
-            },
+    async function (projectId: string, data?: { [key: string]: string }) {
+      console.log('addition-data', data);
+      const result = await wallet?.callContract<any, any>({
+        contractAddress: NETWORK_CONFIG.ewellContractAddress,
+        methodName: 'UpdateAdditionalInfo',
+        args: {
+          projectId: projectId,
+          additionalInfo: {
+            data: data || {},
           },
-        });
-        console.log('update infomation', result);
-        return true;
-      } catch (error) {
-        console.log('update infomation error', error);
-        return false;
-      }
+        },
+      });
+      console.log('update infomation', result);
+      return result;
     },
     [wallet],
   );
