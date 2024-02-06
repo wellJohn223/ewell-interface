@@ -37,8 +37,8 @@ export default function Header() {
     return pathname === '/';
   }, [pathname]);
 
-  const { login, loginState, logout, wallet } = useWallet();
-  const isProjectPage = useCheckRoute('projects');
+  const { login, loginState } = useWallet();
+  const isProjectPage = useCheckRoute('projects/all');
 
   const menuList: TMenuItem[] = useMemo(
     () => [
