@@ -40,14 +40,12 @@ export const clearLocalJWT = () => {
   return localStorage.removeItem(LocalStorageKey.ACCESS_TOKEN);
 };
 
-export const recoverPubKey = (msg, signature) => {
+export const recoverPubKey = (hexMsg, signature) => {
   const signatureObj = {
     r: signature.slice(0, 64),
     s: signature.slice(64, 128),
     recoveryParam: Number(signature.slice(128, 130)),
   };
-
-  const hexMsg = AElf.utils.sha256(msg);
 
   const publicKey = AElf.wallet.ellipticEc
     .recoverPubKey(Buffer.from(hexMsg, 'hex'), signatureObj, signatureObj.recoveryParam)
