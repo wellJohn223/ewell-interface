@@ -48,22 +48,33 @@ export const WelcomeModal = () => {
     }
 
     try {
-      const plainText = `Nonce:${Date.now()}`;
-      const plainTextHex = Buffer.from(plainText).toString('hex');
+      const plainTextOrigin = `Nonce:${Date.now()}`;
+      const plainText: any = Buffer.from(plainTextOrigin).toString('hex').replace('0x', '');
+
+      let signInfo: string;
+      if (wallet.walletType !== WalletType.portkey) {
+        // nightElf or discover
+        signInfo = AElf.utils.sha256(plainText);
+      } else {
+        // portkey sdk
+        signInfo = Buffer.from(plainText).toString('hex');
+      }
+
       const result = await wallet?.getSignature({
-        signInfo: AElf.utils.sha256(plainTextHex),
+        signInfo,
       });
+
       if (result.error) throw result.errorMessage;
       const signature = result?.signature || '';
-      const pubKey = recoverPubKey(plainTextHex, signature);
 
+      const pubKey = recoverPubKey(plainText, signature);
       const apiData = {
         grant_type: 'signature',
         scope: 'EwellServer',
         client_id: 'EwellServer_App',
         pubkey: pubKey,
         signature,
-        plain_text: plainTextHex,
+        plain_text: plainText,
         ca_hash: caHash,
         chain_id: NETWORK_CONFIG.sideChainId,
       };

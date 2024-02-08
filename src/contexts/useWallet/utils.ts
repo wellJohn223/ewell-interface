@@ -48,7 +48,6 @@ export const recoverPubKey = (msg, signature) => {
   };
 
   const hexMsg = AElf.utils.sha256(msg);
-
   const publicKey = AElf.wallet.ellipticEc
     .recoverPubKey(Buffer.from(hexMsg, 'hex'), signatureObj, signatureObj.recoveryParam)
     .encode('hex', false);

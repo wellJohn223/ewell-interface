@@ -6,6 +6,7 @@ import { Button } from 'aelf-design';
 import Web3Button from 'components/Web3Button';
 import { useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
+
 export default function Home() {
   const navigate = useNavigate();
 
