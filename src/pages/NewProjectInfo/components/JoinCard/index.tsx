@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react';
-import clsx from 'clsx';
 import dayjs from 'dayjs';
 import BigNumber from 'bignumber.js';
 import { InputNumber, Flex, Form } from 'antd';
@@ -7,12 +6,12 @@ import { Typography, FontWeightEnum, Progress } from 'aelf-design';
 import CommonCard from 'components/CommonCard';
 import CommonWrapText, { CommonWrapTextAlignType } from 'components/CommonWrapText';
 import NewBaseCountdown from 'components/NewBaseCountdown';
+import CommonProjectStatusTag from 'components/CommonProjectStatusTag';
 import PurchaseButton from '../OperationComponents/PurchaseButton';
 import RevokeInvestmentButton from '../OperationComponents/RevokeInvestmentButton';
 import ClaimTokenButton from '../OperationComponents/ClaimTokenButton';
 import RevokeFineButton from '../OperationComponents/RevokeFineButton';
 import { IProjectInfo, ProjectStatus } from 'types/project';
-import { PROJECT_STATUS_TEXT_MAP } from 'constants/project';
 import { ZERO } from 'constants/misc';
 import { divDecimals, divDecimalsStr, timesDecimals } from 'utils/calculate';
 import { getHref, getPriceDecimal } from 'utils';
@@ -265,20 +264,10 @@ export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefres
 
   return (
     <CommonCard className="join-card-wrapper">
-      <Flex className="swap-progress-wrapper" vertical gap={8}>
+      <Flex vertical gap={8}>
         <Flex align="center" justify="space-between" gap={16}>
           <Title fontWeight={FontWeightEnum.Medium}>Status</Title>
-          {!!projectInfo?.status && (
-            <div
-              className={clsx('status', 'flex-none', {
-                'purple-status':
-                  projectInfo?.status === ProjectStatus.UPCOMING ||
-                  projectInfo?.status === ProjectStatus.UNLOCKED ||
-                  projectInfo?.status === ProjectStatus.PARTICIPATORY,
-              })}>
-              <Text size="small">{PROJECT_STATUS_TEXT_MAP[projectInfo?.status]}</Text>
-            </div>
-          )}
+          {!!projectInfo?.status && <CommonProjectStatusTag className="flex-none" status={projectInfo.status} />}
         </Flex>
         <Progress
           size={['100%', 12]}

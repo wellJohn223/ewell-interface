@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import clsx from 'clsx';
 import { Flex } from 'antd';
 import { Typography, Progress, FontWeightEnum } from 'aelf-design';
 import communityLogo from 'assets/images/communityLogo';
 import ProjectLogo from 'components/ProjectLogo';
 import CommonCommunityLogoList, { COMMUNITY_LOGO_LIST } from 'components/CommonCommunityLogoList';
+import CommonProjectStatusTag from 'components/CommonProjectStatusTag';
 import { IProjectInfo } from './types';
 import { ZERO } from 'constants/misc';
 import { divDecimals } from 'utils/calculate';
@@ -12,7 +12,6 @@ import { ProjectStatus } from 'types/project';
 import { useNavigate, useParams } from 'react-router-dom';
 import { stringifyUrl } from 'query-string';
 import { parseAdditionalInfo } from 'utils/project';
-import { PROJECT_STATUS_TEXT_MAP } from 'constants/project';
 import dayjs from 'dayjs';
 import { timeDuration } from 'utils/time';
 import './styles.less';
@@ -42,15 +41,6 @@ export interface ProjectCardProps {
 }
 
 const Close_Status = [ProjectStatus.CANCELED, ProjectStatus.ENDED];
-
-function ProjectStatusRow({ status }: { status: ProjectStatus }) {
-  if (!status) return null;
-  return (
-    <div className={clsx('project-card-status-row', `project-card-status-row-${status}`)}>
-      {PROJECT_STATUS_TEXT_MAP[status]}
-    </div>
-  );
-}
 
 const { Text, Title } = Typography;
 const Card: React.FC<ProjectCardProps> = ({ data }) => {
@@ -181,7 +171,7 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
           <ProjectLogo className="project-card-logo" src={projectLogoUrl} alt="logo" />
           <div className="project-name-wrap">
             <div className="project-name">{_additionalInfo?.projectName || '--'}</div>
-            <ProjectStatusRow status={status || ProjectStatus.UPCOMING} />
+            {!!status && <CommonProjectStatusTag className="project-status-tag" status={status} />}
           </div>
         </Flex>
         <Flex vertical gap={4}>
