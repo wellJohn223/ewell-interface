@@ -27,21 +27,7 @@ class Wallet implements IWallet {
   }
 
   public async callContract<T, R>(params: CallContractParams<T>): Promise<R> {
-    let req: any;
-    if (this.walletType !== WalletType.portkey) {
-      req = await this._callContract(params);
-    } else {
-      req = await this._callContract({
-        contractAddress: NETWORK_CONFIG.sideChainInfo.caContractAddress,
-        methodName: 'ManagerForwardCall',
-        args: {
-          caHash: this.walletInfo.portkeyInfo?.caInfo?.caHash || '',
-          contractAddress: params.contractAddress,
-          methodName: params.methodName,
-          args: params.args,
-        },
-      });
-    }
+    const req: any = await this._callContract(params);
 
     console.log('callContract req', req);
     if (req.error) {

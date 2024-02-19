@@ -20,6 +20,7 @@ import { useLocation } from 'react-use';
 import { useNavigate } from 'react-router-dom';
 import { checkPathExist } from 'utils/reg';
 import { APP_NAME } from 'constants/aelf';
+import { message } from 'antd';
 
 setGlobalConfig({
   appName: APP_NAME || '',
@@ -88,6 +89,7 @@ function reducer(state: any, { type, payload }: any) {
 
 const LOGOUT_STAY_PATH = ['example', 'project', 'projects/all'];
 export function WalletProvider({ children }: { children: React.ReactNode }) {
+  const [messageApi, contextHolder] = message.useMessage();
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
   const webLoginContext = useWebLogin();
   const webLoginContextRef = useRef<WebLoginInterface>(webLoginContext);
@@ -141,6 +143,17 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   }, [navigate]);
   useWebLoginEvent(WebLoginEvents.LOGOUT, onLogout);
 
+  const onLoginError = useCallback(
+    (error) => {
+      console.log('onLoginError', error);
+      if (error?.message) {
+        messageApi.error(error.message);
+      }
+    },
+    [messageApi],
+  );
+  useWebLoginEvent(WebLoginEvents.LOGIN_ERROR, onLoginError);
+
   const onAuthorizationExpired = useCallback(() => {
     if (webLoginContext.loginState !== WebLoginState.logined) {
       console.log('AuthorizationExpired: Not Logined');
@@ -164,6 +177,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <WalletContext.Provider value={useMemo(() => [state, dispatch], [state, dispatch])}>
+      {contextHolder}
       {children}
     </WalletContext.Provider>
   );

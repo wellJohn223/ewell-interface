@@ -117,6 +117,9 @@ export const ANTD_THEME_CONFIG: ThemeConfig = {
       colorBgSpotlight: '#070A26',
       colorText: '#FFF',
     },
+    Message: {
+      zIndexPopup: 20000,
+    },
   },
 };
 
