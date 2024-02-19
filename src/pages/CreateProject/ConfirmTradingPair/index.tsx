@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import TradingPairList, { ITradingParCard } from '../components/TradingPairList';
 import './styles.less';
 import { CreateStepProps } from '../types';
@@ -14,15 +14,18 @@ import { emitLoading } from 'utils/events';
 import { checkIsAuthorized } from 'api/utils';
 
 const ConfirmTradingPair: React.FC<CreateStepProps> = ({ onNext }) => {
-  const [tradingPair, setTradingPair] = useLocalStorage(storages.ConfirmTradingPair);
-  const [select, setSelect] = useState<ITradingParCard>(tradingPair as ITradingParCard);
+  const [tradingPair, setTradingPair] = useLocalStorage<ITradingParCard>(storages.ConfirmTradingPair);
+  const [select, setSelect] = useState<ITradingParCard | undefined>(tradingPair);
+  const selectRef = useRef<ITradingParCard>();
+  selectRef.current = select;
+
   const [tokenList, setTokenList] = useState<ITradingParCard[]>([]);
   const [disabledBtn, setDisabledBtn] = useState<boolean>(true);
 
   const { loginState } = useWallet();
   const isBtnDisabled = useMemo(
-    () => loginState !== WebLoginState.logined || (disabledBtn && !select),
-    [disabledBtn, loginState, select],
+    () => loginState !== WebLoginState.logined || (disabledBtn && !select) || !tokenList.length,
+    [disabledBtn, loginState, select, tokenList.length],
   );
 
   const onSelect = useCallback((value: ITradingParCard) => {
@@ -48,6 +51,16 @@ const ConfirmTradingPair: React.FC<CreateStepProps> = ({ onNext }) => {
       });
       if (code === '20000') {
         setTokenList(data);
+        const selectToken = selectRef.current;
+        if (selectToken) {
+          const isTokenMatch = data.find(
+            (item) => item.symbol === selectToken.symbol && item.chainId === selectToken.chainId,
+          );
+          if (!isTokenMatch) {
+            setSelect(undefined);
+          }
+        }
+
         return;
       }
       console.log('getTokenList-error:', msg);
