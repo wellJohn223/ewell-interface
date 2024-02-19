@@ -1,3 +1,4 @@
+import { service } from './axios';
 import { BaseConfig, requestConfig } from './types';
 
 export function getRequestConfig(base: BaseConfig, config?: requestConfig) {
@@ -16,3 +17,7 @@ export function getRequestConfig(base: BaseConfig, config?: requestConfig) {
     };
   }
 }
+
+export const checkIsAuthorized = () => {
+  return !!service.defaults.headers.common['Authorization'];
+};

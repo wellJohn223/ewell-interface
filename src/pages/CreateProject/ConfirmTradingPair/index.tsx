@@ -11,6 +11,7 @@ import { useWallet } from 'contexts/useWallet/hooks';
 import { WebLoginState } from 'aelf-web-login';
 import myEvents from 'utils/myEvent';
 import { emitLoading } from 'utils/events';
+import { checkIsAuthorized } from 'api/utils';
 
 const ConfirmTradingPair: React.FC<CreateStepProps> = ({ onNext }) => {
   const [tradingPair, setTradingPair] = useLocalStorage(storages.ConfirmTradingPair);
@@ -58,7 +59,9 @@ const ConfirmTradingPair: React.FC<CreateStepProps> = ({ onNext }) => {
   }, []);
 
   useEffect(() => {
-    getTokenList();
+    const isAuthorized = checkIsAuthorized();
+    isAuthorized && getTokenList();
+
     const { remove } = myEvents.AuthToken.addListener(getTokenList);
     return () => {
       remove();
