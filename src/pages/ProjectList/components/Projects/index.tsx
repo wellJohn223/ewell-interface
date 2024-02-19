@@ -100,14 +100,16 @@ const Projects: React.FC = () => {
             loadMoreData={getClosedProject}
             id="project-list-scroll"
             dataLength={closedItems.length}>
-            {!!closedItems.length && <div className="project-type">Closed</div>}
-            <Row gutter={[24, 24]}>
-              {closedItems.map((item) => (
-                <Col span={24 / colNum} key={item.id}>
-                  <ProjectCard data={item} />
-                </Col>
-              ))}
-            </Row>
+            <div className="project-type">Closed</div>
+            <div className="project-list-wrapper">
+              <Row gutter={[24, 24]}>
+                {closedItems.map((item) => (
+                  <Col span={24 / colNum} key={item.id}>
+                    <ProjectCard data={item} />
+                  </Col>
+                ))}
+              </Row>
+            </div>
           </InfiniteList>
         )}
       </>
