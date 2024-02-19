@@ -21,6 +21,7 @@ import { useNavigate } from 'react-router-dom';
 import { checkPathExist } from 'utils/reg';
 import { APP_NAME } from 'constants/aelf';
 import { message } from 'antd';
+import { service } from 'api/axios';
 
 setGlobalConfig({
   appName: APP_NAME || '',
@@ -134,6 +135,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
       type: SET_WALLET,
       payload: undefined,
     });
+    service.defaults.headers.common['Authorization'] = '';
     clearLocalJWT();
 
     const isStay = checkPathExist(LOGOUT_STAY_PATH, pathnameRef.current || '');
