@@ -11,7 +11,7 @@ import { useViewContract } from 'contexts/useViewContract/hooks';
 
 export const useTransfer = () => {
   const { wallet, checkManagerSyncState } = useWallet();
-  const { getEwellContract } = useViewContract();
+  const { getEwellContract, checkIsNeedApprove } = useViewContract();
 
   const isStartTimeBeforeNow = useCallback((startTime: string) => dayjs(startTime).isBefore(dayjs()), []);
 
@@ -24,6 +24,20 @@ export const useTransfer = () => {
 
   const preCreate = useCallback(
     async (params: { amount: string; symbol: string }) => {
+      try {
+        const needApprove = await checkIsNeedApprove({
+          symbol: params.symbol || '',
+          amount: params.amount,
+          owner: wallet?.walletInfo.address || '',
+          spender: NETWORK_CONFIG.ewellContractAddress,
+        });
+        console.log('needApprove', needApprove);
+        if (!needApprove) return;
+      } catch (error: any) {
+        console.log('error', error);
+        throw new Error(error?.message || 'GetApproveAmount failed');
+      }
+
       console.log('pre-create-txResult-params', params);
       const txResult = await wallet?.callContract({
         contractAddress: NETWORK_CONFIG.sideChainInfo.tokenContractAddress,
@@ -38,7 +52,7 @@ export const useTransfer = () => {
       console.log('pre-create-txResult', txResult);
       return txResult;
     },
-    [wallet],
+    [checkIsNeedApprove, wallet],
   );
 
   const create = useCallback(
