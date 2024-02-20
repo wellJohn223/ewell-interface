@@ -96,11 +96,11 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
 
   useEffect(() => {
     if (status === ProjectStatus.CANCELED) {
-      setRemainderTimeStr(data?.cancelTime ? dayjs(data.cancelTime).format('DD MMM YYYY') : '--');
+      setRemainderTimeStr(data?.cancelTime ? dayjs(data.cancelTime).format('DD MMMM, YYYY') : '--');
     }
 
     if (status === ProjectStatus.ENDED) {
-      setRemainderTimeStr(data?.tokenReleaseTime ? dayjs(data.tokenReleaseTime).format('DD MMM YYYY') : '--');
+      setRemainderTimeStr(data?.tokenReleaseTime ? dayjs(data.tokenReleaseTime).format('DD MMMM, YYYY') : '--');
     }
   }, [data.cancelTime, data.tokenReleaseTime, status]);
 

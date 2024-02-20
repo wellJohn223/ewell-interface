@@ -80,7 +80,7 @@ export function ConfirmModal({ open, info, onCancel, onOk }: ITransferModalProps
             </Flex>
             {info?.contractAddress && (
               <Flex className="modal-box-data-wrapper" justify="space-between">
-                <Text fontWeight={FontWeightEnum.Medium}>Contract Address</Text>
+                <Text fontWeight={FontWeightEnum.Medium}>Tokens stored at</Text>
                 <HashAddress
                   className="hash-address-small"
                   preLen={8}
@@ -123,8 +123,7 @@ export function ConfirmModal({ open, info, onCancel, onOk }: ITransferModalProps
           {isDisabledSubmit && (
             <Flex gap={24} justify="center">
               <Text fontWeight={FontWeightEnum.Bold} style={{ color: '#F53F3F', textAlign: 'center' }}>
-                Insufficient balance to cover the transaction fee. Please transfer some ELF to this address before you
-                try again.
+                Insufficient balance. Please transfer some tokens to your wallet before you try again.
               </Text>
             </Flex>
           )}
