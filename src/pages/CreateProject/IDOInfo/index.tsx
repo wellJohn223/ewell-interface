@@ -28,7 +28,7 @@ const IDOInfo: React.FC<CreateStepProps> = ({ onNext, onPre }) => {
   const [form] = Form.useForm();
   const [tradingPair] = useLocalStorage<ITradingParCard>(storages.ConfirmTradingPair);
   const [idoInfo, setIDOInfo] = useLocalStorage<TIdoInfo>(storages.IDOInfo, {});
-  const [showWhitelist, setShowWhitelist] = useState(true);
+  const [showWhitelist, setShowWhitelist] = useState(false);
   const [formList, setFormList] = useState<FormItemProps[]>(() => getIDOFormJson(tradingPair, idoInfo));
 
   const adapterIdoInfo = useMemo(() => {
@@ -39,6 +39,7 @@ const IDOInfo: React.FC<CreateStepProps> = ({ onNext, onPre }) => {
         _idoInfo[key] = dayjs(value);
       }
     });
+    setShowWhitelist(idoInfo?.isEnableWhitelist ?? true);
     return _idoInfo;
   }, [idoInfo]);
 
