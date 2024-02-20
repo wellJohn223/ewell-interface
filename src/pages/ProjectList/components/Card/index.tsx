@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Flex } from 'antd';
 import { Typography, FontWeightEnum } from 'aelf-design';
-import communityLogo from 'assets/images/communityLogo';
 import ProjectLogo from 'components/ProjectLogo';
 import CommonCommunityLogoList, { COMMUNITY_LOGO_LIST } from 'components/CommonCommunityLogoList';
 import CommonProjectStatusTag from 'components/CommonProjectStatusTag';
