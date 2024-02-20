@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Flex } from 'antd';
-import { Typography, Progress, FontWeightEnum } from 'aelf-design';
-import communityLogo from 'assets/images/communityLogo';
+import { Typography, FontWeightEnum } from 'aelf-design';
 import ProjectLogo from 'components/ProjectLogo';
 import CommonCommunityLogoList, { COMMUNITY_LOGO_LIST } from 'components/CommonCommunityLogoList';
 import CommonProjectStatusTag from 'components/CommonProjectStatusTag';
+import CommonProjectProgress from 'components/CommonProjectProgress';
 import { IProjectInfo } from './types';
 import { ZERO } from 'constants/misc';
 import { divDecimals } from 'utils/calculate';
@@ -42,7 +42,7 @@ export interface ProjectCardProps {
 
 const Close_Status = [ProjectStatus.CANCELED, ProjectStatus.ENDED];
 
-const { Text, Title } = Typography;
+const { Text } = Typography;
 const Card: React.FC<ProjectCardProps> = ({ data }) => {
   const {
     additionalInfo = '',
@@ -96,11 +96,11 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
 
   useEffect(() => {
     if (status === ProjectStatus.CANCELED) {
-      setRemainderTimeStr(data?.cancelTime ? dayjs(data.cancelTime).format('DD MMM YYYY') : '--');
+      setRemainderTimeStr(data?.cancelTime ? dayjs(data.cancelTime).format('DD MMMM, YYYY') : '--');
     }
 
     if (status === ProjectStatus.ENDED) {
-      setRemainderTimeStr(data?.tokenReleaseTime ? dayjs(data.tokenReleaseTime).format('DD MMM YYYY') : '--');
+      setRemainderTimeStr(data?.tokenReleaseTime ? dayjs(data.tokenReleaseTime).format('DD MMMM, YYYY') : '--');
     }
   }, [data.cancelTime, data.tokenReleaseTime, status]);
 
@@ -133,8 +133,6 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
     };
   }, [data?.endTime, data?.startTime, data?.tokenReleaseTime, status]);
 
-  const ProgressStrokeColor = useMemo(() => (status === ProjectStatus.PARTICIPATORY ? '#131631' : '#C1C2C9'), [status]);
-
   const currentRaisedAmountStr = useMemo(
     () => divDecimals(currentRaisedAmount, toRaiseToken?.decimals).toFormat(),
     [currentRaisedAmount, toRaiseToken?.decimals],
@@ -148,12 +146,6 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
   const preSalePriceStr = useMemo(
     () => divDecimals(preSalePrice, crowdFundingIssueToken?.decimals).toFixed(),
     [crowdFundingIssueToken?.decimals, preSalePrice],
-  );
-
-  const communityLogoList = useMemo(
-    () =>
-      Object.entries(additionalInfo || []).filter(([key]) => Object.keys(communityLogo).find((item) => item === key)),
-    [additionalInfo],
   );
 
   const projectImageUrl = useMemo(
@@ -197,20 +189,15 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
               <Text>{remainderTimeStr}</Text>
             </Flex>
           </Flex>
-          <Flex>
-            <Progress
-              size={['100%', 12]}
-              percent={progressPercent}
-              strokeColor={ProgressStrokeColor}
-              trailColor="#F5F5F6"
-            />
-          </Flex>
-          <Flex justify="space-between">
-            <Text>{progressPercent}%</Text>
-            <Text>
-              {currentRaisedAmountStr}/{toRaisedAmountStr} ELF
-            </Text>
-          </Flex>
+          <CommonProjectProgress
+            wrapFlexGap={4}
+            textProps={{ size: 'small' }}
+            progressPercent={progressPercent}
+            projectStatus={status}
+            currentRaisedAmount={currentRaisedAmountStr}
+            toRaisedAmount={toRaisedAmountStr}
+            toRaiseTokenSymbol={toRaiseToken?.symbol}
+          />
         </Flex>
       </Flex>
     </div>

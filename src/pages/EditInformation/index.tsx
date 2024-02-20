@@ -12,8 +12,14 @@ import { useUpdateAddition } from './useApi';
 import { parseAdditionalInfo } from 'utils/project';
 import './styles.less';
 import { emitLoading } from 'utils/events';
+import { ProjectListType } from 'types/project';
 
 const { Title } = Typography;
+
+interface IEditLocationState {
+  projectName: string;
+  from: string;
+}
 
 export default function EditInformation() {
   const [form] = Form.useForm();
@@ -22,12 +28,11 @@ export default function EditInformation() {
   const { updateAddition } = useUpdateAddition();
   const navigate = useNavigate();
   const location = useLocation();
-  console.log('location', location);
-  const { projectName } = useMemo(() => location.state as { projectName: string }, [location.state]);
+  const { projectName, from } = useMemo(() => location.state as IEditLocationState, [location.state]);
   const breadList = useMemo(
     () => [
       {
-        title: <NavLink to={'/projects/my'}>My Projects</NavLink>,
+        title: <NavLink to={`/projects/${from}`}>{from === ProjectListType.MY && 'My '}Projects</NavLink>,
       },
       {
         title: <NavLink to={`/project/${projectId}`}>{projectName}</NavLink>,
@@ -36,7 +41,7 @@ export default function EditInformation() {
         title: 'Update Project Information',
       },
     ],
-    [projectId, projectName],
+    [from, projectId, projectName],
   );
 
   const onFinish = useCallback(

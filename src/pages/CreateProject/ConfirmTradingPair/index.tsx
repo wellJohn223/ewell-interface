@@ -53,12 +53,10 @@ const ConfirmTradingPair: React.FC<CreateStepProps> = ({ onNext }) => {
         setTokenList(data);
         const selectToken = selectRef.current;
         if (selectToken) {
-          const isTokenMatch = data.find(
+          const selectTokenIndex = data.findIndex(
             (item) => item.symbol === selectToken.symbol && item.chainId === selectToken.chainId,
           );
-          if (!isTokenMatch) {
-            setSelect(undefined);
-          }
+          selectTokenIndex < 0 ? setSelect(undefined) : setSelect(data[selectTokenIndex]);
         }
 
         return;

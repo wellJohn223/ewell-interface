@@ -2,11 +2,12 @@ import { useEffect, useMemo, useState } from 'react';
 import dayjs from 'dayjs';
 import BigNumber from 'bignumber.js';
 import { InputNumber, Flex, Form } from 'antd';
-import { Typography, FontWeightEnum, Progress } from 'aelf-design';
+import { Typography, FontWeightEnum } from 'aelf-design';
 import CommonCard from 'components/CommonCard';
 import CommonWrapText, { CommonWrapTextAlignType } from 'components/CommonWrapText';
 import NewBaseCountdown from 'components/NewBaseCountdown';
 import CommonProjectStatusTag from 'components/CommonProjectStatusTag';
+import CommonProjectProgress from 'components/CommonProjectProgress';
 import PurchaseButton from '../OperationComponents/PurchaseButton';
 import RevokeInvestmentButton from '../OperationComponents/RevokeInvestmentButton';
 import ClaimTokenButton from '../OperationComponents/ClaimTokenButton';
@@ -269,20 +270,18 @@ export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefres
           <Title fontWeight={FontWeightEnum.Medium}>Status</Title>
           {!!projectInfo?.status && <CommonProjectStatusTag className="flex-none" status={projectInfo.status} />}
         </Flex>
-        <Progress
-          size={['100%', 12]}
-          percent={progressPercent.toNumber()}
-          strokeColor={projectInfo?.status === ProjectStatus.PARTICIPATORY ? '#131631' : '#C1C2C9'}
-          trailColor="#F5F5F6"
+        <CommonProjectProgress
+          textProps={{ className: 'project-progress-text', fontWeight: FontWeightEnum.Medium }}
+          progressPercent={progressPercent.toNumber()}
+          projectStatus={projectInfo?.status}
+          currentRaisedAmount={divDecimalsStr(
+            projectInfo?.currentRaisedAmount ?? 0,
+            projectInfo?.toRaiseToken?.decimals,
+            '0',
+          )}
+          toRaisedAmount={divDecimalsStr(projectInfo?.toRaisedAmount, projectInfo?.toRaiseToken?.decimals)}
+          toRaiseTokenSymbol={projectInfo?.toRaiseToken?.symbol}
         />
-        <Flex gap={16} align="center" justify="space-between">
-          <Title fontWeight={FontWeightEnum.Medium}>{progressPercent.toFixed(0)}%</Title>
-          <Title fontWeight={FontWeightEnum.Medium}>
-            {divDecimalsStr(projectInfo?.currentRaisedAmount ?? 0, projectInfo?.toRaiseToken?.decimals, '0')}/
-            {divDecimalsStr(projectInfo?.toRaisedAmount, projectInfo?.toRaiseToken?.decimals)}{' '}
-            {projectInfo?.toRaiseToken?.symbol || '--'}
-          </Title>
-        </Flex>
       </Flex>
       <div className="divider" />
       <Flex vertical gap={12}>

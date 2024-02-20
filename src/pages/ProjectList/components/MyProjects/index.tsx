@@ -23,7 +23,6 @@ const MyProjects: React.FC<ProjectListProps> = () => {
   const [loading, setLoading] = useState(true);
   const [createdItems, setCreatedItems] = useState<IListData['createdItems']>([]);
   const [participateItems, setParticipateItems] = useState<IListData['participateItems']>([]);
-  const [participateListPageNum, setParticipateListPageNum] = useState(0);
   const [loadAllParticipateItems, setLoadAllParticipateItems] = useState(false);
   const navigate = useNavigate();
   const { getList } = useGetList();
@@ -43,9 +42,8 @@ const MyProjects: React.FC<ProjectListProps> = () => {
     if (list.participateItems.length === 0) return;
     const newList = participateItems.concat(list.participateItems);
     setParticipateItems(newList);
-    setParticipateListPageNum(participateListPageNum + 1);
     setLoadAllParticipateItems(newList.length >= list.totalCount);
-  }, [colNum, getList, participateItems, participateListPageNum]);
+  }, [colNum, getList, participateItems]);
 
   useEffect(() => {
     emitLoading(loading);

@@ -1,7 +1,8 @@
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import { Button, IButtonProps } from 'aelf-design';
 import { edit } from 'assets/images';
+import { ProjectListType } from 'types/project';
 import './styles.less';
 
 interface IEditButtonProps extends IButtonProps {
@@ -12,7 +13,8 @@ interface IEditButtonProps extends IButtonProps {
 
 export default function EditButton({ projectId, projectName, size = 'large', ...buttonProps }: IEditButtonProps) {
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const { from = ProjectListType.ALL } = (location.state || {}) as { from?: ProjectListType };
   return (
     <Button
       {...buttonProps}
@@ -22,7 +24,7 @@ export default function EditButton({ projectId, projectName, size = 'large', ...
       onClick={() => {
         if (projectId) {
           console.log('button', projectName);
-          navigate(`/edit-information/${projectId}`, { state: { projectName } });
+          navigate(`/edit-information/${projectId}`, { state: { projectName, from } });
         }
       }}
     />
