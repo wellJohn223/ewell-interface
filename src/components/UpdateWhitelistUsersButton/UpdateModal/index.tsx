@@ -98,7 +98,7 @@ const UpdateModal = forwardRef(function (
           <br />
           If you have a list of addresses in CSV or EXCEL doc, you can import them via the "Upload" button.
           <br />
-          Ewell also provides a template for you to fill in addresses and you can download it via the "Download
+          ewell also provides a template for you to fill in addresses and you can download it via the "Download
           Template" button.
           <Space className="download-template cursor-pointer" size={8} align="center" onClick={handleDownloadTemplate}>
             <img src={download} alt="download" />

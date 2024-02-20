@@ -88,7 +88,7 @@ export default function WhitelistTasksButton({ whitelistId, whitelistTasksUrl, d
       </CommonModalSwitchDrawer>
       <Modal
         className="common-modal"
-        title="Whitelist Tasks"
+        title="Whitelist Tasks Updated"
         footer={null}
         centered
         destroyOnClose
