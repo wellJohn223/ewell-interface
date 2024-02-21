@@ -107,7 +107,7 @@ const UpdateModal = forwardRef(function (
             </Text>
           </Space>
         </Text>
-        <Flex className="update-way-radio-wrapper cursor-pointer">
+        <Flex className="update-way-radio-wrapper cursor-pointer flex-none">
           <Flex
             className={clsx('radio-item', { 'radio-item-active': currentUpdateWay === UpdateWay.UPLOAD })}
             justify="center"
