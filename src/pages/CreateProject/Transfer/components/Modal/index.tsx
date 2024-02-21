@@ -80,7 +80,7 @@ export function ConfirmModal({ open, info, onCancel, onOk }: ITransferModalProps
             </Flex>
             {info?.contractAddress && (
               <Flex className="modal-box-data-wrapper" justify="space-between">
-                <Text fontWeight={FontWeightEnum.Medium}>Tokens stored at:</Text>
+                <Text fontWeight={FontWeightEnum.Medium}>Tokens stored at</Text>
                 <HashAddress
                   className="hash-address-small"
                   preLen={8}
