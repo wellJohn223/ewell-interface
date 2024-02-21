@@ -3,6 +3,7 @@ import { Upload, IUploadProps } from 'aelf-design';
 import { GetProp, UploadFile, message } from 'antd';
 import { emitLoading } from 'utils/events';
 import { useAWSUploadService } from 'hooks/useAWSUploadService';
+import './styles.less';
 
 export type FileType = Parameters<GetProp<IUploadProps, 'beforeUpload'>>[0];
 
