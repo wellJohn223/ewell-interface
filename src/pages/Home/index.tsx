@@ -2,13 +2,16 @@ import './styles.less';
 import mainPosterImg from './images/main-poster.png';
 import multipleCirclesImg from './images/multiple-circles.svg';
 import multipleArrowImg from './images/multiple-arrow.svg';
+import specialWordCircleImg from './images/special-word-circle.svg';
 import { Button } from 'aelf-design';
 import Web3Button from 'components/Web3Button';
 import { useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
+import { useMobile } from 'contexts/useStore/hooks';
 
 export default function Home() {
   const navigate = useNavigate();
+  const isMobile = useMobile();
 
   const onProjectsClick = useCallback(() => {
     navigate('/projects/all');
@@ -36,7 +39,11 @@ export default function Home() {
                 <span className="special-word-wrap">
                   Meet
                   <div className="special-word-circle-wrap">
-                    <div className="special-word-circle"></div>
+                    {isMobile ? (
+                      <img className="special-word-circle-img" src={specialWordCircleImg} alt="" />
+                    ) : (
+                      <div className="special-word-circle" />
+                    )}
                   </div>
                 </span>
                 <br />
