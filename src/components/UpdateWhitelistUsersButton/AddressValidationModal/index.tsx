@@ -50,11 +50,8 @@ export default function AddressValidationModal({
         order: `${idx + 1}`,
         address: item.address,
         result:
-          item.status === WhitelistAddressIdentifyStatusEnum.active
-            ? 'Can be '
-            : "Can't be " + updateType === UpdateType.ADD
-            ? 'added'
-            : 'removed',
+          (item.status === WhitelistAddressIdentifyStatusEnum.active ? 'Can be ' : "Can't be ") +
+          (updateType === UpdateType.ADD ? 'added' : 'removed'),
         reason: VALIDATION_STATUS_REASON_MAP[item.status],
       })),
     [updateType, validationData],

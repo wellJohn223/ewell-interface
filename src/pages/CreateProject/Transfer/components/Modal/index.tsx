@@ -7,7 +7,7 @@ import { NumberFormat } from 'utils/format';
 import { success } from 'assets/images';
 import { DEFAULT_CHAIN_ID } from 'constants/network';
 import { IProjectInfo } from 'types/project';
-import { divDecimals } from 'utils/calculate';
+import { divDecimals, timesDecimals } from 'utils/calculate';
 import { useTokenPrice, useTxFee } from 'contexts/useAssets/hooks';
 import { useBalance } from 'hooks/useBalance';
 import { ZERO } from 'constants/misc';
@@ -45,7 +45,7 @@ export function ConfirmModal({ open, info, onCancel, onOk }: ITransferModalProps
 
   const isGasEnough = useMemo(() => {
     const walletELF = ZERO.plus(ELFBalance ?? 0);
-    return walletELF.gte(payGasELF.times(info?.toRaiseToken?.decimals || 8));
+    return walletELF.gte(timesDecimals(payGasELF, info?.toRaiseToken?.decimals || 8));
   }, [ELFBalance, info?.toRaiseToken?.decimals, payGasELF]);
 
   const isDisabledSubmit = useMemo(() => !isGasEnough || !isTokenEnough, [isGasEnough, isTokenEnough]);
@@ -80,7 +80,7 @@ export function ConfirmModal({ open, info, onCancel, onOk }: ITransferModalProps
             </Flex>
             {info?.contractAddress && (
               <Flex className="modal-box-data-wrapper" justify="space-between">
-                <Text fontWeight={FontWeightEnum.Medium}>Contract Address</Text>
+                <Text fontWeight={FontWeightEnum.Medium}>Tokens stored at</Text>
                 <HashAddress
                   className="hash-address-small"
                   preLen={8}
@@ -123,8 +123,7 @@ export function ConfirmModal({ open, info, onCancel, onOk }: ITransferModalProps
           {isDisabledSubmit && (
             <Flex gap={24} justify="center">
               <Text fontWeight={FontWeightEnum.Bold} style={{ color: '#F53F3F', textAlign: 'center' }}>
-                Insufficient balance to cover the transaction fee. Please transfer some ELF to this address before you
-                try again.
+                Insufficient balance. Please transfer some tokens to your wallet before you try again.
               </Text>
             </Flex>
           )}
