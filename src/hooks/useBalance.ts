@@ -20,6 +20,7 @@ export const useBalance = (symbol?: string) => {
         symbol,
         owner,
       });
+      console.log(`updateBalance-${symbol}`, result.balance);
       setBalance(result.balance);
     } catch (error) {
       console.log('updateBalance error', error);
