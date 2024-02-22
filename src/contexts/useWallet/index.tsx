@@ -36,6 +36,7 @@ setGlobalConfig({
     connectUrl: NETWORK_CONFIG.webLoginConnectUrl,
     requestDefaults: {
       baseURL: NETWORK_CONFIG.webLoginRequestDefaultsUrl,
+      timeout: 20 * 1000,
     },
     serviceUrl: NETWORK_CONFIG.webLoginRequestDefaultsUrl,
     customNetworkType: IS_OFFLINE_NETWORK ? 'Offline' : 'onLine',
