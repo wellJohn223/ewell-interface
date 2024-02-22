@@ -40,7 +40,11 @@ export default function EditInformation() {
         title: <NavLink to={`/projects/${from}`}>{from === ProjectListType.MY && 'My '}Projects</NavLink>,
       },
       {
-        title: <NavLink to={`/project/${projectId}`}>{projectName}</NavLink>,
+        title: (
+          <NavLink to={`/project/${projectId}`} state={{ from }}>
+            {projectName}
+          </NavLink>
+        ),
       },
       {
         title: 'Update Project Information',
@@ -76,7 +80,11 @@ export default function EditInformation() {
 
         if (result) {
           message.success('update success!');
-          navigate(`/project/${projectId}`);
+          navigate(`/project/${projectId}`, {
+            state: {
+              from,
+            },
+          });
           return;
         }
       } catch (error: any) {
@@ -84,7 +92,7 @@ export default function EditInformation() {
         message.error(error.message || 'update failed.');
       }
     },
-    [navigate, projectId, updateAddition],
+    [from, navigate, projectId, updateAddition],
   );
 
   const getProjectInfo = useCallback(async () => {

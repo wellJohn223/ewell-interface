@@ -148,7 +148,8 @@ export default function ParticipantList() {
               query: {
                 projectName,
               },
-            })}>
+            })}
+            state={{ from }}>
             {projectName}
           </NavLink>
         ),
