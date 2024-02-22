@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { useParams, useLocation, NavLink } from 'react-router-dom';
+import { useParams, useLocation, NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { request } from 'api';
 import { Breadcrumb, message } from 'antd';
@@ -28,6 +28,7 @@ export default function ProjectInfo({ previewData, style }: IProjectInfoProps) {
   const screenSize = useScreenSize();
   const { wallet } = useWallet();
   const { projectId } = useParams();
+  const navigate = useNavigate();
   const location = useLocation();
   const { from = ProjectListType.ALL } = (location.state || {}) as { from?: ProjectListType };
   const { getWhitelistContract } = useViewContract();
@@ -143,8 +144,10 @@ export default function ProjectInfo({ previewData, style }: IProjectInfoProps) {
 
   const onLogout = useCallback(() => {
     console.log('onLogout');
+    // To remove location state
+    navigate('', { replace: true });
     getProjectInfo();
-  }, [getProjectInfo]);
+  }, [navigate, getProjectInfo]);
 
   useWebLoginEvent(WebLoginEvents.LOGOUT, onLogout);
 
