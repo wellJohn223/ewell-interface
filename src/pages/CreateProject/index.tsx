@@ -55,7 +55,7 @@ const CreateProject: React.FC = () => {
 
   return (
     <div className="common-page create-project page-body">
-      {currentStep <= TSteps.THREE && <Breadcrumb className="project-nav" separator="\" items={breadTitles} />}
+      {currentStep <= TSteps.THREE && <Breadcrumb className="project-nav" items={breadTitles} />}
       <div className={clsx('project-wrapper', currentStep === TSteps.FOUR && 'project-wrapper-full')}>
         <ESteps current={currentStep} items={stepsItems} />
         {renderStep}
