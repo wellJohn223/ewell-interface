@@ -5,6 +5,7 @@ import FormGroup from './components/FormGroup';
 import FormTree from './components/FormTree';
 import Upload from '../AWSUpload';
 import FormDatePiker from './components/FormDatePicker';
+import grayArrow from 'assets/images/project/grayArrow.svg';
 
 import {
   datePickerProps,
@@ -61,7 +62,7 @@ function getChildren(type: FormItemProps['type'], childrenProps: FormItemProps['
     case 'select': {
       const { list, ...props } = childrenProps as selectProps['childrenProps'];
       return (
-        <Select {...props}>
+        <Select {...props} suffixIcon={<img src={grayArrow} style={{ transform: 'rotate(90deg)' }} />}>
           {list?.map(({ title, value }) => {
             return (
               <Select.Option key={value || title} value={value || title}>

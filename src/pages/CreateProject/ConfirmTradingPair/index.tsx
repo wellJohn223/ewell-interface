@@ -88,8 +88,9 @@ const ConfirmTradingPair: React.FC<CreateStepProps> = ({ onNext }) => {
       <TradingPairList list={tokenList} current={select} onChange={onSelect} />
       <div className="trading-footer">
         <div className="footer-text">
-          No token found in your wallet. Note: You can only select tokens for which you are the issuer. You can create a
-          token using SEED which is acquirable through{' '}
+          {tokenList.length <= 0 && <span>No token found in your wallet.</span>}
+          Note: You can only select tokens for which you are the issuer. You can create a token using SEED which is
+          acquirable through{' '}
           <span className="link-text" onClick={() => window.open(NETWORK_CONFIG.symbolMarketUrl)}>
             Symbol Market
           </span>

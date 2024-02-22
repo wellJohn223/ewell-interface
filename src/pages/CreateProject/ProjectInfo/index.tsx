@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useLocalStorage } from 'react-use';
 import { FormFields } from 'components/FormItem';
 import { Form, message } from 'antd';
@@ -6,10 +6,14 @@ import CustomMark from '../components/CustomMark';
 import { CreateStepProps } from '../types';
 import ButtonGroup from '../components/ButtonGroup';
 import storages from '../storages';
-import { ProjectInfoFromJson } from '../constants';
+import { getProjectInfoFromJson } from '../constants';
+import { useMobile } from 'contexts/useStore/hooks';
 
 const ProjectInfo: React.FC<CreateStepProps> = ({ onNext, onPre }) => {
   const [additional, setAdditional] = useLocalStorage(storages.AdditionalInformation, {});
+  const isMobile = useMobile();
+
+  const projectInfoFromJson = useMemo(() => getProjectInfoFromJson(isMobile), [isMobile]);
 
   const onFinish = useCallback(
     (value: any) => {
@@ -42,7 +46,7 @@ const ProjectInfo: React.FC<CreateStepProps> = ({ onNext, onPre }) => {
         requiredMark={CustomMark}
         validateTrigger="onBlur"
         onFinish={onFinish}>
-        {FormFields(ProjectInfoFromJson)}
+        {FormFields(projectInfoFromJson)}
         <Form.Item>
           <ButtonGroup onPre={onPre} htmlType="submit" />
         </Form.Item>

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { Flex } from 'antd';
-import { Button, Typography, FontWeightEnum, Modal, HashAddress } from 'aelf-design';
+import { Button, Typography, FontWeightEnum, Modal, HashAddress, Tooltip } from 'aelf-design';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { wallet } from 'assets/images';
 import { NumberFormat } from 'utils/format';
@@ -13,6 +13,7 @@ import { useBalance } from 'hooks/useBalance';
 import { ZERO } from 'constants/misc';
 import { getExploreLink } from 'utils';
 import { ExplorerLinkType } from 'types/aelf';
+import { infoCircle, question } from 'assets/images/icon/index';
 
 const { Text, Title } = Typography;
 interface ITransferModalProps {
@@ -66,21 +67,22 @@ export function ConfirmModal({ open, info, onCancel, onOk }: ITransferModalProps
             <Title fontWeight={FontWeightEnum.Medium}>{info.crowdFundingIssueToken?.symbol || '--'}</Title>
           </Flex>
           <Flex vertical gap={8}>
-            <Flex>
-              <InfoCircleOutlined style={{ margin: '4px 4px 0 0' }} />
-              <Flex vertical>
-                <Text size="small">
-                  Unpon confirmation, tokens will be transferred to the address specified by ewell.
-                </Text>
-                <Text size="small">
-                  Note: Both tokens for sale and funds raised from participants will be stored in this address, and you
-                  can claim the funds raised along with any unsold tokens after the sale ends.
-                </Text>
-              </Flex>
+            <Flex gap={4} align="flex-start">
+              <img src={infoCircle} alt="" style={{ marginTop: 3 }} />
+              <Text size="small">
+                Unpon confirmation, tokens will be transferred to the address specified by ewell.
+              </Text>
             </Flex>
             {info?.contractAddress && (
               <Flex className="modal-box-data-wrapper" justify="space-between">
-                <Text fontWeight={FontWeightEnum.Medium}>Tokens stored at</Text>
+                <Flex gap={4}>
+                  <Text fontWeight={FontWeightEnum.Medium}>Tokens stored at</Text>
+                  <Tooltip
+                    title="Both tokens for sale and funds raised from participants will be stored in this address, and you
+                  can claim the funds raised along with any unsold tokens after the sale ends.">
+                    <img src={question} />
+                  </Tooltip>
+                </Flex>
                 <HashAddress
                   className="hash-address-small"
                   preLen={8}
