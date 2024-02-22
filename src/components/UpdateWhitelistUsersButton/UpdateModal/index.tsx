@@ -37,7 +37,7 @@ const UpdateModal = forwardRef(function (
 ) {
   const isM = isMobile();
   const isAndroid = useMemo(() => isM.android.phone || isM.android.tablet, [isM]);
-  const pasteAddressTextareaId = useMemo(() => `${PASTE_ADDRESS_TEXTAREA_ID}_${updateType}`, [updateType]);
+  const pasteAddressTextareaId = useMemo(() => `${updateType}_${PASTE_ADDRESS_TEXTAREA_ID}`, [updateType]);
 
   const [currentUpdateWay, setCurrentUpdateWay] = useState<UpdateWay>(UpdateWay.UPLOAD);
   const [fileList, setFileList] = useState<any[]>([]);
