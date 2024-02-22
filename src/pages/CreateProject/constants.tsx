@@ -174,142 +174,6 @@ export const getProjectInfoFromJson = (isMobile: boolean): FormItemProps[] => {
   ];
 };
 
-export const ProjectInfoFromJson: FormItemProps[] = [
-  getInputOptions({
-    label: 'Project Name:',
-    name: 'projectName',
-    tooltip: 'The name of your project.',
-    childrenProps: {
-      maxLength: 40,
-      showCount: true,
-    },
-  }),
-  {
-    type: 'textArea',
-    label: 'Description (20-500 characters):',
-    name: 'projectSummary',
-    tooltip: 'A concise overview of your project, like its objectives, target audience, and unique advantages.',
-    rules: [
-      { required: true, message: 'Please enter the necessary information' },
-      { min: 20, message: 'Please enter the necessary information' },
-    ],
-    childrenProps: {
-      maxLength: 500,
-      autoSize: true,
-      // autoSize: { minRows: 3, maxRows: 5 },
-    },
-  },
-  {
-    type: 'textArea',
-    label: 'Project Details (300-20,000 characters):',
-    name: 'projectDescription',
-    tooltip:
-      'An in-depth introduction to your project. You can highlight the issues it aims to tackle, the solutions it offers, the technologies involved, and the potential impact it may have, etc.',
-    rules: [
-      { required: true, message: 'Please enter the necessary information' },
-      { min: 300, max: 20000, message: '300-20000' },
-    ],
-    childrenProps: {
-      maxLength: 20000,
-      autoSize: true,
-      // autoSize: { minRows: 3, maxRows: 5 },
-    },
-  },
-  {
-    type: 'fileUpload',
-    label: 'Logo:',
-    name: 'logoUrl',
-    tooltip: 'The logo of your token that can represent your project.',
-    required: true,
-    valuePropName: 'fileList',
-    className: 'form-upload',
-    getValueFromEvent: normFile,
-    childrenProps: {
-      tips: <LogoUploadTips />,
-      maxFileCount: 1,
-      fileLimit: '10M',
-      accept: '.jpg,.jpeg.,.png',
-    },
-  },
-  {
-    type: 'fileUpload',
-    label: 'Featured Images:',
-    name: 'projectImgs',
-    required: true,
-    valuePropName: 'fileList',
-    className: 'form-upload',
-    tooltip: '3-5 additional images for promotional or branding purposes.',
-    getValueFromEvent: normFile,
-    childrenProps: {
-      tips: <FeaturedUploadTips />,
-      maxFileCount: 5,
-      fileLimit: '10M',
-      accept: '.jpg,.jpeg.,.png',
-    },
-  },
-  getInputOptions({
-    label: 'Official Website:',
-    name: 'website',
-    tooltip: "The link to your project's official website.",
-    rules: [
-      {
-        required: true,
-        message: 'Please enter the necessary information',
-      },
-      urlRule,
-    ],
-  }),
-  {
-    type: 'fieldsGroup',
-    label: 'Socials:',
-    tooltip: "The links to your project's social media or communities.",
-    fieldsList: [
-      getInputOptions({
-        label: 'Medium:',
-        name: 'medium',
-        required: false,
-        rules: [urlRule],
-      }),
-      getInputOptions({
-        label: 'X:',
-        name: 'x',
-        required: false,
-        rules: [urlRule],
-      }),
-      getInputOptions({
-        label: 'Telegram:',
-        name: 'telegram',
-        required: false,
-        rules: [urlRule],
-      }),
-      getInputOptions({
-        label: 'Github:',
-        name: 'github',
-        required: false,
-        rules: [urlRule],
-      }),
-      getInputOptions({
-        label: 'Discord:',
-        name: 'discord',
-        required: false,
-        rules: [urlRule],
-      }),
-      getInputOptions({
-        label: 'Reddit:',
-        name: 'reddit',
-        required: false,
-        rules: [urlRule],
-      }),
-      getInputOptions({
-        label: 'Facebook:',
-        name: 'facebook',
-        required: false,
-        rules: [urlRule],
-      }),
-    ],
-  },
-];
-
 export const formWhitelist: FormItemProps[] = [
   {
     type: 'textArea',
@@ -366,8 +230,9 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
               validator: (rule, value) => Validators.preSalePrice(form, value),
             }),
           ],
+          className: 'flex-1',
           childrenProps: {
-            className: 'flex-grow',
+            className: 'full-width',
             formatter: (value) => formatInputNumberString(value, 8),
             stringMode: true,
             controls: false,
@@ -396,12 +261,13 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
               validator: (_, value) => Validators.crowdFundingIssueAmount(form, value),
             }),
           ],
+          className: 'flex-1',
           childrenProps: {
             formatter: integerNumberFormat,
             parser: formatNumberParser,
             precision: 0,
             min: 0,
-            className: 'flex-grow',
+            className: 'full-width',
             controls: false,
           },
         },
@@ -423,6 +289,7 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
         {
           type: 'inputNumber',
           name: 'minSubscription',
+          className: 'flex-1',
           rules: [
             (form: any) => ({
               validator: (_, value) => Validators.minSubscription(form, value),
@@ -434,9 +301,7 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
             precision: 0,
             min: 0,
             controls: false,
-            style: {
-              flexGrow: 1,
-            },
+            className: 'full-width',
           },
         },
         {
@@ -452,6 +317,7 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
         {
           type: 'inputNumber',
           name: 'maxSubscription',
+          className: 'flex-1',
           rules: [
             (form: any) => ({
               validator: (_, value) => Validators.maxSubscription(form, value),
@@ -463,9 +329,7 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
             precision: 0,
             min: 1,
             controls: false,
-            style: {
-              flexGrow: 1,
-            },
+            className: 'full-width',
           },
         },
         {

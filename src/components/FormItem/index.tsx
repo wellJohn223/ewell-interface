@@ -107,7 +107,7 @@ function getChildren(type: FormItemProps['type'], childrenProps: FormItemProps['
 const FormItem = memo(({ type, childrenProps, ...props }: Omit<FormItemProps, 'inlineFieldProps'>) => {
   if (type === 'customize') return <Form.Item {...props}>{props.children}</Form.Item>;
   const children = getChildren(type, childrenProps);
-  return type === 'pureText' ? <>{children}</> : <Form.Item {...props}>{children}</Form.Item>;
+  return <Form.Item {...props}>{children}</Form.Item>;
 });
 
 export const FormFields = (formJson: FormItemProps[]) => {
@@ -115,10 +115,10 @@ export const FormFields = (formJson: FormItemProps[]) => {
     if (field.type === 'inlineField') {
       const { type, inlineFieldList, flexProps, ...props } = field;
       return (
-        <Form.Item {...props} key={`${index}-${type}`}>
+        <Form.Item {...props} key={`${index}-${type}`} style={{ marginBottom: 0 }}>
           <Flex align="center" {...flexProps}>
             {inlineFieldList.map((field, index) => (
-              <FormItem key={index} noStyle {...field} />
+              <FormItem key={index} {...field} />
             ))}
           </Flex>
         </Form.Item>
