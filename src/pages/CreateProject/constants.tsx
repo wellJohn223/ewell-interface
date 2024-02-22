@@ -32,11 +32,14 @@ const urlRule: Rule = { type: 'url', message: 'Please enter a valid link.' };
 
 export const getProjectInfoFromJson = (isMobile: boolean): FormItemProps[] => {
   const textAreaMaxHeight = isMobile ? 'calc(100vh - 64px - 120px' : 'calc(100vh - 64px - 72px';
-  const textAreaStyle: React.CSSProperties = {
+  const textAreaStyleMobile: React.CSSProperties = {
     height: textAreaMaxHeight,
     minHeight: 64,
     maxHeight: textAreaMaxHeight,
   };
+  const autoSize = isMobile ? true : false;
+  const textAreaStyle = isMobile ? textAreaStyleMobile : { height: 64 };
+
   return [
     getInputOptions({
       label: 'Project Name:',
@@ -58,7 +61,7 @@ export const getProjectInfoFromJson = (isMobile: boolean): FormItemProps[] => {
       ],
       childrenProps: {
         maxLength: 500,
-        autoSize: true,
+        autoSize,
         style: textAreaStyle,
       },
     },
@@ -74,7 +77,7 @@ export const getProjectInfoFromJson = (isMobile: boolean): FormItemProps[] => {
       ],
       childrenProps: {
         maxLength: 20000,
-        autoSize: true,
+        autoSize,
         style: textAreaStyle,
       },
     },
@@ -175,14 +178,14 @@ export const getProjectInfoFromJson = (isMobile: boolean): FormItemProps[] => {
 };
 
 export const formWhitelist: FormItemProps[] = [
-  {
-    type: 'textArea',
+  getInputOptions({
     label: 'Whitelist Tasks:',
     name: 'whitelistUrl',
+    required: false,
     tooltip:
       'A list of tasks that users must complete in order to join the whitelist. Please provide a publicly accessible link that explains the associated tasks.',
     rules: [urlRule],
-  },
+  }),
 ];
 
 export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo): FormItemProps[] => {
@@ -236,6 +239,7 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
             formatter: (value) => formatInputNumberString(value, 8),
             stringMode: true,
             controls: false,
+            wheel: false,
           },
         },
         {
@@ -269,6 +273,7 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
             min: 0,
             className: 'full-width',
             controls: false,
+            wheel: false,
           },
         },
         {
@@ -302,6 +307,7 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
             min: 0,
             controls: false,
             className: 'full-width',
+            wheel: false,
           },
         },
         {
@@ -330,6 +336,7 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
             min: 1,
             controls: false,
             className: 'full-width',
+            wheel: false,
           },
         },
         {
