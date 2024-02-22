@@ -224,7 +224,7 @@ export default function ParticipantList() {
           </Title>
           {!!virtualAddress && (
             <Flex vertical={isScreenLteLarge}>
-              <Text className="margin-right-8">Tokens stored at: </Text>
+              <Text className="margin-right-8">Tokens stored at</Text>
               <HashAddress
                 preLen={isScreenLteLarge ? 8 : 0}
                 endLen={isScreenLteLarge ? 9 : 0}
