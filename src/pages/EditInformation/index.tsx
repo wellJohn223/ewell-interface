@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { Form, message, Flex, Breadcrumb } from 'antd';
 import { Button, Typography, FontWeightEnum } from 'aelf-design';
 import { NavLink, useLocation, useNavigate, useParams } from 'react-router-dom';
-import { ProjectInfoFromJson } from 'pages/CreateProject/constants';
+import { getProjectInfoFromJson } from 'pages/CreateProject/constants';
 import { useTransfer } from 'pages/CreateProject/Transfer/useTransfer';
 import { FormFields } from 'components/FormItem';
 import { useEffectOnce } from 'react-use';
@@ -13,6 +13,7 @@ import { parseAdditionalInfo } from 'utils/project';
 import './styles.less';
 import { emitLoading } from 'utils/events';
 import { ProjectListType } from 'types/project';
+import { useMobile } from 'contexts/useStore/hooks';
 
 const { Title } = Typography;
 
@@ -26,8 +27,12 @@ export default function EditInformation() {
   const { projectId } = useParams();
   const { getDetail } = useTransfer();
   const { updateAddition } = useUpdateAddition();
-  const navigate = useNavigate();
+
+  const isMobile = useMobile();
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const projectInfoFromJson = useMemo(() => getProjectInfoFromJson(isMobile), [isMobile]);
   const { projectName, from } = useMemo(() => location.state as IEditLocationState, [location.state]);
   const breadList = useMemo(
     () => [
@@ -35,7 +40,11 @@ export default function EditInformation() {
         title: <NavLink to={`/projects/${from}`}>{from === ProjectListType.MY && 'My '}Projects</NavLink>,
       },
       {
-        title: <NavLink to={`/project/${projectId}`}>{projectName}</NavLink>,
+        title: (
+          <NavLink to={`/project/${projectId}`} state={{ from }}>
+            {projectName}
+          </NavLink>
+        ),
       },
       {
         title: 'Update Project Information',
@@ -71,7 +80,11 @@ export default function EditInformation() {
 
         if (result) {
           message.success('update success!');
-          navigate(`/project/${projectId}`);
+          navigate(`/project/${projectId}`, {
+            state: {
+              from,
+            },
+          });
           return;
         }
       } catch (error: any) {
@@ -79,7 +92,7 @@ export default function EditInformation() {
         message.error(error.message || 'update failed.');
       }
     },
-    [navigate, projectId, updateAddition],
+    [from, navigate, projectId, updateAddition],
   );
 
   const getProjectInfo = useCallback(async () => {
@@ -119,7 +132,7 @@ export default function EditInformation() {
             scrollToFirstError
             onFinish={onFinish}
             validateTrigger="onBlur">
-            {FormFields(ProjectInfoFromJson)}
+            {FormFields(projectInfoFromJson)}
             <Form.Item>
               <Flex justify="center">
                 <Button type="primary" htmlType="submit" style={{ width: 206 }}>

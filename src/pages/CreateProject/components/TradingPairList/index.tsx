@@ -2,9 +2,8 @@ import React, { useCallback, useState } from 'react';
 import clsx from 'clsx';
 import './styles.less';
 import { divDecimalsStr } from 'utils/calculate';
-import ImgLoading from 'components/ImgLoading';
 import { NETWORK_CONFIG } from 'constants/network';
-
+import { useMobile } from 'contexts/useStore/hooks';
 export interface ITradingParCard {
   chainId: string;
   symbol: string;
@@ -34,6 +33,8 @@ const TokenImg = ({ src, symbol }: { src: string; symbol: string }) => {
 };
 
 const TradingPairList: React.FC<TradingParCardProps> = ({ list = [], current, onChange }) => {
+  const isMobile = useMobile();
+
   const onClick = useCallback(
     (item: ITradingParCard) => {
       onChange?.(item);
@@ -45,7 +46,10 @@ const TradingPairList: React.FC<TradingParCardProps> = ({ list = [], current, on
     <div>
       {list.map((item) => (
         <div
-          className={clsx({ 'trading-card': true, active: current?.symbol === item.symbol })}
+          className={clsx({
+            'trading-card': true,
+            active: current?.symbol === item.symbol && current?.chainId === item.chainId,
+          })}
           key={item.symbol}
           onClick={() => onClick(item)}>
           <div className="card-left">
@@ -57,11 +61,14 @@ const TradingPairList: React.FC<TradingParCardProps> = ({ list = [], current, on
                   ? `MainChain ${NETWORK_CONFIG.mainChainId}`
                   : `SideChain ${NETWORK_CONFIG.sideChainId}`}
               </div>
+              {isMobile && <div className="token-quantity">{divDecimalsStr(item.balance, item.decimals)}</div>}
             </div>
           </div>
-          <div className="card-right">
-            <div className="token-quantity">{divDecimalsStr(item.balance, item.decimals)}</div>
-          </div>
+          {!isMobile && (
+            <div className="card-right">
+              <div className="token-quantity">{divDecimalsStr(item.balance, item.decimals)}</div>
+            </div>
+          )}
         </div>
       ))}
     </div>

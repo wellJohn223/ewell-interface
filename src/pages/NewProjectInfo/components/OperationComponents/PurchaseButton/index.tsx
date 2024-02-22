@@ -180,7 +180,7 @@ export default function PurchaseButton({
           </Flex>
           <Flex vertical gap={8}>
             <Flex justify="space-between">
-              <Text>Tokens stored at:</Text>
+              <Text>Tokens stored at</Text>
               <HashAddress
                 className="hash-address-small"
                 preLen={8}

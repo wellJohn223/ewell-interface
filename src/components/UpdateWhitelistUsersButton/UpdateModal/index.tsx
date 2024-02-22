@@ -7,6 +7,8 @@ import { UpdateType } from '../types';
 import './styles.less';
 import { parseWhitelistFile, parseWhitelistInput } from 'utils/parseWhiteList';
 import CommonModalSwitchDrawer from 'components/CommonModalSwitchDrawer';
+import isMobile from 'utils/isMobile';
+import { sleep } from 'utils';
 
 const { TextArea } = Input;
 const { Text } = Typography;
@@ -23,6 +25,8 @@ enum UpdateWay {
   PASTE = 'paste',
 }
 
+const PASTE_ADDRESS_TEXTAREA_ID = 'pasteAddressTextareaId';
+
 export type UpdateModalInterface = {
   reset: () => void;
 };
@@ -31,6 +35,10 @@ const UpdateModal = forwardRef(function (
   { updateType, modalOpen, onModalCancel, onModalSubmit }: IUpdateModalProps,
   ref,
 ) {
+  const isM = isMobile();
+  const isAndroid = useMemo(() => isM.android.phone || isM.android.tablet, [isM]);
+  const pasteAddressTextareaId = useMemo(() => `${updateType}_${PASTE_ADDRESS_TEXTAREA_ID}`, [updateType]);
+
   const [currentUpdateWay, setCurrentUpdateWay] = useState<UpdateWay>(UpdateWay.UPLOAD);
   const [fileList, setFileList] = useState<any[]>([]);
   const [addressInput, setAddressInput] = useState<string>('');
@@ -75,7 +83,7 @@ const UpdateModal = forwardRef(function (
 
   const handleDownloadTemplate = useCallback(() => {
     const link = document.createElement('a');
-    link.href = 'https://portkey-im-dev.s3.ap-northeast-1.amazonaws.com/Template.xlsx';
+    link.href = 'https://ewell-mainnet.s3.ap-northeast-1.amazonaws.com/Template.xlsx';
     link.download = 'Template.xlsx';
     link.click();
   }, []);
@@ -90,24 +98,27 @@ const UpdateModal = forwardRef(function (
       open={modalOpen}
       onCancel={onModalCancel}>
       <Flex className="content-wrapper" vertical gap={24}>
-        <Text>
-          Please enter users' wallet addresses.
-          <br />
-          Batch input is supported, and you can separate addresses with special symbols such as "," or "|" and so on.
-          <br />
-          <br />
-          If you have a list of addresses in CSV or EXCEL doc, you can import them via the "Upload" button.
-          <br />
-          ewell also provides a template for you to fill in addresses and you can download it via the "Download
-          Template" button.
-          <Space className="download-template cursor-pointer" size={8} align="center" onClick={handleDownloadTemplate}>
-            <img src={download} alt="download" />
-            <Text className="purple-text" fontWeight={FontWeightEnum.Medium}>
-              Download Template
-            </Text>
-          </Space>
-        </Text>
-        <Flex className="update-way-radio-wrapper cursor-pointer">
+        <Flex vertical gap={8}>
+          <Text>
+            Please enter users' wallet addresses. Batch input is supported, and you can separate addresses with special
+            symbols such as "," or "|" and so on.
+          </Text>
+          <Text>
+            If you have a list of addresses in CSV or EXCEL doc, you can import them via the "Upload" button. ewell also
+            provides a template for you to fill in addresses and you can download it via the "Download Template" button.
+            <Space
+              className="download-template cursor-pointer"
+              size={8}
+              align="center"
+              onClick={handleDownloadTemplate}>
+              <img src={download} alt="download" />
+              <Text className="purple-text" fontWeight={FontWeightEnum.Medium}>
+                Download Template
+              </Text>
+            </Space>
+          </Text>
+        </Flex>
+        <Flex className="update-way-radio-wrapper cursor-pointer flex-none">
           <Flex
             className={clsx('radio-item', { 'radio-item-active': currentUpdateWay === UpdateWay.UPLOAD })}
             justify="center"
@@ -144,7 +155,21 @@ const UpdateModal = forwardRef(function (
           />
         )}
         {currentUpdateWay === UpdateWay.PASTE && (
-          <TextArea value={addressInput} className="paste-address-textarea" onChange={handleAddressInputChange} />
+          <TextArea
+            id={pasteAddressTextareaId}
+            value={addressInput}
+            className="paste-address-textarea"
+            onChange={handleAddressInputChange}
+            onFocus={async () => {
+              if (isAndroid) {
+                await sleep(500);
+                document.getElementById(pasteAddressTextareaId)?.scrollIntoView({
+                  block: 'center',
+                  behavior: 'smooth',
+                });
+              }
+            }}
+          />
         )}
         <Flex
           className={clsx('footer-wrapper', { ['flex-1']: currentUpdateWay === UpdateWay.UPLOAD })}

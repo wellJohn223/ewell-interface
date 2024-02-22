@@ -9,6 +9,7 @@ import { formatInputNumberString } from 'utils/calculate';
 import { TIdoInfo } from './IDOInfo';
 import { Rule } from 'antd/es/form';
 import { LogoUploadTips, FeaturedUploadTips } from './components/uploadTips';
+import React from 'react';
 
 export const stepTitle = ['Select Token', 'Describe Project', 'Customise Sale', 'Review & Transfer'];
 
@@ -28,6 +29,150 @@ export const stepsItems: StepProps[] = [
 ];
 
 const urlRule: Rule = { type: 'url', message: 'Please enter a valid link.' };
+
+export const getProjectInfoFromJson = (isMobile: boolean): FormItemProps[] => {
+  const textAreaMaxHeight = isMobile ? 'calc(100vh - 64px - 120px' : 'calc(100vh - 64px - 72px';
+  const textAreaStyle: React.CSSProperties = {
+    height: textAreaMaxHeight,
+    minHeight: 64,
+    maxHeight: textAreaMaxHeight,
+  };
+  return [
+    getInputOptions({
+      label: 'Project Name:',
+      name: 'projectName',
+      tooltip: 'The name of your project.',
+      childrenProps: {
+        maxLength: 40,
+        showCount: true,
+      },
+    }),
+    {
+      type: 'textArea',
+      label: 'Description (20-500 characters):',
+      name: 'projectSummary',
+      tooltip: 'A concise overview of your project, like its objectives, target audience, and unique advantages.',
+      rules: [
+        { required: true, message: 'Please enter the necessary information' },
+        { min: 20, message: 'Please enter the necessary information' },
+      ],
+      childrenProps: {
+        maxLength: 500,
+        autoSize: true,
+        style: textAreaStyle,
+      },
+    },
+    {
+      type: 'textArea',
+      label: 'Project Details (300-20,000 characters):',
+      name: 'projectDescription',
+      tooltip:
+        'An in-depth introduction to your project. You can highlight the issues it aims to tackle, the solutions it offers, the technologies involved, and the potential impact it may have, etc.',
+      rules: [
+        { required: true, message: 'Please enter the necessary information' },
+        { min: 300, max: 20000, message: '300-20000' },
+      ],
+      childrenProps: {
+        maxLength: 20000,
+        autoSize: true,
+        style: textAreaStyle,
+      },
+    },
+    {
+      type: 'fileUpload',
+      label: 'Logo:',
+      name: 'logoUrl',
+      tooltip: 'The logo of your token that can represent your project.',
+      required: true,
+      valuePropName: 'fileList',
+      className: 'form-upload',
+      getValueFromEvent: normFile,
+      childrenProps: {
+        tips: <LogoUploadTips />,
+        maxFileCount: 1,
+        fileLimit: '10M',
+        accept: '.jpg,.jpeg.,.png',
+      },
+    },
+    {
+      type: 'fileUpload',
+      label: 'Featured Images:',
+      name: 'projectImgs',
+      required: true,
+      valuePropName: 'fileList',
+      className: 'form-upload',
+      tooltip: '3-5 additional images for promotional or branding purposes.',
+      getValueFromEvent: normFile,
+      childrenProps: {
+        tips: <FeaturedUploadTips />,
+        maxFileCount: 5,
+        fileLimit: '10M',
+        accept: '.jpg,.jpeg.,.png',
+      },
+    },
+    getInputOptions({
+      label: 'Official Website:',
+      name: 'website',
+      tooltip: "The link to your project's official website.",
+      rules: [
+        {
+          required: true,
+          message: 'Please enter the necessary information',
+        },
+        urlRule,
+      ],
+    }),
+    {
+      type: 'fieldsGroup',
+      label: 'Socials:',
+      tooltip: "The links to your project's social media or communities.",
+      fieldsList: [
+        getInputOptions({
+          label: 'Medium:',
+          name: 'medium',
+          required: false,
+          rules: [urlRule],
+        }),
+        getInputOptions({
+          label: 'X:',
+          name: 'x',
+          required: false,
+          rules: [urlRule],
+        }),
+        getInputOptions({
+          label: 'Telegram:',
+          name: 'telegram',
+          required: false,
+          rules: [urlRule],
+        }),
+        getInputOptions({
+          label: 'Github:',
+          name: 'github',
+          required: false,
+          rules: [urlRule],
+        }),
+        getInputOptions({
+          label: 'Discord:',
+          name: 'discord',
+          required: false,
+          rules: [urlRule],
+        }),
+        getInputOptions({
+          label: 'Reddit:',
+          name: 'reddit',
+          required: false,
+          rules: [urlRule],
+        }),
+        getInputOptions({
+          label: 'Facebook:',
+          name: 'facebook',
+          required: false,
+          rules: [urlRule],
+        }),
+      ],
+    },
+  ];
+};
 
 export const ProjectInfoFromJson: FormItemProps[] = [
   getInputOptions({
@@ -50,7 +195,8 @@ export const ProjectInfoFromJson: FormItemProps[] = [
     ],
     childrenProps: {
       maxLength: 500,
-      autoSize: { minRows: 3, maxRows: 5 },
+      autoSize: true,
+      // autoSize: { minRows: 3, maxRows: 5 },
     },
   },
   {
@@ -65,7 +211,8 @@ export const ProjectInfoFromJson: FormItemProps[] = [
     ],
     childrenProps: {
       maxLength: 20000,
-      autoSize: { minRows: 3, maxRows: 5 },
+      autoSize: true,
+      // autoSize: { minRows: 3, maxRows: 5 },
     },
   },
   {

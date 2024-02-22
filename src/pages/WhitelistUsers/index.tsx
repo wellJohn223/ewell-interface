@@ -109,7 +109,11 @@ export default function WhitelistUsers() {
         title: <NavLink to={`/projects/${from}`}>{from === ProjectListType.MY && 'My '}Projects</NavLink>,
       },
       {
-        title: <NavLink to={`/project/${projectId}`}>{projectName}</NavLink>,
+        title: (
+          <NavLink to={`/project/${projectId}`} state={{ from }}>
+            {projectName}
+          </NavLink>
+        ),
       },
       {
         title: 'Whitelisted Users',
