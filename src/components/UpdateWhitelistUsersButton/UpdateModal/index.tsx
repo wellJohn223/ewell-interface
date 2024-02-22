@@ -75,7 +75,7 @@ const UpdateModal = forwardRef(function (
 
   const handleDownloadTemplate = useCallback(() => {
     const link = document.createElement('a');
-    link.href = 'https://portkey-im-dev.s3.ap-northeast-1.amazonaws.com/Template.xlsx';
+    link.href = 'https://ewell-mainnet.s3.ap-northeast-1.amazonaws.com/Template.xlsx';
     link.download = 'Template.xlsx';
     link.click();
   }, []);
@@ -107,7 +107,7 @@ const UpdateModal = forwardRef(function (
             </Text>
           </Space>
         </Text>
-        <Flex className="update-way-radio-wrapper cursor-pointer">
+        <Flex className="update-way-radio-wrapper cursor-pointer flex-none">
           <Flex
             className={clsx('radio-item', { 'radio-item-active': currentUpdateWay === UpdateWay.UPLOAD })}
             justify="center"
