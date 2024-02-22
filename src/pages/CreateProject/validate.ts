@@ -68,6 +68,7 @@ export const crowdFundingIssueAmountValidator: ValidatorFun = async (form: any, 
 
 export const minSubscriptionValidator: ValidatorFun = async (form, v) => {
   console.log('validate min');
+  if (!v) return Promise.reject('please enter the min allocation.');
   const bigV = ZERO.plus(v);
 
   await subscriptionGteTotal(form, bigV);
@@ -82,6 +83,7 @@ export const minSubscriptionValidator: ValidatorFun = async (form, v) => {
 
 export const maxSubscriptionValidator: ValidatorFun = async (form, v) => {
   console.log('validate max');
+  if (!v) return Promise.reject('please enter the max allocation.');
   const bigV = ZERO.plus(v);
 
   await subscriptionGteTotal(form, bigV);

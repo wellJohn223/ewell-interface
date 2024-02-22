@@ -14,6 +14,7 @@ import { ZERO } from 'constants/misc';
 import { getExploreLink } from 'utils';
 import { ExplorerLinkType } from 'types/aelf';
 import { infoCircle, question } from 'assets/images/icon/index';
+import { useMobile } from 'contexts/useStore/hooks';
 
 const { Text, Title } = Typography;
 interface ITransferModalProps {
@@ -28,6 +29,7 @@ export function ConfirmModal({ open, info, onCancel, onOk }: ITransferModalProps
   const { tokenPrice } = useTokenPrice();
   const { balance: ELFBalance } = useBalance(info?.toRaiseToken?.symbol);
   const { balance: tokenBalance } = useBalance(info?.crowdFundingIssueToken?.symbol);
+  const isMobile = useMobile();
 
   const payGasELF = useMemo(() => ZERO.plus(txFee).times(2), [txFee]);
 
@@ -68,19 +70,19 @@ export function ConfirmModal({ open, info, onCancel, onOk }: ITransferModalProps
           </Flex>
           <Flex vertical gap={8}>
             <Flex gap={4} align="flex-start">
-              <img src={infoCircle} alt="" style={{ marginTop: 3 }} />
+              <img src={infoCircle} alt="" style={{ marginTop: 3, width: 12, height: 12 }} />
               <Text size="small">
                 Unpon confirmation, tokens will be transferred to the address specified by ewell.
               </Text>
             </Flex>
             {info?.contractAddress && (
-              <Flex className="modal-box-data-wrapper" justify="space-between">
-                <Flex gap={4}>
+              <Flex className="modal-box-data-wrapper" justify="space-between" vertical={isMobile}>
+                <Flex gap={4} align="center">
                   <Text fontWeight={FontWeightEnum.Medium}>Tokens stored at</Text>
                   <Tooltip
                     title="Both tokens for sale and funds raised from participants will be stored in this address, and you
                   can claim the funds raised along with any unsold tokens after the sale ends.">
-                    <img src={question} />
+                    <img src={question} style={{ width: 12, height: 12 }} />
                   </Tooltip>
                 </Flex>
                 <HashAddress
@@ -151,6 +153,8 @@ interface ISuccessModalProps extends Omit<ITransferModalProps, 'info'> {
 }
 
 export function SuccessModal({ open, info, onCancel, onOk }: ISuccessModalProps) {
+  const isMobile = useMobile();
+
   return (
     <Modal title="Successfully Transferred" open={open} onCancel={onCancel} footer={null} centered>
       <Flex vertical gap={24}>
@@ -167,12 +171,9 @@ export function SuccessModal({ open, info, onCancel, onOk }: ISuccessModalProps)
           <Text className="text-center" fontWeight={FontWeightEnum.Bold}>
             Congratulations! The tokens have been successfully transferred.
           </Text>
-          <Text className="text-center">
-            The token has been transferred to the contract, the project has been created, and you can view the project
-            now!
-          </Text>
+          <Text className="text-center">The sale has been created and you can view it now.</Text>
         </Flex>
-        <Flex className="modal-box-data-wrapper" justify="space-between">
+        <Flex className="modal-box-data-wrapper" justify="space-between" vertical={isMobile}>
           <Text>Transaction ID</Text>
           <HashAddress
             className="hash-address-small"

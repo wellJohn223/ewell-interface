@@ -29,7 +29,12 @@ const ButtonGroup: React.FC<IButtonGroup> = ({
   return (
     <Flex className={clsx('create-btn-group', className)} justify="center" style={style}>
       {onPre && (
-        <Button className={clsx('group-btn pre-btn', { disabled: disablePre })} disabled={disablePre} onClick={onPre}>
+        <Button
+          ghost
+          type="primary"
+          className={clsx('group-btn pre-btn', { disabled: disablePre })}
+          disabled={disablePre}
+          onClick={onPre}>
           <img className="arrow-icon" src={arrow} alt="" />
           <span>Back</span>
         </Button>
@@ -39,6 +44,7 @@ const ButtonGroup: React.FC<IButtonGroup> = ({
           className={clsx('group-btn', 'next-btn', { disabled: disabledNext })}
           disabled={disabledNext}
           htmlType="submit"
+          type="primary"
           onClick={onNext}>
           <span>{nextText || 'Next'}</span>
           <img className="arrow-icon" src={disabledNext ? grayArrow : whiteArrow} alt="" />
