@@ -377,6 +377,7 @@ export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefres
                     placeholder="Enter amount"
                     controls={false}
                     stringMode
+                    wheel={false}
                     addonAfter={
                       <div className="max-operation-wrapper">
                         <Title
