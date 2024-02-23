@@ -23,7 +23,7 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
-    "aelf-design": "^0.1.68-alpha.0",
+    "aelf-design": "^0.1.70-alpha.0",
     "aelf-sdk": "^3.2.45-beta.0",
     "aelf-web-login": "^2.0.0-beta.27",
     "antd": "^5.13.1",
