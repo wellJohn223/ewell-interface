@@ -98,7 +98,7 @@ export default function CancelProjectButton({ projectInfo }: ICancelProjectButto
       </Modal>
       <Modal
         className="common-modal"
-        title="Claim Token"
+        title="Cancel Sale"
         footer={null}
         centered
         destroyOnClose
@@ -106,7 +106,8 @@ export default function CancelProjectButton({ projectInfo }: ICancelProjectButto
         onCancel={() => setIsSubmitModalOpen(false)}>
         <Flex vertical gap={24}>
           <Text>
-            Click to extract ELF from EWELL contract. If you have any token left, it will be withdrawn as well.
+            Upon confirmation, the sale will be cancelled and you can claim all the tokens you provided, yet you won't
+            receive any ELF raised.
           </Text>
           <Flex gap={8} justify="center" align="baseline">
             <Title level={4} fontWeight={FontWeightEnum.Medium}>
@@ -114,7 +115,7 @@ export default function CancelProjectButton({ projectInfo }: ICancelProjectButto
             </Title>
             <Title fontWeight={FontWeightEnum.Medium}>{projectInfo?.crowdFundingIssueToken?.symbol || '--'}</Title>
           </Flex>
-          <Flex className="modal-box-data-wrapper" justify="space-between" align="center">
+          <Flex className="modal-box-data-wrapper mobile-flex-vertical-gap-0" justify="space-between" align="center">
             <Text>My address</Text>
             <HashAddress
               className="hash-address-small"
@@ -151,7 +152,7 @@ export default function CancelProjectButton({ projectInfo }: ICancelProjectButto
           </Flex>
           <Flex justify="center">
             <Button className="modal-single-button" type="primary" onClick={handleSubmit}>
-              Submit
+              Confirm
             </Button>
           </Flex>
         </Flex>
