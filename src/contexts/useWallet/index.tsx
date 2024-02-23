@@ -38,6 +38,15 @@ setGlobalConfig({
       baseURL: NETWORK_CONFIG.webLoginRequestDefaultsUrl,
       timeout: 20 * 1000,
     },
+    loginConfig: {
+      loginMethodsOrder: ['Google', 'Apple', 'Telegram', 'Email', 'Scan'],
+    },
+    // socialLogin: {
+    //   Portkey: {
+    //     websiteName: '',
+    //     websiteIcon: '',
+    //   },
+    // },
     serviceUrl: NETWORK_CONFIG.webLoginRequestDefaultsUrl,
     customNetworkType: IS_OFFLINE_NETWORK ? 'Offline' : 'onLine',
   },
