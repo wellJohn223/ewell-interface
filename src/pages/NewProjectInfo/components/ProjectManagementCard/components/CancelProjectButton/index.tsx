@@ -115,7 +115,7 @@ export default function CancelProjectButton({ projectInfo }: ICancelProjectButto
             </Title>
             <Title fontWeight={FontWeightEnum.Medium}>{projectInfo?.crowdFundingIssueToken?.symbol || '--'}</Title>
           </Flex>
-          <Flex className="modal-box-data-wrapper" justify="space-between" align="center">
+          <Flex className="modal-box-data-wrapper mobile-flex-vertical-gap-0" justify="space-between" align="center">
             <Text>My address</Text>
             <HashAddress
               className="hash-address-small"
