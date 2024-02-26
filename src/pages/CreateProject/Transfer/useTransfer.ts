@@ -93,7 +93,7 @@ export const useTransfer = () => {
       console.log('create-params', info);
       await preCreate({
         amount: info.crowdFundingIssueAmount,
-        symbol: info.projectCurrency,
+        symbol: info.projectSymbol,
       });
       const { projectId, transactionId } = await create(info);
       const { crowdFundingIssueToken, crowdFundingIssueAmount } = await handleLoopFetch({
