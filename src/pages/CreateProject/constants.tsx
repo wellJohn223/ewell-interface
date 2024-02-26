@@ -356,6 +356,7 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
       label: 'Sale Start Time:',
       name: 'startTime',
       required: true,
+      rules: [{ required: true, message: 'please select start time' }],
       tooltip: 'The token sale will start at this time.',
       childrenProps: {
         pcProps: {
@@ -378,6 +379,7 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
       tooltip: 'The token sale will end at this time.',
       name: 'endTime',
       required: true,
+      rules: [{ required: true, message: 'please select end time' }],
       childrenProps: {
         disabled: !idoInfo?.startTime,
         pcProps: {
@@ -399,6 +401,7 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
       label: 'Token Distribution Time:',
       name: 'tokenReleaseTime',
       required: true,
+      rules: [{ required: true, message: 'please select token distribution time' }],
       tooltip:
         'The time when tokens will be released to users, and you can receive proceeds along with any unsold tokens.',
       childrenProps: {

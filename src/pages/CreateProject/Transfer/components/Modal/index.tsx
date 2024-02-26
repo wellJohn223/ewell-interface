@@ -116,10 +116,17 @@ export function ConfirmModal({ open, info, onCancel, onOk }: ITransferModalProps
             </Flex>
             <Flex vertical gap={8}>
               <Flex justify="space-between">
-                <Text>Estimated Transaction Fee</Text>
-                <Flex gap={8} align="baseline">
+                <Flex vertical={isMobile}>
+                  <Text>Estimated </Text>
+                  <Text>Transaction Fee</Text>
+                </Flex>
+                <Flex gap={8} align="baseline" vertical={isMobile}>
                   <Text>{payGasELF.toFormat()} ELF</Text>
-                  {payGasUSD.gt(0) && <Text size="small">$ {payGasUSD.toFormat(2)}</Text>}
+                  {payGasUSD.gt(0) && (
+                    <Text size="small" style={{ alignSelf: 'flex-end' }}>
+                      $ {payGasUSD.toFormat(2)}
+                    </Text>
+                  )}
                 </Flex>
               </Flex>
             </Flex>
