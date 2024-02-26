@@ -76,6 +76,12 @@
       border-color: #9b5eff;
     }
   }
+  &:hover:has(> .@{app-prefix}-input-number-status-error) {
+    .@{app-prefix}-input-number,
+    .@{app-prefix}-input-number-group-addon {
+      border-color: #f53f3f;
+    }
+  }
   .@{app-prefix}-input-number {
     caret-color: #863dff;
   }

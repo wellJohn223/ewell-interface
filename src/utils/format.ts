@@ -1,7 +1,7 @@
-import BigNumber from 'bignumber.js';
 import { UploadFile } from 'antd';
+import { ZERO } from 'constants/misc';
 export const NumberFormat = (val: string | number, precision: number = 0) => {
-  return new BigNumber(val).toFormat(precision).replace(/\.0+$|(?<=\.\d+)0*$/, '');
+  return ZERO.plus(val).toFormat(precision);
 };
 
 export const urlString2FileList = (urlString: string) => {

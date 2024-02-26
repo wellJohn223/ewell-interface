@@ -112,7 +112,7 @@ export default function RevokeFineButton({ projectInfo }: IClaimTokenButtonProps
             </Title>
             <Title fontWeight={FontWeightEnum.Medium}>{projectInfo?.toRaiseToken?.symbol || '--'}</Title>
           </Flex>
-          <Flex className="modal-box-data-wrapper" justify="space-between">
+          <Flex className="modal-box-data-wrapper mobile-flex-vertical-gap-0" justify="space-between">
             <Text fontWeight={FontWeightEnum.Medium}>My address</Text>
             <HashAddress
               className="hash-address-small"

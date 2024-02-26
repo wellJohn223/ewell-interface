@@ -110,7 +110,7 @@ export default function ClaimTokenButton({ projectInfo }: IClaimTokenButtonProps
             </Title>
             <Title fontWeight={FontWeightEnum.Medium}>{projectInfo?.crowdFundingIssueToken?.symbol || '--'}</Title>
           </Flex>
-          <Flex className="modal-box-data-wrapper" justify="space-between">
+          <Flex className="modal-box-data-wrapper mobile-flex-vertical-gap-0" justify="space-between">
             <Text>My address</Text>
             <HashAddress
               className="hash-address-small"
