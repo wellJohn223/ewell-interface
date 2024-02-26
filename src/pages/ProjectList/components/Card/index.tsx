@@ -32,7 +32,7 @@ export interface IProjectCard {
   unlockTime?: number;
   isCanceled?: boolean;
   cancelTime?: number;
-  toRaisedAmount?: number;
+  targetRaisedAmount?: number;
   currentRaisedAmount?: number;
 }
 
@@ -49,7 +49,7 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
     preSalePrice,
     crowdFundingIssueToken,
     currentRaisedAmount,
-    toRaisedAmount,
+    targetRaisedAmount,
     toRaiseToken,
     status,
   } = data;
@@ -58,10 +58,10 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
 
   const progressPercent = useMemo(() => {
     const percent = ZERO.plus(currentRaisedAmount ?? 0)
-      .div(toRaisedAmount ?? 0)
+      .div(targetRaisedAmount ?? 0)
       .times(1e2);
     return percent.isNaN() ? 0 : Number(percent.toFixed(2));
-  }, [currentRaisedAmount, toRaisedAmount]);
+  }, [currentRaisedAmount, targetRaisedAmount]);
   const navigate = useNavigate();
 
   const { type } = useParams();
@@ -96,11 +96,11 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
 
   useEffect(() => {
     if (status === ProjectStatus.CANCELED) {
-      setRemainderTimeStr(data?.cancelTime ? dayjs(data.cancelTime).format('DD MMMM, YYYY') : '--');
+      setRemainderTimeStr(data?.cancelTime ? dayjs(data.cancelTime).format('DD MMM YYYY') : '--');
     }
 
     if (status === ProjectStatus.ENDED) {
-      setRemainderTimeStr(data?.tokenReleaseTime ? dayjs(data.tokenReleaseTime).format('DD MMMM, YYYY') : '--');
+      setRemainderTimeStr(data?.tokenReleaseTime ? dayjs(data.tokenReleaseTime).format('DD MMM YYYY') : '--');
     }
   }, [data.cancelTime, data.tokenReleaseTime, status]);
 
@@ -124,7 +124,7 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
       if (remainingTime <= ONE_DAY_IN_MS) {
         formatValue = timeDuration(remainingTime);
       } else {
-        formatValue = dayjs(timestamp).format('DD MMMM, YYYY');
+        formatValue = dayjs(timestamp).format('DD MMM YYYY');
       }
       setRemainderTimeStr(formatValue);
     }, 1000);
@@ -138,9 +138,9 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
     [currentRaisedAmount, toRaiseToken?.decimals],
   );
 
-  const toRaisedAmountStr = useMemo(
-    () => divDecimals(toRaisedAmount, toRaiseToken?.decimals).toFormat(),
-    [toRaiseToken?.decimals, toRaisedAmount],
+  const targetRaisedAmountStr = useMemo(
+    () => divDecimals(targetRaisedAmount, toRaiseToken?.decimals).toFormat(),
+    [toRaiseToken?.decimals, targetRaisedAmount],
   );
 
   const preSalePriceStr = useMemo(
@@ -187,9 +187,11 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
                 <Text fontWeight={FontWeightEnum.Medium} style={{ flex: 'none' }}>
                   1 ELF =
                 </Text>
-                <Text ellipsis>{`${preSalePriceStr} ${crowdFundingIssueToken?.symbol || ''}`}</Text>
+                <Text className="flex-1" ellipsis>{`${preSalePriceStr} 0000000000${
+                  crowdFundingIssueToken?.symbol || ''
+                }`}</Text>
               </Flex>
-              <Text ellipsis>{remainderTimeStr}</Text>
+              <Text style={{ flex: 'none' }}>{remainderTimeStr}</Text>
             </Flex>
           </Flex>
           <CommonProjectProgress
@@ -198,7 +200,7 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
             progressPercent={progressPercent}
             projectStatus={status}
             currentRaisedAmount={currentRaisedAmountStr}
-            toRaisedAmount={toRaisedAmountStr}
+            targetRaisedAmount={targetRaisedAmountStr}
             toRaiseTokenSymbol={toRaiseToken?.symbol}
           />
         </Flex>

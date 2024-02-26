@@ -11,7 +11,7 @@ interface ICommonProjectProgressProps {
   progressPercent: number;
   projectStatus?: ProjectStatus;
   currentRaisedAmount: string;
-  toRaisedAmount: string;
+  targetRaisedAmount: string;
   toRaiseTokenSymbol?: string;
 }
 
@@ -21,7 +21,7 @@ export default function CommonProjectProgress({
   progressPercent,
   projectStatus,
   currentRaisedAmount,
-  toRaisedAmount,
+  targetRaisedAmount,
   toRaiseTokenSymbol,
 }: ICommonProjectProgressProps) {
   return (
@@ -35,7 +35,7 @@ export default function CommonProjectProgress({
       <Flex gap={16} align="center" justify="space-between">
         <Text {...textProps}>{progressPercent.toFixed(0)}%</Text>
         <Text {...textProps}>
-          {currentRaisedAmount}/{toRaisedAmount} {toRaiseTokenSymbol || '--'}
+          {currentRaisedAmount}/{targetRaisedAmount} {toRaiseTokenSymbol || '--'}
         </Text>
       </Flex>
     </Flex>
