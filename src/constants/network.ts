@@ -69,7 +69,7 @@ const NETWORK_CONFIG_LIST: Record<string, TNetworkConfig> = {
     webLoginGraphqlUrl: 'https://dapp-aa-portkey-test.portkey.finance/Portkey_V2_DID/PortKeyIndexerCASchema/graphql',
     webLoginRequestDefaultsUrl: 'https://aa-portkey-test.portkey.finance',
     webLoginConnectUrl: 'https://auth-aa-portkey-test.portkey.finance',
-    ewellContractAddress: '2YEYK4sFBJPXEbX9PKniaoJ72ro6FxJjDLVJANZGyfJq6JLcRQ',
+    ewellContractAddress: '2EbbUpZLds58keVZPJDLPRbPpxzUYCcjooq6LBiBoRXVTFZTiQ',
     whitelistContractAddress: '25VDxYFNxujPnPzqzkHxveegoV9wYm5zY72Hv6L7utD1kKu2jZ',
     symbolMarketUrl: 'https://test.eforest.finance/symbolmarket',
     mainChainInfo: {
