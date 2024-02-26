@@ -12,9 +12,39 @@ import { WebLoginState } from 'aelf-web-login';
 import myEvents from 'utils/myEvent';
 import { emitLoading } from 'utils/events';
 import { checkIsAuthorized } from 'api/utils';
+import { Select, Space } from 'antd';
+import type { SelectProps } from 'antd';
+import { elf, usdt } from 'assets/images/tokens';
+import { arrow } from 'assets/images';
+import { TCurrencyType } from '../types';
 
+const currencyOptions: SelectProps['options'] = [
+  {
+    label: (
+      <>
+        <Space>
+          <img src={elf} alt="" />
+          {TCurrencyType.ELF}
+        </Space>
+      </>
+    ),
+    value: TCurrencyType.ELF,
+  },
+  {
+    label: (
+      <>
+        <Space>
+          <img src={usdt} alt="" />
+          {TCurrencyType.USDT}
+        </Space>
+      </>
+    ),
+    value: TCurrencyType.USDT,
+  },
+];
 const ConfirmTradingPair: React.FC<CreateStepProps> = ({ onNext }) => {
   const [tradingPair, setTradingPair] = useLocalStorage<ITradingParCard>(storages.ConfirmTradingPair);
+  const [currency, setCurrency] = useLocalStorage<TCurrencyType>(storages.Currency);
   const [select, setSelect] = useState<ITradingParCard | undefined>(tradingPair);
   const selectRef = useRef<ITradingParCard>();
   selectRef.current = select;
@@ -79,6 +109,8 @@ const ConfirmTradingPair: React.FC<CreateStepProps> = ({ onNext }) => {
     };
   }, [getTokenList]);
 
+  const onSelectCurrency = useCallback((val) => setCurrency(val), [setCurrency]);
+
   return (
     <div className="trading-page">
       <div className="trading-title">Raise funds for your project in ewell</div>
@@ -96,6 +128,16 @@ const ConfirmTradingPair: React.FC<CreateStepProps> = ({ onNext }) => {
           </span>
           .
         </div>
+      </div>
+      <div className="trading-footer">
+        <div className="trading-sub-title">2. Choose a currency that can be used to purchase your tokens.</div>
+        <Select
+          suffixIcon={<img src={arrow} />}
+          defaultValue={currency || TCurrencyType.ELF}
+          options={currencyOptions}
+          style={{ width: '100%' }}
+          onSelect={onSelectCurrency}
+        />
       </div>
       <ButtonGroup onNext={onClick} disabledNext={isBtnDisabled} />
     </div>

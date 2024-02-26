@@ -3,7 +3,7 @@ import { getInputOptions, normFile } from 'components/FormItem/utils';
 import { FormItemProps } from 'components/FormItem';
 import { Validators } from './validate';
 import { disabledDateBefore, disabledTimeBefore, integerNumberFormat, formatNumberParser } from './utils';
-import { TSteps } from './types';
+import { TCurrencyType, TSteps } from './types';
 import { ITradingParCard } from './components/TradingPairList';
 import { formatInputNumberString } from 'utils/calculate';
 import { TIdoInfo } from './IDOInfo';
@@ -188,7 +188,11 @@ export const formWhitelist: FormItemProps[] = [
   }),
 ];
 
-export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo): FormItemProps[] => {
+export const getIDOFormJson = (
+  tradingCard?: ITradingParCard,
+  idoInfo?: TIdoInfo,
+  currency?: TCurrencyType,
+): FormItemProps[] => {
   return [
     {
       type: 'select',
@@ -246,7 +250,7 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
           type: 'pureText',
           childrenProps: {
             className: 'margin-left-8',
-            text: tradingCard?.symbol ? `${tradingCard?.symbol} = 1 ELF` : '',
+            text: tradingCard?.symbol ? `${tradingCard?.symbol} = 1 ${currency}` : '',
           },
         },
       ],
@@ -313,7 +317,7 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
         {
           type: 'pureText',
           childrenProps: {
-            text: 'ELF To ',
+            text: `${currency} To `,
             style: {
               flex: 'none',
               margin: '0 8px',
@@ -342,7 +346,7 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
         {
           type: 'pureText',
           childrenProps: {
-            text: 'ELF',
+            text: currency,
             style: {
               flex: 'none',
               marginLeft: 8,

@@ -9,3 +9,8 @@ export enum TSteps {
   THREE,
   FOUR,
 }
+
+export enum TCurrencyType {
+  ELF = 'ELF',
+  USDT = 'USDT',
+}
