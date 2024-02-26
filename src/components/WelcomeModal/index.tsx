@@ -86,7 +86,7 @@ export const WelcomeModal = () => {
       console.log('/connect/token', res);
       setLocalJWT(key, res.data);
       service.defaults.headers.common['Authorization'] = `${res.data.token_type} ${res.data.access_token}`;
-      myEvents.AuthToken.emit();
+      myEvents.AuthToken.emit(wallet);
     } catch (error) {
       console.log('authToken error', error);
       logout();

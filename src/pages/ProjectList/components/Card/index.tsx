@@ -19,23 +19,6 @@ import { pick } from 'utils';
 
 const ONE_DAY_IN_MS = 24 * 60 * 60 * 1000;
 
-export interface IProjectCard {
-  id?: string;
-  chainId?: string;
-  creator?: string;
-  crowdFundingType?: string;
-  crowdFundingIssueAmount?: string;
-  preSalePrice?: number;
-  additionalInfo?: string[];
-  startTime?: number;
-  endTime?: number;
-  unlockTime?: number;
-  isCanceled?: boolean;
-  cancelTime?: number;
-  targetRaisedAmount?: number;
-  currentRaisedAmount?: number;
-}
-
 export interface ProjectCardProps {
   data: IProjectInfo;
 }

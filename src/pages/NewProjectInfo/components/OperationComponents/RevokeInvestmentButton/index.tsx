@@ -75,10 +75,10 @@ export default function RevokeInvestmentButton({ projectInfo }: IRevokeInvestmen
     try {
       const result = await wallet?.callContract<any, any>({
         contractAddress: NETWORK_CONFIG.ewellContractAddress,
-        methodName: 'UnInvest',
+        methodName: 'Disinvest',
         args: projectId,
       });
-      console.log('UnInvest result', result);
+      console.log('Disinvest result', result);
       const { TransactionId } = result;
       setTransactionId(TransactionId);
       setIsSuccessModalOpen(true);
@@ -86,7 +86,7 @@ export default function RevokeInvestmentButton({ projectInfo }: IRevokeInvestmen
       console.log('error', error);
       messageApi.open({
         type: 'error',
-        content: error?.message || 'UnInvest failed',
+        content: error?.message || 'Disinvest failed',
       });
     } finally {
       emitLoading(false);

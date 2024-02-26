@@ -3,8 +3,8 @@ import { ChainId } from '@portkey/types';
 
 export type TNetworkConfig = {
   networkType: NetworkType;
-  mainChainId: string;
-  sideChainId: string;
+  mainChainId: ChainId;
+  sideChainId: ChainId;
   ewellRequestUrl: string;
   ewellConnectUrl: string;
   webLoginNetworkType: 'MAIN' | 'TESTNET';
@@ -69,7 +69,7 @@ const NETWORK_CONFIG_LIST: Record<string, TNetworkConfig> = {
     webLoginGraphqlUrl: 'https://dapp-aa-portkey-test.portkey.finance/Portkey_V2_DID/PortKeyIndexerCASchema/graphql',
     webLoginRequestDefaultsUrl: 'https://aa-portkey-test.portkey.finance',
     webLoginConnectUrl: 'https://auth-aa-portkey-test.portkey.finance',
-    ewellContractAddress: '2YEYK4sFBJPXEbX9PKniaoJ72ro6FxJjDLVJANZGyfJq6JLcRQ',
+    ewellContractAddress: '2EbbUpZLds58keVZPJDLPRbPpxzUYCcjooq6LBiBoRXVTFZTiQ',
     whitelistContractAddress: '25VDxYFNxujPnPzqzkHxveegoV9wYm5zY72Hv6L7utD1kKu2jZ',
     symbolMarketUrl: 'https://test.eforest.finance/symbolmarket',
     mainChainInfo: {
@@ -119,6 +119,6 @@ const NETWORK_CONFIG_LIST: Record<string, TNetworkConfig> = {
 
 export const NETWORK_CONFIG = NETWORK_CONFIG_LIST[process.env.REACT_APP_NETWORK_KEY || ''];
 
-export const DEFAULT_CHAIN_ID = NETWORK_CONFIG_LIST[process.env.REACT_APP_NETWORK_KEY || ''].sideChainId as ChainId;
+export const DEFAULT_CHAIN_ID = NETWORK_CONFIG_LIST[process.env.REACT_APP_NETWORK_KEY || ''].sideChainId;
 
 export const IS_OFFLINE_NETWORK = process.env.REACT_APP_NETWORK_KEY === 'test3';
