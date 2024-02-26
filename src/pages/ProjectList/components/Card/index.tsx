@@ -182,11 +182,14 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
               <Text>Sale Price</Text>
               <Text>{remainderStr}</Text>
             </Flex>
-            <Flex justify="space-between">
-              <Text fontWeight={FontWeightEnum.Medium}>
-                1 ELF = {`${preSalePriceStr} ${crowdFundingIssueToken?.symbol || ''}`}
-              </Text>
-              <Text>{remainderTimeStr}</Text>
+            <Flex justify="space-between" gap={16}>
+              <Flex gap={3}>
+                <Text fontWeight={FontWeightEnum.Medium} style={{ flex: 'none' }}>
+                  1 ELF =
+                </Text>
+                <Text ellipsis>{`${preSalePriceStr} ${crowdFundingIssueToken?.symbol || ''}`}</Text>
+              </Flex>
+              <Text ellipsis>{remainderTimeStr}</Text>
             </Flex>
           </Flex>
           <CommonProjectProgress
