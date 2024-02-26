@@ -2,7 +2,7 @@ import React, { useMemo, useState, useCallback, useEffect, useRef } from 'react'
 import { Row, Col } from 'antd';
 import { useEffectOnce } from 'react-use';
 import { useCardCol } from '../../hooks/useCardCol';
-import ProjectCard, { IProjectCard } from '../Card';
+import ProjectCard from '../Card';
 import { useGetList, IListData } from '../../hooks/useGetList';
 import { ProjectType } from 'types/project';
 import Empty from 'components/Empty';
@@ -13,8 +13,8 @@ import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import { useMobile } from 'contexts/useStore/hooks';
 interface ProjectListProps {
-  createdItems?: IProjectCard[];
-  participateItems?: IProjectCard[];
+  createdItems?: IListData['createdItems'];
+  participateItems?: IListData['createdItems'];
 }
 
 const MyProjects: React.FC<ProjectListProps> = () => {
