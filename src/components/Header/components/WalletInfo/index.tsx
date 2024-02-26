@@ -5,11 +5,12 @@ import { NETWORK_CONFIG } from 'constants/network';
 import { useNavigate } from 'react-router-dom';
 import projectsSvg from '../../images/projects.svg';
 import logoutSvg from '../../images/logout.svg';
+import personSvg from '../../images/person.svg';
 import './styles.less';
 import { useMobile } from 'contexts/useStore/hooks';
 import { useCallback } from 'react';
-import myEvents from 'utils/myEvent';
 import { getExploreLink } from 'utils';
+import { WalletType } from 'aelf-web-login';
 
 export interface IWalletInfoProps {
   onMyProjectClick?: () => void;
@@ -26,7 +27,7 @@ export const WalletInfo = ({ onMyProjectClick }: IWalletInfoProps) => {
   return (
     <>
       <div className="wallet-info-item-wrap">
-        <img src={walletSvg} alt="" />
+        <img src={personSvg} alt="" />
         <div className="wallet-item-body">
           <span className="wallet-item-title">My Address</span>
           <div className="wallet-item-content">
@@ -47,6 +48,20 @@ export const WalletInfo = ({ onMyProjectClick }: IWalletInfoProps) => {
           </div>
         </div>
       </div>
+
+      {wallet?.walletType === WalletType.portkey && (
+        <div
+          className="wallet-info-item-wrap"
+          onClick={() => {
+            navigate('/assets', { replace: true });
+            onMyProjectClick?.();
+          }}>
+          <img src={walletSvg} alt="" />
+          <div className="wallet-item-body">
+            <span className="wallet-item-title">My Assets</span>
+          </div>
+        </div>
+      )}
 
       <div
         className="wallet-info-item-wrap"

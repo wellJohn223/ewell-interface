@@ -6,21 +6,25 @@ import Footer from 'components/Footer';
 import PageLoading from 'components/PageLoading';
 import PageSyncTipsModal from 'components/PageSyncTipsModal';
 import { useInit } from 'hooks/useInit';
+import { useCheckRoute } from 'hooks';
 
 function App() {
   useInit();
+  const isFullPage = useCheckRoute('assets');
 
   return (
     <>
       <div className="ewell-ui-root" id="project-list-scroll">
-        <Header />
-        <ScrollToTop />
-        <div className="page-container">
-          <PageRouter />
-          <Footer />
-        </div>
-        <PageLoading />
-        <PageSyncTipsModal />
+        <>
+          {!isFullPage && <Header />}
+          <ScrollToTop />
+          <div className="page-container">
+            <PageRouter />
+            {!isFullPage && <Footer />}
+          </div>
+          <PageLoading />
+          <PageSyncTipsModal />
+        </>
       </div>
     </>
   );
