@@ -6,6 +6,7 @@ import ParticipantList from 'pages/ParticipantList';
 import WhitelistUsers from 'pages/WhitelistUsers';
 import CreateProject from 'pages/CreateProject';
 import EditInformation from 'pages/EditInformation';
+import PortkeyAssets from 'pages/PortkeyAssets';
 
 export const PageRouter = () =>
   useRoutes([
@@ -36,6 +37,10 @@ export const PageRouter = () =>
     {
       path: '/edit-information/:projectId',
       element: <EditInformation />,
+    },
+    {
+      path: '/assets',
+      element: <PortkeyAssets />,
     },
     {
       path: '*',

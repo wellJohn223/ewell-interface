@@ -61,7 +61,7 @@ export const authToken = async (wallet: IWallet) => {
   const localJWT = getLocalJWT(key);
   if (localJWT) {
     service.defaults.headers.common['Authorization'] = `${localJWT.token_type} ${localJWT.access_token}`;
-    myEvents.AuthToken.emit();
+    myEvents.AuthToken.emit(wallet);
     return;
   }
 
