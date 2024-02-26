@@ -55,7 +55,7 @@ const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
       whitelistInfo: {
         url: whitelistUrl,
       },
-      toRaisedAmount: timesDecimals(
+      targetRaisedAmount: timesDecimals(
         new BigNumber(data.crowdFundingIssueAmount).div(data.preSalePrice),
         AELF_TOKEN_INFO.decimals,
       ).toString(),

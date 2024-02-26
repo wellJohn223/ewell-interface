@@ -68,11 +68,11 @@ export interface IProjectInfo {
   periodDuration?: number;
   preSalePrice?: string;
   publicSalePrice?: string;
-  restDistributeProportion?: number;
+  restPeriodDistributeProportion?: number;
   startTime?: string;
   toClaimAmount?: string;
   toRaiseToken?: TokenInfo;
-  toRaisedAmount?: string;
+  targetRaisedAmount?: string;
   totalPeriod?: number;
   unlockTime?: string;
   whitelistId?: string;
@@ -121,11 +121,11 @@ export interface ProjectItem {
   periodDuration?: number;
   preSalePrice?: number;
   publicSalePrice?: number;
-  restDistributeProportion?: number;
+  restPeriodDistributeProportion?: number;
   startTime?: number;
   toClaimAmount?: number;
   toRaiseToken?: TokenInfo;
-  toRaisedAmount?: number;
+  targetRaisedAmount?: number;
   totalPeriod?: number;
   unlockTime?: number;
   whitelistId?: string;

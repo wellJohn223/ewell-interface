@@ -19,23 +19,6 @@ import { pick } from 'utils';
 
 const ONE_DAY_IN_MS = 24 * 60 * 60 * 1000;
 
-export interface IProjectCard {
-  id?: string;
-  chainId?: string;
-  creator?: string;
-  crowdFundingType?: string;
-  crowdFundingIssueAmount?: string;
-  preSalePrice?: number;
-  additionalInfo?: string[];
-  startTime?: number;
-  endTime?: number;
-  unlockTime?: number;
-  isCanceled?: boolean;
-  cancelTime?: number;
-  toRaisedAmount?: number;
-  currentRaisedAmount?: number;
-}
-
 export interface ProjectCardProps {
   data: IProjectInfo;
 }
@@ -49,7 +32,7 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
     preSalePrice,
     crowdFundingIssueToken,
     currentRaisedAmount,
-    toRaisedAmount,
+    targetRaisedAmount,
     toRaiseToken,
     status,
   } = data;
@@ -58,10 +41,10 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
 
   const progressPercent = useMemo(() => {
     const percent = ZERO.plus(currentRaisedAmount ?? 0)
-      .div(toRaisedAmount ?? 0)
+      .div(targetRaisedAmount ?? 0)
       .times(1e2);
     return percent.isNaN() ? 0 : Number(percent.toFixed(2));
-  }, [currentRaisedAmount, toRaisedAmount]);
+  }, [currentRaisedAmount, targetRaisedAmount]);
   const navigate = useNavigate();
 
   const { type } = useParams();
@@ -138,9 +121,9 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
     [currentRaisedAmount, toRaiseToken?.decimals],
   );
 
-  const toRaisedAmountStr = useMemo(
-    () => divDecimals(toRaisedAmount, toRaiseToken?.decimals).toFormat(),
-    [toRaiseToken?.decimals, toRaisedAmount],
+  const targetRaisedAmountStr = useMemo(
+    () => divDecimals(targetRaisedAmount, toRaiseToken?.decimals).toFormat(),
+    [toRaiseToken?.decimals, targetRaisedAmount],
   );
 
   const preSalePriceStr = useMemo(
@@ -198,7 +181,7 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
             progressPercent={progressPercent}
             projectStatus={status}
             currentRaisedAmount={currentRaisedAmountStr}
-            toRaisedAmount={toRaisedAmountStr}
+            targetRaisedAmount={targetRaisedAmountStr}
             toRaiseTokenSymbol={toRaiseToken?.symbol}
           />
         </Flex>
