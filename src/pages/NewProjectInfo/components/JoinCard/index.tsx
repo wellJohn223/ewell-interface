@@ -93,8 +93,12 @@ export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefres
   }, [projectInfo?.isEnableWhitelist, projectInfo?.isInWhitelist, projectInfo?.whitelistInfo?.url]);
 
   const showWhitelistEnabledLabel = useMemo(() => {
-    return !showViewWhitelistTasks && projectInfo?.isEnableWhitelist;
-  }, [projectInfo?.isEnableWhitelist, showViewWhitelistTasks]);
+    return (
+      !showViewWhitelistTasks &&
+      projectInfo?.isEnableWhitelist &&
+      (projectInfo?.status === ProjectStatus.UPCOMING || projectInfo?.status === ProjectStatus.PARTICIPATORY)
+    );
+  }, [projectInfo?.isEnableWhitelist, projectInfo?.status, showViewWhitelistTasks]);
 
   const showWhitelistJoined = useMemo(() => {
     return projectInfo?.isEnableWhitelist && projectInfo?.isInWhitelist;
@@ -342,14 +346,9 @@ export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefres
             <Flex justify="flex-end">{renderViewWhitelistTasks('View Whitelist Tasks')}</Flex>
           </>
         )}
-        {showWhitelistEnabledLabel && (
-          <>
-            {(projectInfo?.status === ProjectStatus.UPCOMING ||
-              projectInfo?.status === ProjectStatus.PARTICIPATORY) && (
-              <Text>Whitelisted is enabled for this sale.</Text>
-            )}
-          </>
-        )}
+
+        {showWhitelistEnabledLabel && <Text>Whitelisted is enabled for this sale.</Text>}
+
         {showWhitelistJoined && (
           <Flex gap={16} align="center" justify="space-between">
             <Text>Whitelist</Text>
