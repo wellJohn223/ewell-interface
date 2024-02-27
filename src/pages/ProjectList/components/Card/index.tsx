@@ -80,11 +80,11 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
 
   useEffect(() => {
     if (status === ProjectStatus.CANCELED) {
-      setRemainderTimeStr(data?.cancelTime ? dayjs(data.cancelTime).format('DD MMM YYYY') : '--');
+      setRemainderTimeStr(data?.cancelTime ? dayjs(data.cancelTime).format('DD MMM, YYYY') : '--');
     }
 
     if (status === ProjectStatus.ENDED) {
-      setRemainderTimeStr(data?.tokenReleaseTime ? dayjs(data.tokenReleaseTime).format('DD MMM YYYY') : '--');
+      setRemainderTimeStr(data?.tokenReleaseTime ? dayjs(data.tokenReleaseTime).format('DD MMM, YYYY') : '--');
     }
   }, [data.cancelTime, data.tokenReleaseTime, status]);
 
@@ -108,7 +108,7 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
       if (remainingTime <= ONE_DAY_IN_MS) {
         formatValue = timeDuration(remainingTime);
       } else {
-        formatValue = dayjs(timestamp).format('DD MMM YYYY');
+        formatValue = dayjs(timestamp).format('DD MMM, YYYY');
       }
       setRemainderTimeStr(formatValue);
     }, 1000);
@@ -166,14 +166,16 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
               <Text>Sale Price</Text>
               <Text>{remainderStr}</Text>
             </Flex>
-            <Flex justify="space-between" gap={16}>
-              <Flex gap={3}>
+            <Flex justify="space-between" gap={'5%'}>
+              <Flex gap={3} flex={1} style={{ maxWidth: '68%' }}>
                 <Text fontWeight={FontWeightEnum.Medium} style={{ flex: 'none' }}>
                   1 ELF =
                 </Text>
                 <Text className="flex-1" ellipsis>{`${preSalePriceStr} ${crowdFundingIssueToken?.symbol || ''}`}</Text>
               </Flex>
-              <Text style={{ flex: 'none' }}>{remainderTimeStr}</Text>
+              <Flex flex="none">
+                <Text>{remainderTimeStr}</Text>
+              </Flex>
             </Flex>
           </Flex>
           <CommonProjectProgress
