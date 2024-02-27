@@ -199,7 +199,7 @@ export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefres
     if (projectInfo?.status === ProjectStatus.UPCOMING) {
       return (
         <>
-          <Text>Ends in</Text>
+          <Text>Starts in</Text>
           <NewBaseCountdown
             className="countdown-wrapper"
             value={projectInfo?.startTime ? dayjs(projectInfo.startTime).valueOf() : 0}
