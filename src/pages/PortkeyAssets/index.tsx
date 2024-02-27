@@ -1,39 +1,28 @@
 import './styles.less';
 import assetsBackImg from './images/assetsBack.svg';
 import { useNavigate } from 'react-router-dom';
-import { useCallback, useEffect } from 'react';
-import { PortkeyDid, WalletType, WebLoginState } from 'aelf-web-login';
+import { useCallback, useMemo } from 'react';
+import { PortkeyDid, WebLoginState } from 'aelf-web-login';
 import { useWallet } from 'contexts/useWallet/hooks';
 import { NETWORK_CONFIG } from 'constants/network';
 import { useEffectOnce } from 'react-use';
-import myEvents from 'utils/myEvent';
 
 export default function PortkeyAssets() {
   const navigate = useNavigate();
   const { wallet, loginState } = useWallet();
+  const isLogin = useMemo(() => loginState === WebLoginState.logined, [loginState]);
 
   useEffectOnce(() => {
-    console.log('useEffectOnce: loginState', loginState, wallet);
-    if (loginState === WebLoginState.logined && wallet?.walletType !== WalletType.portkey) {
+    if (!isLogin) {
       navigate('/', { replace: true });
     }
   });
-
-  useEffect(() => {
-    const { remove } = myEvents.AuthToken.addListener((wallet) => {
-      if (wallet?.walletType === WalletType.portkey) return;
-      navigate('/', { replace: true });
-    });
-    return () => {
-      remove();
-    };
-  }, [navigate]);
 
   const onOverviewBack = useCallback(() => {
     navigate(-1);
   }, [navigate]);
 
-  return (
+  return isLogin ? (
     <PortkeyDid.PortkeyAssetProvider
       pin={wallet?.walletInfo.portkeyInfo?.pin || ''}
       caHash={wallet?.walletInfo.portkeyInfo?.caInfo.caHash}
@@ -47,5 +36,7 @@ export default function PortkeyAssets() {
         onOverviewBack={onOverviewBack}
       />
     </PortkeyDid.PortkeyAssetProvider>
+  ) : (
+    <></>
   );
 }
