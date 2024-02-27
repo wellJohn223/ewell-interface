@@ -7,7 +7,7 @@ import CommonProjectStatusTag from 'components/CommonProjectStatusTag';
 import CommonProjectProgress from 'components/CommonProjectProgress';
 import { IProjectInfo } from './types';
 import { ZERO } from 'constants/misc';
-import { divDecimals } from 'utils/calculate';
+import { divDecimals, divDecimalsStr } from 'utils/calculate';
 import { ProjectStatus } from 'types/project';
 import { useNavigate, useParams } from 'react-router-dom';
 import { stringifyUrl } from 'query-string';
@@ -79,11 +79,11 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
 
   useEffect(() => {
     if (status === ProjectStatus.CANCELED) {
-      setRemainderTimeStr(data?.cancelTime ? dayjs(data.cancelTime).format('DD MMMM, YYYY') : '--');
+      setRemainderTimeStr(data?.cancelTime ? dayjs(data.cancelTime).format('DD MMM YYYY') : '--');
     }
 
     if (status === ProjectStatus.ENDED) {
-      setRemainderTimeStr(data?.tokenReleaseTime ? dayjs(data.tokenReleaseTime).format('DD MMMM, YYYY') : '--');
+      setRemainderTimeStr(data?.tokenReleaseTime ? dayjs(data.tokenReleaseTime).format('DD MMM YYYY') : '--');
     }
   }, [data.cancelTime, data.tokenReleaseTime, status]);
 
@@ -107,7 +107,7 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
       if (remainingTime <= ONE_DAY_IN_MS) {
         formatValue = timeDuration(remainingTime);
       } else {
-        formatValue = dayjs(timestamp).format('DD MMMM, YYYY');
+        formatValue = dayjs(timestamp).format('DD MMM YYYY');
       }
       setRemainderTimeStr(formatValue);
     }, 1000);
@@ -117,12 +117,12 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
   }, [data?.endTime, data?.startTime, data?.tokenReleaseTime, status]);
 
   const currentRaisedAmountStr = useMemo(
-    () => divDecimals(currentRaisedAmount, toRaiseToken?.decimals).toFormat(),
+    () => divDecimalsStr(currentRaisedAmount, toRaiseToken?.decimals),
     [currentRaisedAmount, toRaiseToken?.decimals],
   );
 
   const targetRaisedAmountStr = useMemo(
-    () => divDecimals(targetRaisedAmount, toRaiseToken?.decimals).toFormat(),
+    () => divDecimalsStr(targetRaisedAmount, toRaiseToken?.decimals),
     [toRaiseToken?.decimals, targetRaisedAmount],
   );
 
@@ -170,9 +170,9 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
                 <Text fontWeight={FontWeightEnum.Medium} style={{ flex: 'none' }}>
                   1 ELF =
                 </Text>
-                <Text ellipsis>{`${preSalePriceStr} ${crowdFundingIssueToken?.symbol || ''}`}</Text>
+                <Text className="flex-1" ellipsis>{`${preSalePriceStr} ${crowdFundingIssueToken?.symbol || ''}`}</Text>
               </Flex>
-              <Text ellipsis>{remainderTimeStr}</Text>
+              <Text style={{ flex: 'none' }}>{remainderTimeStr}</Text>
             </Flex>
           </Flex>
           <CommonProjectProgress
