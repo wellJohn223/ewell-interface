@@ -70,7 +70,8 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
     if (status === ProjectStatus.CANCELED) str = 'Cancelled on';
     if (status === ProjectStatus.ENDED) str = 'Ended on';
     if (status === ProjectStatus.UNLOCKED) str = 'Token Distribution Time';
-    if ([ProjectStatus.UPCOMING, ProjectStatus.PARTICIPATORY].includes(status as ProjectStatus)) str = 'Ends in';
+    if (status === ProjectStatus.UPCOMING) str = 'Starts in';
+    if (status === ProjectStatus.PARTICIPATORY) str = 'Ends in';
 
     setRemainderStr(str);
   }, [status]);

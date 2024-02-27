@@ -46,7 +46,7 @@ export default function Header() {
         name: 'Projects',
         onClick: () => {
           console.log('project');
-          navigate('/projects/all', { replace: true });
+          navigate('/projects/all');
         },
         isActive: isProjectPage,
       },
@@ -64,7 +64,7 @@ export default function Header() {
         onClick: () => {
           if (loginState === WebLoginState.logining) return;
           if (loginState === WebLoginState.logined) {
-            navigate('/create-project', { replace: true });
+            navigate('/create-project');
           }
           if (loginState === WebLoginState.initial || loginState === WebLoginState.lock) return login();
         },
