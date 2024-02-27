@@ -11,14 +11,15 @@ import { message, Flex } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import NewProjectInfo from 'pages/NewProjectInfo';
 import { getInfo } from '../utils';
-import { AELF_TOKEN_INFO, TokenType } from 'constants/misc';
+import { TokenType } from 'constants/misc';
 import { Typography, FontWeightEnum } from 'aelf-design';
 import BigNumber from 'bignumber.js';
-import { ProjectStatus } from 'types/project';
+import { IProjectInfo, ProjectStatus } from 'types/project';
 import { resetCreateProjectInfo } from '../utils';
 import { timesDecimals } from 'utils/calculate';
 import { useMobile } from 'contexts/useStore/hooks';
 import { getTokenInfo } from 'utils/assets';
+import { TConfirmInfo } from './components/Modal';
 
 interface SuccessInfo {
   supply?: number;
@@ -62,7 +63,7 @@ const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
         new BigNumber(data.crowdFundingIssueAmount).div(data.preSalePrice),
         toRaiseToken.decimals,
       ).toString(),
-    } as any;
+    } as TConfirmInfo;
   }, [additional, contractAddress, idoInfo, toRaiseToken, tradingPair]);
 
   const onTransfer = useCallback(async () => {

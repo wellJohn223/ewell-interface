@@ -17,9 +17,11 @@ import { infoCircle, question } from 'assets/images/icon/index';
 import { useMobile } from 'contexts/useStore/hooks';
 
 const { Text, Title } = Typography;
+
+export type TConfirmInfo = IProjectInfo & { contractAddress: string };
 interface ITransferModalProps {
   open: boolean;
-  info: IProjectInfo & { contractAddress: string };
+  info: TConfirmInfo;
   onCancel: () => void;
   onOk: () => void;
 }
