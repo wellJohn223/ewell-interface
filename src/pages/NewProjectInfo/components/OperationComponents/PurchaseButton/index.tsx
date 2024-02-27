@@ -128,7 +128,7 @@ export default function PurchaseButton({
         methodName: 'Invest',
         args: {
           projectId,
-          currency: 'ELF',
+          symbol: 'ELF',
           investAmount: amount,
         },
       });
