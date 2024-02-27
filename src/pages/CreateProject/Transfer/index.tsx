@@ -11,13 +11,15 @@ import { message, Flex } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import NewProjectInfo from 'pages/NewProjectInfo';
 import { getInfo } from '../utils';
-import { AELF_TOKEN_INFO } from 'constants/misc';
+import { TokenType } from 'constants/misc';
 import { Typography, FontWeightEnum } from 'aelf-design';
 import BigNumber from 'bignumber.js';
-import { ProjectStatus } from 'types/project';
+import { IProjectInfo, ProjectStatus } from 'types/project';
 import { resetCreateProjectInfo } from '../utils';
 import { timesDecimals } from 'utils/calculate';
 import { useMobile } from 'contexts/useStore/hooks';
+import { getTokenInfo } from 'utils/assets';
+import { TConfirmInfo } from './components/Modal';
 
 interface SuccessInfo {
   supply?: number;
@@ -29,6 +31,7 @@ const { Title } = Typography;
 
 const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
   const [tradingPair] = useLocalStorage<ITradingParCard>(storages.ConfirmTradingPair);
+  const [currency] = useLocalStorage<TokenType>(storages.Currency);
   const [additional] = useLocalStorage(storages.AdditionalInformation);
   const [idoInfo] = useLocalStorage<any>(storages.IDOInfo);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
@@ -38,8 +41,10 @@ const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
   const navigate = useNavigate();
   const { register, checkManagerSyncState, isStartTimeBeforeNow, getProjectAddress } = useTransfer();
 
+  const toRaiseToken = useMemo(() => getTokenInfo(currency || TokenType.ELF), [currency]);
+
   const previewData = useMemo(() => {
-    const { additionalInfo, ...data } = getInfo(tradingPair, idoInfo, additional);
+    const { additionalInfo, ...data } = getInfo(tradingPair, idoInfo, additional, toRaiseToken);
     const { startTime, endTime, tokenReleaseTime, whitelistUrl } = idoInfo;
     return {
       ...data,
@@ -48,7 +53,6 @@ const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
       contractAddress,
       tokenReleaseTime,
       additionalInfo: additionalInfo.data,
-      toRaiseToken: AELF_TOKEN_INFO,
       crowdFundingIssueToken: tradingPair,
       unlockTime: tokenReleaseTime,
       status: ProjectStatus.UPCOMING,
@@ -57,10 +61,10 @@ const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
       },
       targetRaisedAmount: timesDecimals(
         new BigNumber(data.crowdFundingIssueAmount).div(data.preSalePrice),
-        AELF_TOKEN_INFO.decimals,
+        toRaiseToken.decimals,
       ).toString(),
-    } as any;
-  }, [additional, contractAddress, idoInfo, tradingPair]);
+    } as TConfirmInfo;
+  }, [additional, contractAddress, idoInfo, toRaiseToken, tradingPair]);
 
   const onTransfer = useCallback(async () => {
     try {
@@ -78,7 +82,7 @@ const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
         return;
       }
 
-      const result: any = await register({ tradingPair, idoInfo, additional });
+      const result: any = await register({ tradingPair, idoInfo, additional, toRaiseToken });
       console.log('createResult:', result);
       setSuccessInfo(result);
       resetCreateProjectInfo();
@@ -89,7 +93,7 @@ const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
     } finally {
       emitLoading(false);
     }
-  }, [additional, checkManagerSyncState, idoInfo, isStartTimeBeforeNow, register, tradingPair]);
+  }, [additional, checkManagerSyncState, idoInfo, isStartTimeBeforeNow, register, toRaiseToken, tradingPair]);
 
   const gotoDetail = useCallback(() => {
     navigate(`/project/${successInfo?.projectId}`, { replace: true });

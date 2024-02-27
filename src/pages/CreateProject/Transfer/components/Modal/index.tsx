@@ -17,9 +17,11 @@ import { infoCircle, question } from 'assets/images/icon/index';
 import { useMobile } from 'contexts/useStore/hooks';
 
 const { Text, Title } = Typography;
+
+export type TConfirmInfo = IProjectInfo & { contractAddress: string };
 interface ITransferModalProps {
   open: boolean;
-  info: IProjectInfo & { contractAddress: string };
+  info: TConfirmInfo;
   onCancel: () => void;
   onOk: () => void;
 }
@@ -47,6 +49,7 @@ export function ConfirmModal({ open, info, onCancel, onOk }: ITransferModalProps
   }, [info?.crowdFundingIssueAmount, tokenBalance]);
 
   const isGasEnough = useMemo(() => {
+    console.log('efl-balance', ELFBalance);
     const walletELF = ZERO.plus(ELFBalance ?? 0);
     return walletELF.gte(timesDecimals(payGasELF, info?.toRaiseToken?.decimals || 8));
   }, [ELFBalance, info?.toRaiseToken?.decimals, payGasELF]);

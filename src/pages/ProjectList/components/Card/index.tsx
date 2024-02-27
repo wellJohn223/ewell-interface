@@ -6,7 +6,7 @@ import CommonCommunityLogoList, { COMMUNITY_LOGO_LIST } from 'components/CommonC
 import CommonProjectStatusTag from 'components/CommonProjectStatusTag';
 import CommonProjectProgress from 'components/CommonProjectProgress';
 import { IProjectInfo } from './types';
-import { ZERO } from 'constants/misc';
+import { TokenType, ZERO } from 'constants/misc';
 import { divDecimals, divDecimalsStr } from 'utils/calculate';
 import { ProjectStatus } from 'types/project';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -169,7 +169,7 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
             <Flex justify="space-between" gap={'5%'}>
               <Flex gap={3} flex={1} style={{ maxWidth: '68%' }}>
                 <Text fontWeight={FontWeightEnum.Medium} style={{ flex: 'none' }}>
-                  1 ELF =
+                  1 {toRaiseToken?.symbol} =
                 </Text>
                 <Text className="flex-1" ellipsis>{`${preSalePriceStr} ${crowdFundingIssueToken?.symbol || ''}`}</Text>
               </Flex>

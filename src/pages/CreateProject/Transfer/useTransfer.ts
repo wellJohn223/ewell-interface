@@ -8,6 +8,7 @@ import { getInfo } from '../utils';
 import { handleLoopFetch } from 'utils';
 import dayjs from 'dayjs';
 import { useViewContract } from 'contexts/useViewContract/hooks';
+import { ITokenInfo } from 'types/assets';
 
 export const useTransfer = () => {
   const { wallet, checkManagerSyncState } = useWallet();
@@ -88,8 +89,18 @@ export const useTransfer = () => {
   }, []);
 
   const register = useCallback(
-    async ({ tradingPair, idoInfo, additional }: { tradingPair: any; idoInfo: any; additional: any }) => {
-      const info = getInfo(tradingPair, idoInfo, additional);
+    async ({
+      tradingPair,
+      idoInfo,
+      additional,
+      toRaiseToken,
+    }: {
+      tradingPair: any;
+      idoInfo: any;
+      additional: any;
+      toRaiseToken: ITokenInfo;
+    }) => {
+      const info = getInfo(tradingPair, idoInfo, additional, toRaiseToken);
       console.log('create-params', info);
       await preCreate({
         amount: info.crowdFundingIssueAmount,

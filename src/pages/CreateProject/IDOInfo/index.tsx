@@ -4,12 +4,13 @@ import { Form } from 'antd';
 import { FormItemProps, FormFields } from 'components/FormItem';
 import CustomMark from '../components/CustomMark';
 import storages from '../storages';
-import { CreateStepProps, TCurrencyType } from '../types';
+import { CreateStepProps } from '../types';
 import ButtonGroup from '../components/ButtonGroup';
 import { disabledDateBefore, disabledTimeBefore } from '../utils';
 import dayjs from 'dayjs';
 import { getIDOFormJson, formWhitelist } from '../constants';
 import { ITradingParCard } from '../components/TradingPairList';
+import { TokenType } from 'constants/misc';
 export interface TIdoInfo {
   crowdFundingIssueAmount?: number;
   crowdFundingType?: string;
@@ -27,7 +28,7 @@ export interface TIdoInfo {
 const IDOInfo: React.FC<CreateStepProps> = ({ onNext, onPre }) => {
   const [form] = Form.useForm();
   const [tradingPair] = useLocalStorage<ITradingParCard>(storages.ConfirmTradingPair);
-  const [currency] = useLocalStorage<TCurrencyType>(storages.Currency);
+  const [currency] = useLocalStorage<TokenType>(storages.Currency);
   const [idoInfo, setIDOInfo] = useLocalStorage<TIdoInfo>(storages.IDOInfo, {});
   const [showWhitelist, setShowWhitelist] = useState(false);
   const [formList, setFormList] = useState<FormItemProps[]>(() => getIDOFormJson(tradingPair, idoInfo, currency));

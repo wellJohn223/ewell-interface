@@ -12,39 +12,14 @@ import { WebLoginState } from 'aelf-web-login';
 import myEvents from 'utils/myEvent';
 import { emitLoading } from 'utils/events';
 import { checkIsAuthorized } from 'api/utils';
-import { Select, Space } from 'antd';
-import type { SelectProps } from 'antd';
-import { elf, usdt } from 'assets/images/tokens';
+import { Select } from 'antd';
 import { arrow } from 'assets/images';
-import { TCurrencyType } from '../types';
+import { TokenType } from 'constants/misc';
+import { currencyOptions } from '../constants';
 
-const currencyOptions: SelectProps['options'] = [
-  {
-    label: (
-      <>
-        <Space>
-          <img src={elf} alt="" />
-          {TCurrencyType.ELF}
-        </Space>
-      </>
-    ),
-    value: TCurrencyType.ELF,
-  },
-  {
-    label: (
-      <>
-        <Space>
-          <img src={usdt} alt="" />
-          {TCurrencyType.USDT}
-        </Space>
-      </>
-    ),
-    value: TCurrencyType.USDT,
-  },
-];
 const ConfirmTradingPair: React.FC<CreateStepProps> = ({ onNext }) => {
   const [tradingPair, setTradingPair] = useLocalStorage<ITradingParCard>(storages.ConfirmTradingPair);
-  const [currency, setCurrency] = useLocalStorage<TCurrencyType>(storages.Currency);
+  const [currency, setCurrency] = useLocalStorage<TokenType>(storages.Currency);
   const [select, setSelect] = useState<ITradingParCard | undefined>(tradingPair);
   const selectRef = useRef<ITradingParCard>();
   selectRef.current = select;
@@ -133,7 +108,7 @@ const ConfirmTradingPair: React.FC<CreateStepProps> = ({ onNext }) => {
         <div className="trading-sub-title">2. Choose a currency that can be used to purchase your tokens.</div>
         <Select
           suffixIcon={<img src={arrow} />}
-          defaultValue={currency || TCurrencyType.ELF}
+          defaultValue={currency || TokenType.ELF}
           options={currencyOptions}
           style={{ width: '100%' }}
           onSelect={onSelectCurrency}
