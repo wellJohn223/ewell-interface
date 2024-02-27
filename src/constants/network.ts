@@ -30,6 +30,9 @@ export type TNetworkConfig = {
   };
 };
 
+const EWELL_CONTRACT_ADDRESS = process.env.REACT_APP_EWELL_CONTRACT_ADDRESS;
+const WHITELIST_CONTRACT_ADDRESS = process.env.REACT_APP_WHITELIST_CONTRACT_ADDRESS;
+
 const NETWORK_CONFIG_LIST: Record<string, TNetworkConfig> = {
   mainnet: {
     networkType: 'MAINNET',
@@ -38,24 +41,24 @@ const NETWORK_CONFIG_LIST: Record<string, TNetworkConfig> = {
     ewellRequestUrl: 'https://ewell.finance',
     ewellConnectUrl: 'https://ewell.finance',
     webLoginNetworkType: 'MAIN',
-    webLoginGraphqlUrl: 'https://dapp-portkey.portkey.finance/Portkey_DID/PortKeyIndexerCASchema/graphql',
-    webLoginRequestDefaultsUrl: 'https://did-portkey.portkey.finance',
-    webLoginConnectUrl: 'https://auth-portkey.portkey.finance',
-    ewellContractAddress: '',
-    whitelistContractAddress: '',
+    webLoginGraphqlUrl: 'https://dapp-aa-portkey.portkey.finance/Portkey_V2_DID/PortKeyIndexerCASchema/graphql',
+    webLoginRequestDefaultsUrl: 'https://aa-portkey.portkey.finance',
+    webLoginConnectUrl: 'https://auth-aa-portkey.portkey.finance',
+    ewellContractAddress: EWELL_CONTRACT_ADDRESS || '',
+    whitelistContractAddress: WHITELIST_CONTRACT_ADDRESS || '',
     symbolMarketUrl: 'https://www.eforest.finance/symbolmarket',
     mainChainInfo: {
       chainId: 'AELF',
       exploreUrl: 'https://explorer.aelf.io/',
       endPoint: 'https://aelf-public-node.aelf.io',
-      caContractAddress: '28PcLvP41ouUd6UNGsNRvKpkFTe6am34nPy4YPsWUJnZNwUvzM',
+      caContractAddress: '2UthYi7AHRdfrqc1YCfeQnjdChDLaas65bW4WxESMGMojFiXj9',
       tokenContractAddress: 'JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE',
     },
     sideChainInfo: {
       chainId: 'tDVV',
       exploreUrl: 'https://tdvv-explorer.aelf.io/',
       endPoint: 'https://tdvv-public-node.aelf.io',
-      caContractAddress: '2cLA9kJW3gdHuGoYNY16Qir69J3Nkn6MSsuYxRkUHbz4SG2hZr',
+      caContractAddress: '2UthYi7AHRdfrqc1YCfeQnjdChDLaas65bW4WxESMGMojFiXj9',
       tokenContractAddress: '7RzVGiuVWkvL4VfVHdZfQF2Tri3sgLe9U991bohHFfSRZXuGX',
     },
   },
@@ -69,8 +72,8 @@ const NETWORK_CONFIG_LIST: Record<string, TNetworkConfig> = {
     webLoginGraphqlUrl: 'https://dapp-aa-portkey-test.portkey.finance/Portkey_V2_DID/PortKeyIndexerCASchema/graphql',
     webLoginRequestDefaultsUrl: 'https://aa-portkey-test.portkey.finance',
     webLoginConnectUrl: 'https://auth-aa-portkey-test.portkey.finance',
-    ewellContractAddress: '2EbbUpZLds58keVZPJDLPRbPpxzUYCcjooq6LBiBoRXVTFZTiQ',
-    whitelistContractAddress: '25VDxYFNxujPnPzqzkHxveegoV9wYm5zY72Hv6L7utD1kKu2jZ',
+    ewellContractAddress: EWELL_CONTRACT_ADDRESS || '2EbbUpZLds58keVZPJDLPRbPpxzUYCcjooq6LBiBoRXVTFZTiQ',
+    whitelistContractAddress: WHITELIST_CONTRACT_ADDRESS || '25VDxYFNxujPnPzqzkHxveegoV9wYm5zY72Hv6L7utD1kKu2jZ',
     symbolMarketUrl: 'https://test.eforest.finance/symbolmarket',
     mainChainInfo: {
       chainId: 'AELF',
@@ -97,8 +100,8 @@ const NETWORK_CONFIG_LIST: Record<string, TNetworkConfig> = {
     webLoginGraphqlUrl: '/AElfIndexer_DApp/PortKeyIndexerCASchema/graphql',
     webLoginRequestDefaultsUrl: '/webLoginRequest',
     webLoginConnectUrl: '/webLoginConnect',
-    ewellContractAddress: 'mhgUyGhd27YaoG8wgXTbwtbAiYx7E59n5GXEkmkTFKKQTvGnB',
-    whitelistContractAddress: 'x4CTSuM8typUbpdfxRZDTqYVa42RdxrwwPkXX7WUJHeRmzE6k',
+    ewellContractAddress: EWELL_CONTRACT_ADDRESS || 'mhgUyGhd27YaoG8wgXTbwtbAiYx7E59n5GXEkmkTFKKQTvGnB',
+    whitelistContractAddress: WHITELIST_CONTRACT_ADDRESS || 'x4CTSuM8typUbpdfxRZDTqYVa42RdxrwwPkXX7WUJHeRmzE6k',
     symbolMarketUrl: 'http://192.168.67.124:3001/symbolmarket',
     mainChainInfo: {
       chainId: 'AELF',
