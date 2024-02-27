@@ -94,19 +94,21 @@ export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefres
 
   const showWhitelistEnabledLabel = useMemo(() => {
     return (
-      !showViewWhitelistTasks &&
       projectInfo?.isEnableWhitelist &&
+      !projectInfo?.whitelistInfo?.url &&
+      !projectInfo?.isInWhitelist &&
       (projectInfo?.status === ProjectStatus.UPCOMING || projectInfo?.status === ProjectStatus.PARTICIPATORY)
     );
-  }, [projectInfo?.isEnableWhitelist, projectInfo?.status, showViewWhitelistTasks]);
+  }, [
+    projectInfo?.isEnableWhitelist,
+    projectInfo?.isInWhitelist,
+    projectInfo?.status,
+    projectInfo?.whitelistInfo?.url,
+  ]);
 
   const showWhitelistJoined = useMemo(() => {
     return projectInfo?.isEnableWhitelist && projectInfo?.isInWhitelist;
   }, [projectInfo?.isEnableWhitelist, projectInfo?.isInWhitelist]);
-
-  const canOperate = useMemo(() => {
-    return isLogin && (!projectInfo?.isEnableWhitelist || projectInfo?.isInWhitelist);
-  }, [isLogin, projectInfo?.isEnableWhitelist, projectInfo?.isInWhitelist]);
 
   const showMyAmount = useMemo(() => {
     return (
@@ -116,9 +118,13 @@ export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefres
     );
   }, [projectInfo?.status]);
 
+  const canPurchase = useMemo(() => {
+    return !projectInfo?.isEnableWhitelist || projectInfo?.isInWhitelist;
+  }, [projectInfo?.isEnableWhitelist, projectInfo?.isInWhitelist]);
+
   const showPurchaseButton = useMemo(() => {
-    return projectInfo?.status === ProjectStatus.PARTICIPATORY;
-  }, [projectInfo?.status]);
+    return canPurchase && projectInfo?.status === ProjectStatus.PARTICIPATORY;
+  }, [canPurchase, projectInfo?.status]);
 
   const showRevokeInvestmentButton = useMemo(() => {
     return projectInfo?.status === ProjectStatus.PARTICIPATORY && new BigNumber(projectInfo?.investAmount ?? 0).gt(0);
@@ -146,7 +152,7 @@ export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefres
 
   const showOperationArea = useMemo(() => {
     return (
-      canOperate &&
+      isLogin &&
       (showMyAmount ||
         showPurchaseButton ||
         showRevokeInvestmentButton ||
@@ -155,7 +161,7 @@ export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefres
         showRevokeFineButton)
     );
   }, [
-    canOperate,
+    isLogin,
     showClaimTokenButton,
     showMyAmount,
     showPurchaseButton,
@@ -355,7 +361,7 @@ export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefres
             {renderViewWhitelistTasks('Joined')}
           </Flex>
         )}
-        {canOperate && (
+        {showOperationArea && (
           <>
             {showMyAmount && (
               <Flex gap={16} align="center" justify="space-between">
