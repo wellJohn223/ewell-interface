@@ -170,9 +170,7 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
                 <Text fontWeight={FontWeightEnum.Medium} style={{ flex: 'none' }}>
                   1 ELF =
                 </Text>
-                <Text className="flex-1" ellipsis>{`${preSalePriceStr} 0000000000${
-                  crowdFundingIssueToken?.symbol || ''
-                }`}</Text>
+                <Text className="flex-1" ellipsis>{`${preSalePriceStr} ${crowdFundingIssueToken?.symbol || ''}`}</Text>
               </Flex>
               <Text style={{ flex: 'none' }}>{remainderTimeStr}</Text>
             </Flex>
