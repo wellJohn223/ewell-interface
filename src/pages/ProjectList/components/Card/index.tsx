@@ -7,7 +7,7 @@ import CommonProjectStatusTag from 'components/CommonProjectStatusTag';
 import CommonProjectProgress from 'components/CommonProjectProgress';
 import { IProjectInfo } from './types';
 import { ZERO } from 'constants/misc';
-import { divDecimals } from 'utils/calculate';
+import { divDecimals, divDecimalsStr } from 'utils/calculate';
 import { ProjectStatus } from 'types/project';
 import { useNavigate, useParams } from 'react-router-dom';
 import { stringifyUrl } from 'query-string';
@@ -117,12 +117,12 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
   }, [data?.endTime, data?.startTime, data?.tokenReleaseTime, status]);
 
   const currentRaisedAmountStr = useMemo(
-    () => divDecimals(currentRaisedAmount, toRaiseToken?.decimals).toFormat(),
+    () => divDecimalsStr(currentRaisedAmount, toRaiseToken?.decimals),
     [currentRaisedAmount, toRaiseToken?.decimals],
   );
 
   const targetRaisedAmountStr = useMemo(
-    () => divDecimals(targetRaisedAmount, toRaiseToken?.decimals).toFormat(),
+    () => divDecimalsStr(targetRaisedAmount, toRaiseToken?.decimals),
     [toRaiseToken?.decimals, targetRaisedAmount],
   );
 
