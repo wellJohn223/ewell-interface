@@ -11,6 +11,7 @@ import { DEFAULT_CHAIN_ID, NETWORK_CONFIG } from 'constants/network';
 import { useTokenPrice, useTxFee } from 'contexts/useAssets/hooks';
 import { renderTokenPrice } from 'utils/project';
 import { getExploreLink } from 'utils';
+import { DEFAULT_TOKEN_SYMBOL } from 'constants/misc';
 
 const { Text, Title } = Typography;
 
@@ -21,7 +22,7 @@ interface IClaimTokenButtonProps {
 export default function RevokeFineButton({ projectInfo }: IClaimTokenButtonProps) {
   const { projectId } = useParams();
   const { wallet, checkManagerSyncState } = useWallet();
-  const { tokenPrice } = useTokenPrice();
+  const { tokenPrice } = useTokenPrice(DEFAULT_TOKEN_SYMBOL);
   const { txFee } = useTxFee();
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -105,7 +106,9 @@ export default function RevokeFineButton({ projectInfo }: IClaimTokenButtonProps
           setIsSubmitModalOpen(false);
         }}>
         <Flex vertical gap={24}>
-          <Text>Upon clicking "Confirm," ELF will be returned to the specified address.</Text>
+          <Text>{`Upon clicking "Confirm," ${
+            projectInfo?.toRaiseToken?.symbol || DEFAULT_TOKEN_SYMBOL
+          } will be returned to the specified address.`}</Text>
           <Flex gap={8} justify="center" align="baseline">
             <Title fontWeight={FontWeightEnum.Medium} level={4}>
               {divDecimalsStr(projectInfo?.liquidatedDamageAmount, projectInfo?.toRaiseToken?.decimals)}
@@ -135,9 +138,7 @@ export default function RevokeFineButton({ projectInfo }: IClaimTokenButtonProps
                 <Text>Transaction Fee</Text>
               </Flex>
               <Flex className="mobile-flex-vertical-end-gap-2" gap={8} align="baseline">
-                <Text>
-                  {txFee} {projectInfo?.toRaiseToken?.symbol ?? '--'}
-                </Text>
+                <Text>{`${txFee} ${DEFAULT_TOKEN_SYMBOL}`}</Text>
                 {renderTokenPrice({
                   textProps: {
                     size: 'small',

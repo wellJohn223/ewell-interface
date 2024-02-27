@@ -15,6 +15,7 @@ import { useTokenPrice, useTxFee } from 'contexts/useAssets/hooks';
 import { useBalance } from 'hooks/useBalance';
 import { renderTokenPrice } from 'utils/project';
 import { getExploreLink } from 'utils';
+import { DEFAULT_TOKEN_SYMBOL } from 'constants/misc';
 
 const { Title, Text } = Typography;
 
@@ -24,7 +25,7 @@ interface ICreatorClaimTokenButtonProps {
 
 export default function CreatorClaimTokenButton({ projectInfo }: ICreatorClaimTokenButtonProps) {
   const { projectId } = useParams();
-  const { tokenPrice } = useTokenPrice();
+  const { tokenPrice } = useTokenPrice(DEFAULT_TOKEN_SYMBOL);
   const { txFee } = useTxFee();
   const [messageApi, contextHolder] = message.useMessage();
   const { wallet, checkManagerSyncState } = useWallet();
@@ -102,7 +103,9 @@ export default function CreatorClaimTokenButton({ projectInfo }: ICreatorClaimTo
         }}>
         <Flex vertical gap={24}>
           <Text>
-            Click to extract ELF from EWELL contract. If you have any token left, it will be withdrawn as well.
+            {`Click to extract ${
+              projectInfo?.toRaiseToken?.symbol || DEFAULT_TOKEN_SYMBOL
+            } from EWELL contract. If you have any token left, it will be withdrawn as well.`}
           </Text>
           <Flex vertical align="center">
             <Flex align="baseline" gap={8}>
@@ -147,9 +150,7 @@ export default function CreatorClaimTokenButton({ projectInfo }: ICreatorClaimTo
           <Flex justify="space-between">
             <Text>Estimated Transaction Fee</Text>
             <Flex gap={8} align="baseline">
-              <Text>
-                {txFee} {projectInfo?.toRaiseToken?.symbol ?? '--'}
-              </Text>
+              <Text>{`${txFee} ${DEFAULT_TOKEN_SYMBOL}`}</Text>
               {renderTokenPrice({
                 textProps: {
                   size: 'small',
@@ -163,8 +164,10 @@ export default function CreatorClaimTokenButton({ projectInfo }: ICreatorClaimTo
           <Text
             className={clsx('error-text', 'text-center', { ['display-none']: !notEnoughTokens })}
             fontWeight={FontWeightEnum.Medium}>
-            Please deposit enough ELF in your wallet to pay for Gas! Estimated Gas is {txFee}{' '}
-            {projectInfo?.toRaiseToken?.symbol ?? '--'}
+            {`Please deposit enough ${
+              projectInfo?.toRaiseToken?.symbol || DEFAULT_TOKEN_SYMBOL
+            } in your wallet to pay for Gas! Estimated Gas is`}{' '}
+            {txFee} {projectInfo?.toRaiseToken?.symbol ?? '--'}
           </Text>
           <Flex justify="center">
             <Button className="modal-single-button" type="primary" disabled={notEnoughTokens} onClick={handleSubmit}>

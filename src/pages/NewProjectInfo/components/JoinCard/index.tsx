@@ -13,7 +13,7 @@ import RevokeInvestmentButton from '../OperationComponents/RevokeInvestmentButto
 import ClaimTokenButton from '../OperationComponents/ClaimTokenButton';
 import RevokeFineButton from '../OperationComponents/RevokeFineButton';
 import { IProjectInfo, ProjectStatus } from 'types/project';
-import { ZERO } from 'constants/misc';
+import { DEFAULT_TOKEN_SYMBOL, ZERO } from 'constants/misc';
 import { divDecimals, divDecimalsStr, timesDecimals } from 'utils/calculate';
 import { getHref, getPriceDecimal } from 'utils';
 import { parseInputNumberChange } from 'utils/input';
@@ -184,7 +184,9 @@ export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefres
       setPurchaseInputErrorMessage('');
     } else if (bigValue.gt(divDecimals(canPurchaseAmount, projectInfo?.toRaiseToken?.decimals))) {
       setPurchaseInputErrorMessage(
-        'Insufficient balance. Please consider purchasing a smaller amount or transferring some ELF to your address before you try again.',
+        `Insufficient balance. Please consider purchasing a smaller amount or transferring some ${
+          projectInfo?.toRaiseToken?.symbol || DEFAULT_TOKEN_SYMBOL
+        } to your address before you try again.`,
       );
     } else if (bigValue.gt(divDecimals(maxAllocation, projectInfo?.toRaiseToken?.decimals))) {
       setPurchaseInputErrorMessage('Please enter a number not exceeding the maximum allocation.');

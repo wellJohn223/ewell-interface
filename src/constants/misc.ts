@@ -46,3 +46,5 @@ export const TOKEN_MAP: Record<string, ITokenInfo> = TOKEN_LIST.reduce((acc, ite
 
 export const PriceDecimal = 8;
 export const InstallmentDecimal = 8;
+
+export const DEFAULT_LIQUIDATED_DAMAGE_PROPORTION = 10;

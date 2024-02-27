@@ -92,6 +92,7 @@ export interface IProjectInfo {
   tokenReleaseTime?: string;
   actualClaimAmount?: string;
   virtualAddress?: string;
+  liquidatedDamageProportion?: number;
 }
 
 export interface ProjectItem {

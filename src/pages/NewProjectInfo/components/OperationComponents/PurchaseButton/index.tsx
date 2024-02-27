@@ -18,6 +18,7 @@ import { renderTokenPrice } from 'utils/project';
 import { useBalance } from 'hooks/useBalance';
 import { useViewContract } from 'contexts/useViewContract/hooks';
 import './styles.less';
+import { DEFAULT_TOKEN_SYMBOL } from 'constants/misc';
 
 const { Title, Text } = Typography;
 
@@ -38,7 +39,8 @@ export default function PurchaseButton({
   const { additionalInfo } = projectInfo || {};
   const { wallet, checkManagerSyncState } = useWallet();
   const { checkIsNeedApprove } = useViewContract();
-  const { tokenPrice } = useTokenPrice();
+  const { tokenPrice } = useTokenPrice(projectInfo?.toRaiseToken?.symbol);
+  const { tokenPrice: elfTokenPrice } = useTokenPrice(DEFAULT_TOKEN_SYMBOL);
   const { txFee } = useTxFee();
   const [messageApi, contextHolder] = message.useMessage();
   const { balance, updateBalance } = useBalance(projectInfo?.toRaiseToken?.symbol);
@@ -64,10 +66,6 @@ export default function PurchaseButton({
   const totalTxFee = useMemo(() => {
     return new BigNumber(txFee || 0).times(2);
   }, [txFee]);
-
-  const totalAmount = useMemo(() => {
-    return new BigNumber(purchaseAmount || 0).plus(totalTxFee);
-  }, [purchaseAmount, totalTxFee]);
 
   const handleSubmit = async () => {
     setIsSubmitModalOpen(false);
@@ -128,7 +126,7 @@ export default function PurchaseButton({
         methodName: 'Invest',
         args: {
           projectId,
-          symbol: 'ELF',
+          symbol: projectInfo?.toRaiseToken?.symbol,
           investAmount: amount,
         },
       });
@@ -250,33 +248,14 @@ export default function PurchaseButton({
                 <Text>Transaction Fee</Text>
               </Flex>
               <Flex className="mobile-flex-vertical-end-gap-2" gap={8} align="baseline">
-                <Text>
-                  {totalTxFee.toFixed()} {projectInfo?.toRaiseToken?.symbol ?? '--'}
-                </Text>
+                <Text>{`${totalTxFee.toFixed()} ${DEFAULT_TOKEN_SYMBOL}`}</Text>
                 {renderTokenPrice({
                   textProps: {
                     size: 'small',
                   },
                   amount: totalTxFee,
                   decimals: 0,
-                  tokenPrice,
-                })}
-              </Flex>
-            </Flex>
-            <Flex justify="space-between">
-              <Text>Total</Text>
-              <Flex className="mobile-flex-vertical-end-gap-2" gap={8} align="baseline">
-                <Text fontWeight={FontWeightEnum.Medium}>
-                  {totalAmount.toFormat()} {projectInfo?.toRaiseToken?.symbol ?? '--'}
-                </Text>
-                {renderTokenPrice({
-                  textProps: {
-                    size: 'small',
-                    fontWeight: FontWeightEnum.Medium,
-                  },
-                  amount: totalAmount,
-                  decimals: 0,
-                  tokenPrice,
+                  tokenPrice: elfTokenPrice,
                 })}
               </Flex>
             </Flex>

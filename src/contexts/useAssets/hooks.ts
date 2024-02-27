@@ -91,10 +91,10 @@ export function useAssets() {
   };
 }
 
-export function useTokenPrice() {
+export function useTokenPrice(symbol = DEFAULT_TOKEN_SYMBOL) {
   const { tokenPrice, getTokenPrice } = useAssets();
 
-  const _tokenPrice = useMemo(() => tokenPrice?.['ELF_USD'], [tokenPrice]);
+  const _tokenPrice = useMemo(() => tokenPrice?.[`${symbol}_USD`], [symbol, tokenPrice]);
 
   return {
     tokenPrice: _tokenPrice,

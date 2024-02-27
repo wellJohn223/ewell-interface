@@ -15,6 +15,7 @@ import { useTokenPrice, useTxFee } from 'contexts/useAssets/hooks';
 import { renderTokenPrice } from 'utils/project';
 import { useBalance } from 'hooks/useBalance';
 import { getExploreLink } from 'utils';
+import { DEFAULT_TOKEN_SYMBOL } from 'constants/misc';
 
 const { Title, Text } = Typography;
 
@@ -26,7 +27,7 @@ export default function ClaimTokenButton({ projectInfo }: IClaimTokenButtonProps
   const { projectId } = useParams();
 
   const { wallet, checkManagerSyncState } = useWallet();
-  const { tokenPrice } = useTokenPrice();
+  const { tokenPrice } = useTokenPrice(DEFAULT_TOKEN_SYMBOL);
   const { txFee } = useTxFee();
   const [messageApi, contextHolder] = message.useMessage();
   const { balance, updateBalance } = useBalance(projectInfo?.toRaiseToken?.symbol);
@@ -103,7 +104,9 @@ export default function ClaimTokenButton({ projectInfo }: IClaimTokenButtonProps
           setIsSubmitModalOpen(false);
         }}>
         <Flex vertical gap={24}>
-          <Text>After clicking “Submit”, EWELL transfer ELF to the designated account.</Text>
+          <Text>{`After clicking “Submit”, EWELL transfer ${
+            projectInfo?.toRaiseToken?.symbol || DEFAULT_TOKEN_SYMBOL
+          } to the designated account.`}</Text>
           <Flex justify="center" align="baseline" gap={8}>
             <Title fontWeight={FontWeightEnum.Medium} level={4}>
               {divDecimalsStr(projectInfo?.toClaimAmount, projectInfo?.crowdFundingIssueToken?.decimals)}
@@ -132,9 +135,7 @@ export default function ClaimTokenButton({ projectInfo }: IClaimTokenButtonProps
               <Text>Transaction Fee</Text>
             </Flex>
             <Flex className="mobile-flex-vertical-end-gap-2" gap={8} align="baseline">
-              <Text>
-                {txFee} {projectInfo?.toRaiseToken?.symbol ?? '--'}
-              </Text>
+              <Text>{`${txFee} ${DEFAULT_TOKEN_SYMBOL}`}</Text>
               {renderTokenPrice({
                 textProps: {
                   size: 'small',

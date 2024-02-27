@@ -8,7 +8,7 @@ import SuccessModal from '../SuccessModal';
 import { useWallet } from 'contexts/useWallet/hooks';
 import { IProjectInfo } from 'types/project';
 import { divDecimalsStr, timesDecimals } from 'utils/calculate';
-import { ZERO } from 'constants/misc';
+import { DEFAULT_LIQUIDATED_DAMAGE_PROPORTION, DEFAULT_TOKEN_SYMBOL } from 'constants/misc';
 import { emitLoading, emitSyncTipsModal } from 'utils/events';
 import { DEFAULT_CHAIN_ID, NETWORK_CONFIG } from 'constants/network';
 import { useTokenPrice, useTxFee } from 'contexts/useAssets/hooks';
@@ -25,7 +25,8 @@ interface IRevokeInvestmentButtonProps {
 
 export default function RevokeInvestmentButton({ projectInfo }: IRevokeInvestmentButtonProps) {
   const { wallet, checkManagerSyncState } = useWallet();
-  const { tokenPrice } = useTokenPrice();
+  const { tokenPrice } = useTokenPrice(projectInfo?.toRaiseToken?.symbol);
+  const { tokenPrice: elfTokenPrice } = useTokenPrice(DEFAULT_TOKEN_SYMBOL);
   const { txFee } = useTxFee();
   const [messageApi, contextHolder] = message.useMessage();
   const { projectId } = useParams();
@@ -47,17 +48,10 @@ export default function RevokeInvestmentButton({ projectInfo }: IRevokeInvestmen
   }, [txFee, projectInfo?.toRaiseToken?.decimals]);
 
   const revokeAmount = useMemo(() => {
-    return new BigNumber(projectInfo?.investAmount ?? 0).times(0.9);
-  }, [projectInfo?.investAmount]);
-
-  const finalAmount = useMemo(() => {
-    const amount = revokeAmount.minus(txFeeAmount);
-    if (amount.lt(0)) {
-      return ZERO;
-    } else {
-      return amount;
-    }
-  }, [revokeAmount, txFeeAmount]);
+    const liquidatedDamageProportion = projectInfo?.liquidatedDamageProportion || DEFAULT_LIQUIDATED_DAMAGE_PROPORTION;
+    const ratio = (100 - liquidatedDamageProportion) / 100;
+    return new BigNumber(projectInfo?.investAmount ?? 0).times(ratio);
+  }, [projectInfo?.investAmount, projectInfo?.liquidatedDamageProportion]);
 
   const notEnoughTokens = useMemo(() => {
     return new BigNumber(balance).lt(txFeeAmount);
@@ -114,8 +108,13 @@ export default function RevokeInvestmentButton({ projectInfo }: IRevokeInvestmen
         }}>
         <Flex vertical gap={24}>
           <Text>
-            Are you sure you want to cancel your investment? Upon cancellation, a penalty of 10% of the ELF you invested
-            will be deducted, and the remaining 90% will be returned to you.
+            {`Are you sure you want to cancel your investment? Upon cancellation, a penalty of ${
+              projectInfo?.liquidatedDamageProportion || DEFAULT_LIQUIDATED_DAMAGE_PROPORTION
+            }% of the ${
+              projectInfo?.toRaiseToken?.symbol || DEFAULT_TOKEN_SYMBOL
+            } you invested will be deducted, and the remaining ${
+              100 - (projectInfo?.liquidatedDamageProportion || DEFAULT_LIQUIDATED_DAMAGE_PROPORTION)
+            }% will be returned to you.`}
           </Text>
           <Flex className="mobile-flex-vertical-reverse" gap={16}>
             <Button className="flex-1" onClick={() => setIsConfirmModalOpen(false)}>
@@ -144,7 +143,9 @@ export default function RevokeInvestmentButton({ projectInfo }: IRevokeInvestmen
           setIsSubmitModalOpen(false);
         }}>
         <Flex vertical gap={24}>
-          <Text>Upon clicking "Confirm," ELF will be returned to the specified address.</Text>
+          <Text>{`Upon clicking "Confirm," ${
+            projectInfo?.toRaiseToken?.symbol || DEFAULT_TOKEN_SYMBOL
+          } will be returned to the specified address.`}</Text>
           <Flex justify="space-between">
             <Text>My address</Text>
             <HashAddress
@@ -186,33 +187,14 @@ export default function RevokeInvestmentButton({ projectInfo }: IRevokeInvestmen
                 <Text>Transaction Fee</Text>
               </Flex>
               <Flex className="mobile-flex-vertical-end-gap-2" gap={8} align="baseline">
-                <Text>
-                  {txFee} {projectInfo?.toRaiseToken?.symbol ?? '--'}
-                </Text>
+                <Text>{`${txFee} ${DEFAULT_TOKEN_SYMBOL}`}</Text>
                 {renderTokenPrice({
                   textProps: {
                     size: 'small',
                   },
                   amount: txFee,
                   decimals: 0,
-                  tokenPrice,
-                })}
-              </Flex>
-            </Flex>
-            <Flex justify="space-between">
-              <Text>Amount to Be Received</Text>
-              <Flex className="mobile-flex-vertical-end-gap-2" gap={8} align="baseline">
-                <Text>
-                  {divDecimalsStr(finalAmount, projectInfo?.toRaiseToken?.decimals)}{' '}
-                  {projectInfo?.toRaiseToken?.symbol ?? '--'}
-                </Text>
-                {renderTokenPrice({
-                  textProps: {
-                    size: 'small',
-                  },
-                  amount: finalAmount,
-                  decimals: projectInfo?.toRaiseToken?.decimals,
-                  tokenPrice,
+                  tokenPrice: elfTokenPrice,
                 })}
               </Flex>
             </Flex>
@@ -220,8 +202,9 @@ export default function RevokeInvestmentButton({ projectInfo }: IRevokeInvestmen
           <Text
             className={clsx('error-text', 'text-center', { ['display-none']: !notEnoughTokens })}
             fontWeight={FontWeightEnum.Medium}>
-            Insufficient balance to cover the transaction fee. Please transfer some ELF to this address before you try
-            again.
+            {`Insufficient balance to cover the transaction fee. Please transfer some ${
+              projectInfo?.toRaiseToken?.symbol || DEFAULT_TOKEN_SYMBOL
+            } to this address before you try again.`}
           </Text>
           <Flex justify="center">
             <Button className="modal-single-button" type="primary" disabled={notEnoughTokens} onClick={handleSubmit}>

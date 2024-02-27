@@ -11,6 +11,7 @@ import { DEFAULT_CHAIN_ID, NETWORK_CONFIG } from 'constants/network';
 import { useTokenPrice, useTxFee } from 'contexts/useAssets/hooks';
 import { renderTokenPrice } from 'utils/project';
 import { getExploreLink } from 'utils';
+import { DEFAULT_TOKEN_SYMBOL } from 'constants/misc';
 
 const { Text, Title } = Typography;
 
@@ -20,7 +21,7 @@ interface ICancelProjectButtonProps {
 
 export default function CancelProjectButton({ projectInfo }: ICancelProjectButtonProps) {
   const { wallet, checkManagerSyncState } = useWallet();
-  const { tokenPrice } = useTokenPrice();
+  const { tokenPrice } = useTokenPrice(DEFAULT_TOKEN_SYMBOL);
   const { txFee } = useTxFee();
   const [messageApi, contextHolder] = message.useMessage();
   const { projectId } = useParams();
@@ -76,8 +77,9 @@ export default function CancelProjectButton({ projectInfo }: ICancelProjectButto
         onCancel={() => setIsConfirmModalOpen(false)}>
         <Flex vertical gap={24}>
           <Text className="text-center">
-            Are you sure you want to cancel the sale? Once cancelled, you can claim all the tokens you provided, yet you
-            won't receive any ELF raised.
+            {`Are you sure you want to cancel the sale? Once cancelled, you can claim all the tokens you provided, yet you won't receive any ${
+              projectInfo?.toRaiseToken?.symbol || DEFAULT_TOKEN_SYMBOL
+            } raised.`}
           </Text>
           <Flex className="mobile-flex-vertical-reverse" gap={16}>
             <Button className="flex-1" onClick={() => setIsConfirmModalOpen(false)}>
@@ -106,8 +108,9 @@ export default function CancelProjectButton({ projectInfo }: ICancelProjectButto
         onCancel={() => setIsSubmitModalOpen(false)}>
         <Flex vertical gap={24}>
           <Text>
-            Upon confirmation, the sale will be cancelled and you can claim all the tokens you provided, yet you won't
-            receive any ELF raised.
+            {`Upon confirmation, the sale will be cancelled and you can claim all the tokens you provided, yet you won't receive any ${
+              projectInfo?.toRaiseToken?.symbol || DEFAULT_TOKEN_SYMBOL
+            } raised.`}
           </Text>
           <Flex gap={8} justify="center" align="baseline">
             <Title level={4} fontWeight={FontWeightEnum.Medium}>
@@ -137,9 +140,7 @@ export default function CancelProjectButton({ projectInfo }: ICancelProjectButto
               <Text>Transaction Fee</Text>
             </Flex>
             <Flex className="mobile-flex-vertical-end-gap-2" gap={8} justify="flex-end" align="baseline">
-              <Text>
-                {txFee} {projectInfo?.toRaiseToken?.symbol ?? '--'}
-              </Text>
+              <Text>{`${txFee} ${DEFAULT_TOKEN_SYMBOL}`}</Text>
               {renderTokenPrice({
                 textProps: {
                   size: 'small',
