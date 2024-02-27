@@ -49,6 +49,12 @@ const MyProjects: React.FC<ProjectListProps> = () => {
     emitLoading(loading);
   }, [loading]);
 
+  useEffect(() => {
+    return () => {
+      emitLoading(false);
+    };
+  }, []);
+
   const initList = useCallback(async () => {
     await Promise.all([getCreatedProjects(), getParticipateProject()]);
     setLoading(false);

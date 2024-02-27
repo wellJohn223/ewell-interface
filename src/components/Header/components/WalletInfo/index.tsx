@@ -53,7 +53,7 @@ export const WalletInfo = ({ onMyProjectClick }: IWalletInfoProps) => {
         <div
           className="wallet-info-item-wrap"
           onClick={() => {
-            navigate('/assets', { replace: true });
+            navigate('/assets');
             onMyProjectClick?.();
           }}>
           <img src={walletSvg} alt="" />
@@ -66,7 +66,7 @@ export const WalletInfo = ({ onMyProjectClick }: IWalletInfoProps) => {
       <div
         className="wallet-info-item-wrap"
         onClick={() => {
-          navigate('/projects/my', { replace: true });
+          navigate('/projects/my');
           onMyProjectClick?.();
         }}>
         <img src={projectsSvg} alt="" />
