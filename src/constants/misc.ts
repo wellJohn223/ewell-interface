@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { DEFAULT_CHAIN_ID, NETWORK_CONFIG } from './network';
+import { ITokenInfo } from 'types/assets';
 
 export enum REQ_CODE {
   UserDenied = -1,
@@ -17,7 +18,7 @@ export const isEffectiveNumber = (v: any) => {
   return !val.isNaN() && !val.lte(0);
 };
 
-export const AELF_TOKEN_INFO = {
+export const AELF_TOKEN_INFO: ITokenInfo = {
   symbol: 'ELF',
   decimals: 8,
   chainId: DEFAULT_CHAIN_ID,
@@ -25,6 +26,23 @@ export const AELF_TOKEN_INFO = {
   address: NETWORK_CONFIG.sideChainInfo.tokenContractAddress,
   id: `${DEFAULT_CHAIN_ID}-ELF`,
 };
+export const DEFAULT_TOKEN_INFO = AELF_TOKEN_INFO;
+export const DEFAULT_TOKEN_SYMBOL = DEFAULT_TOKEN_INFO.symbol;
+
+export const USDT_TOKEN_INFO: ITokenInfo = {
+  symbol: 'USDT',
+  decimals: 6,
+  chainId: DEFAULT_CHAIN_ID,
+  name: '',
+  address: NETWORK_CONFIG.sideChainInfo.tokenContractAddress,
+  id: `${DEFAULT_CHAIN_ID}-USDT`,
+};
+
+export const TOKEN_LIST = [AELF_TOKEN_INFO, USDT_TOKEN_INFO];
+export const TOKEN_MAP: Record<string, ITokenInfo> = TOKEN_LIST.reduce((acc, item) => {
+  acc[item.id] = item;
+  return acc;
+}, {});
 
 export const PriceDecimal = 8;
 export const InstallmentDecimal = 8;
