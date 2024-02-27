@@ -18,24 +18,29 @@ export const isEffectiveNumber = (v: any) => {
   return !val.isNaN() && !val.lte(0);
 };
 
+export enum TokenType {
+  ELF = 'ELF',
+  USDT = 'USDT',
+}
+
 export const AELF_TOKEN_INFO: ITokenInfo = {
-  symbol: 'ELF',
+  symbol: TokenType.ELF,
   decimals: 8,
   chainId: DEFAULT_CHAIN_ID,
   name: 'Native Token',
   address: NETWORK_CONFIG.sideChainInfo.tokenContractAddress,
-  id: `${DEFAULT_CHAIN_ID}-ELF`,
+  id: `${DEFAULT_CHAIN_ID}-${TokenType.ELF}`,
 };
 export const DEFAULT_TOKEN_INFO = AELF_TOKEN_INFO;
 export const DEFAULT_TOKEN_SYMBOL = DEFAULT_TOKEN_INFO.symbol;
 
 export const USDT_TOKEN_INFO: ITokenInfo = {
-  symbol: 'USDT',
+  symbol: TokenType.USDT,
   decimals: 6,
   chainId: DEFAULT_CHAIN_ID,
   name: '',
   address: NETWORK_CONFIG.sideChainInfo.tokenContractAddress,
-  id: `${DEFAULT_CHAIN_ID}-USDT`,
+  id: `${DEFAULT_CHAIN_ID}-${TokenType.USDT}`,
 };
 
 export const TOKEN_LIST = [AELF_TOKEN_INFO, USDT_TOKEN_INFO];

@@ -3,7 +3,7 @@ import { getPriceDecimal, getProtobufTime } from 'utils';
 import { formatInputNumberString, timesDecimals } from 'utils/calculate';
 import storages from './storages';
 import dayjs, { Dayjs } from 'dayjs';
-import { AELF_TOKEN_INFO } from 'constants/misc';
+import { ITokenInfo } from 'types/assets';
 
 export function resetCreateProjectInfo() {
   localStorage.removeItem(storages.ConfirmTradingPair);
@@ -32,8 +32,7 @@ export function intervalTip(l: string | number, r: string | number) {
   return `Please enter a number between ${l} and ${r}!`;
 }
 
-export function getInfo(confirmTradingPair: any, projectPanel: any, additionalInfo: any) {
-  const toRaiseToken = AELF_TOKEN_INFO;
+export function getInfo(confirmTradingPair: any, projectPanel: any, additionalInfo: any, toRaiseToken: ITokenInfo) {
   const priceDecimal = getPriceDecimal(confirmTradingPair, toRaiseToken);
   const preSalePrice = timesDecimals(projectPanel.preSalePrice, priceDecimal.toFixed()).toFixed(0);
   const publicSalePrice = ZERO.plus(preSalePrice).div(1.05).toFixed(0);
@@ -65,7 +64,7 @@ export function getInfo(confirmTradingPair: any, projectPanel: any, additionalIn
     restPeriodDistributeProportion: 0,
     additionalInfo: _additionalInfo,
     firstDistributeProportion: '100000000',
-    acceptedSymbol: AELF_TOKEN_INFO.symbol,
+    acceptedSymbol: toRaiseToken.symbol,
     projectSymbol: confirmTradingPair.symbol,
     crowdFundingType: projectPanel.crowdFundingType,
     startTime: getProtobufTime(projectPanel.startTime),

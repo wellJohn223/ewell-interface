@@ -3,13 +3,17 @@ import { getInputOptions, normFile } from 'components/FormItem/utils';
 import { FormItemProps } from 'components/FormItem';
 import { Validators } from './validate';
 import { disabledDateBefore, disabledTimeBefore, integerNumberFormat, formatNumberParser } from './utils';
-import { TCurrencyType, TSteps } from './types';
+import { TSteps } from './types';
 import { ITradingParCard } from './components/TradingPairList';
 import { formatInputNumberString } from 'utils/calculate';
 import { TIdoInfo } from './IDOInfo';
 import { Rule } from 'antd/es/form';
 import { LogoUploadTips, FeaturedUploadTips } from './components/uploadTips';
 import React from 'react';
+import { TokenType } from 'constants/misc';
+import { elf, usdt } from 'assets/images/tokens';
+import { Space } from 'antd';
+import type { SelectProps } from 'antd';
 
 export const stepTitle = ['Select Token', 'Describe Project', 'Customise Sale', 'Review & Transfer'];
 
@@ -25,6 +29,31 @@ export const stepsItems: StepProps[] = [
   },
   {
     title: stepTitle[TSteps.FOUR],
+  },
+];
+
+export const currencyOptions: SelectProps['options'] = [
+  {
+    label: (
+      <>
+        <Space>
+          <img src={elf} alt="" />
+          {TokenType.ELF}
+        </Space>
+      </>
+    ),
+    value: TokenType.ELF,
+  },
+  {
+    label: (
+      <>
+        <Space>
+          <img src={usdt} alt="" />
+          {TokenType.USDT}
+        </Space>
+      </>
+    ),
+    value: TokenType.USDT,
   },
 ];
 
@@ -191,7 +220,7 @@ export const formWhitelist: FormItemProps[] = [
 export const getIDOFormJson = (
   tradingCard?: ITradingParCard,
   idoInfo?: TIdoInfo,
-  currency?: TCurrencyType,
+  currency?: TokenType,
 ): FormItemProps[] => {
   return [
     {

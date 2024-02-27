@@ -47,6 +47,7 @@ export function ConfirmModal({ open, info, onCancel, onOk }: ITransferModalProps
   }, [info?.crowdFundingIssueAmount, tokenBalance]);
 
   const isGasEnough = useMemo(() => {
+    console.log('efl-balance', ELFBalance);
     const walletELF = ZERO.plus(ELFBalance ?? 0);
     return walletELF.gte(timesDecimals(payGasELF, info?.toRaiseToken?.decimals || 8));
   }, [ELFBalance, info?.toRaiseToken?.decimals, payGasELF]);
