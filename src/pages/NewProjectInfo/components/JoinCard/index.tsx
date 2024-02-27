@@ -51,17 +51,17 @@ export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefres
   }, [balance, txFeeAmount]);
 
   const maxAllocation = useMemo(() => {
-    const remainingToRaisedAmount = ZERO.plus(projectInfo?.toRaisedAmount ?? 0).minus(
+    const remainingTargetRaisedAmount = ZERO.plus(projectInfo?.targetRaisedAmount ?? 0).minus(
       projectInfo?.currentRaisedAmount ?? 0,
     );
     const currentMaxSubscription = ZERO.plus(projectInfo?.maxSubscription ?? 0).minus(projectInfo?.investAmount ?? 0);
-    const arr = [remainingToRaisedAmount, currentMaxSubscription];
+    const arr = [remainingTargetRaisedAmount, currentMaxSubscription];
     return BigNumber.min.apply(null, arr);
   }, [
     projectInfo?.currentRaisedAmount,
     projectInfo?.investAmount,
     projectInfo?.maxSubscription,
-    projectInfo?.toRaisedAmount,
+    projectInfo?.targetRaisedAmount,
   ]);
 
   const maxCanInvestAmount = useMemo(() => {
@@ -83,14 +83,18 @@ export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefres
 
   const progressPercent = useMemo(() => {
     const percent = ZERO.plus(projectInfo?.currentRaisedAmount ?? 0)
-      .div(projectInfo?.toRaisedAmount ?? 0)
+      .div(projectInfo?.targetRaisedAmount ?? 0)
       .times(1e2);
     return percent.isNaN() ? ZERO : percent;
-  }, [projectInfo?.currentRaisedAmount, projectInfo?.toRaisedAmount]);
+  }, [projectInfo?.currentRaisedAmount, projectInfo?.targetRaisedAmount]);
 
   const showViewWhitelistTasks = useMemo(() => {
     return projectInfo?.isEnableWhitelist && projectInfo?.whitelistInfo?.url && !projectInfo?.isInWhitelist;
   }, [projectInfo?.isEnableWhitelist, projectInfo?.isInWhitelist, projectInfo?.whitelistInfo?.url]);
+
+  const showWhitelistEnabledLabel = useMemo(() => {
+    return !showViewWhitelistTasks && projectInfo?.isEnableWhitelist;
+  }, [projectInfo?.isEnableWhitelist, showViewWhitelistTasks]);
 
   const showWhitelistJoined = useMemo(() => {
     return projectInfo?.isEnableWhitelist && projectInfo?.isInWhitelist;
@@ -195,7 +199,7 @@ export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefres
     if (projectInfo?.status === ProjectStatus.UPCOMING) {
       return (
         <>
-          <Text>Ends in</Text>
+          <Text>Starts in</Text>
           <NewBaseCountdown
             className="countdown-wrapper"
             value={projectInfo?.startTime ? dayjs(projectInfo.startTime).valueOf() : 0}
@@ -279,7 +283,7 @@ export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefres
             projectInfo?.toRaiseToken?.decimals,
             '0',
           )}
-          toRaisedAmount={divDecimalsStr(projectInfo?.toRaisedAmount, projectInfo?.toRaiseToken?.decimals)}
+          targetRaisedAmount={divDecimalsStr(projectInfo?.targetRaisedAmount, projectInfo?.toRaiseToken?.decimals)}
           toRaiseTokenSymbol={projectInfo?.toRaiseToken?.symbol}
         />
       </Flex>
@@ -322,7 +326,9 @@ export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefres
           />
         </Flex>
       </Flex>
-      {(showViewWhitelistTasks || showWhitelistJoined || showOperationArea) && <div className="divider" />}
+      {(showViewWhitelistTasks || showWhitelistJoined || showOperationArea || showWhitelistEnabledLabel) && (
+        <div className="divider" />
+      )}
       <Flex vertical gap={12}>
         {showViewWhitelistTasks && (
           <>
@@ -334,6 +340,14 @@ export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefres
               </Text>
             )}
             <Flex justify="flex-end">{renderViewWhitelistTasks('View Whitelist Tasks')}</Flex>
+          </>
+        )}
+        {showWhitelistEnabledLabel && (
+          <>
+            {(projectInfo?.status === ProjectStatus.UPCOMING ||
+              projectInfo?.status === ProjectStatus.PARTICIPATORY) && (
+              <Text>Whitelisted is enabled for this sale.</Text>
+            )}
           </>
         )}
         {showWhitelistJoined && (

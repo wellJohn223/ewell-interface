@@ -1,8 +1,11 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Flex } from 'antd';
-import { Loading } from 'aelf-design';
+import { Loading, Typography } from 'aelf-design';
 import SandGlassLoading from 'components/SandGlassLoading';
 import myEvents from 'utils/myEvent';
+import './styles.less';
+
+const { Text } = Typography;
 
 export interface ILoadingInfo {
   isLoading: boolean;
@@ -35,9 +38,9 @@ export default function PageLoading() {
     <Loading
       open={loadingInfo.isLoading}
       content={
-        <Flex gap={8}>
-          <SandGlassLoading />
-          {!!loadingInfo.text && <span>{loadingInfo.text}</span>}
+        <Flex gap={8} align="flex-start">
+          <SandGlassLoading className="page-loading-icon" />
+          {!!loadingInfo.text && <Text>{loadingInfo.text}</Text>}
         </Flex>
       }
     />

@@ -16,7 +16,7 @@ export function getInstallments(v: any) {
   return {
     totalPeriod: 1,
     firstDistributeProportion: timesDecimals(100, InstallmentDecimal - 2).toFixed(0),
-    restDistributeProportion: 0,
+    restPeriodDistributeProportion: 0,
     periodDuration: 0,
   };
 }
@@ -62,11 +62,11 @@ export function getInfo(confirmTradingPair: any, projectPanel: any, additionalIn
     listMarketInfo: [],
     crowdFundingIssueAmount,
     liquidityLockProportion: 0, // fixed
-    restDistributeProportion: 0,
+    restPeriodDistributeProportion: 0,
     additionalInfo: _additionalInfo,
     firstDistributeProportion: '100000000',
-    acceptedCurrency: AELF_TOKEN_INFO.symbol,
-    projectCurrency: confirmTradingPair.symbol,
+    acceptedSymbol: AELF_TOKEN_INFO.symbol,
+    projectSymbol: confirmTradingPair.symbol,
     crowdFundingType: projectPanel.crowdFundingType,
     startTime: getProtobufTime(projectPanel.startTime),
     endTime: getProtobufTime(projectPanel.endTime),

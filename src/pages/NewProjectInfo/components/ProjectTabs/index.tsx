@@ -104,7 +104,7 @@ export default function ProjectTabs({ projectInfo }: IProjectTabsProps) {
         {
           key: 'Goal',
           label: 'Goal',
-          value: `${divDecimalsStr(projectInfo?.toRaisedAmount, projectInfo?.toRaiseToken?.decimals)} ${
+          value: `${divDecimalsStr(projectInfo?.targetRaisedAmount, projectInfo?.toRaiseToken?.decimals)} ${
             projectInfo?.toRaiseToken?.symbol || '--'
           }`,
         },

@@ -7,7 +7,7 @@ import CommonProjectStatusTag from 'components/CommonProjectStatusTag';
 import CommonProjectProgress from 'components/CommonProjectProgress';
 import { IProjectInfo } from './types';
 import { ZERO } from 'constants/misc';
-import { divDecimals } from 'utils/calculate';
+import { divDecimals, divDecimalsStr } from 'utils/calculate';
 import { ProjectStatus } from 'types/project';
 import { useNavigate, useParams } from 'react-router-dom';
 import { stringifyUrl } from 'query-string';
@@ -18,23 +18,6 @@ import './styles.less';
 import { pick } from 'utils';
 
 const ONE_DAY_IN_MS = 24 * 60 * 60 * 1000;
-
-export interface IProjectCard {
-  id?: string;
-  chainId?: string;
-  creator?: string;
-  crowdFundingType?: string;
-  crowdFundingIssueAmount?: string;
-  preSalePrice?: number;
-  additionalInfo?: string[];
-  startTime?: number;
-  endTime?: number;
-  unlockTime?: number;
-  isCanceled?: boolean;
-  cancelTime?: number;
-  toRaisedAmount?: number;
-  currentRaisedAmount?: number;
-}
 
 export interface ProjectCardProps {
   data: IProjectInfo;
@@ -49,7 +32,7 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
     preSalePrice,
     crowdFundingIssueToken,
     currentRaisedAmount,
-    toRaisedAmount,
+    targetRaisedAmount,
     toRaiseToken,
     status,
   } = data;
@@ -58,10 +41,10 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
 
   const progressPercent = useMemo(() => {
     const percent = ZERO.plus(currentRaisedAmount ?? 0)
-      .div(toRaisedAmount ?? 0)
+      .div(targetRaisedAmount ?? 0)
       .times(1e2);
     return percent.isNaN() ? 0 : Number(percent.toFixed(2));
-  }, [currentRaisedAmount, toRaisedAmount]);
+  }, [currentRaisedAmount, targetRaisedAmount]);
   const navigate = useNavigate();
 
   const { type } = useParams();
@@ -87,7 +70,8 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
     if (status === ProjectStatus.CANCELED) str = 'Cancelled on';
     if (status === ProjectStatus.ENDED) str = 'Ended on';
     if (status === ProjectStatus.UNLOCKED) str = 'Token Distribution Time';
-    if ([ProjectStatus.UPCOMING, ProjectStatus.PARTICIPATORY].includes(status as ProjectStatus)) str = 'Ends in';
+    if (status === ProjectStatus.UPCOMING) str = 'Starts in';
+    if (status === ProjectStatus.PARTICIPATORY) str = 'Ends in';
 
     setRemainderStr(str);
   }, [status]);
@@ -96,11 +80,11 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
 
   useEffect(() => {
     if (status === ProjectStatus.CANCELED) {
-      setRemainderTimeStr(data?.cancelTime ? dayjs(data.cancelTime).format('DD MMMM, YYYY') : '--');
+      setRemainderTimeStr(data?.cancelTime ? dayjs(data.cancelTime).format('DD MMM, YYYY') : '--');
     }
 
     if (status === ProjectStatus.ENDED) {
-      setRemainderTimeStr(data?.tokenReleaseTime ? dayjs(data.tokenReleaseTime).format('DD MMMM, YYYY') : '--');
+      setRemainderTimeStr(data?.tokenReleaseTime ? dayjs(data.tokenReleaseTime).format('DD MMM, YYYY') : '--');
     }
   }, [data.cancelTime, data.tokenReleaseTime, status]);
 
@@ -124,7 +108,7 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
       if (remainingTime <= ONE_DAY_IN_MS) {
         formatValue = timeDuration(remainingTime);
       } else {
-        formatValue = dayjs(timestamp).format('DD MMMM, YYYY');
+        formatValue = dayjs(timestamp).format('DD MMM, YYYY');
       }
       setRemainderTimeStr(formatValue);
     }, 1000);
@@ -134,13 +118,13 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
   }, [data?.endTime, data?.startTime, data?.tokenReleaseTime, status]);
 
   const currentRaisedAmountStr = useMemo(
-    () => divDecimals(currentRaisedAmount, toRaiseToken?.decimals).toFormat(),
+    () => divDecimalsStr(currentRaisedAmount, toRaiseToken?.decimals),
     [currentRaisedAmount, toRaiseToken?.decimals],
   );
 
-  const toRaisedAmountStr = useMemo(
-    () => divDecimals(toRaisedAmount, toRaiseToken?.decimals).toFormat(),
-    [toRaiseToken?.decimals, toRaisedAmount],
+  const targetRaisedAmountStr = useMemo(
+    () => divDecimalsStr(targetRaisedAmount, toRaiseToken?.decimals),
+    [toRaiseToken?.decimals, targetRaisedAmount],
   );
 
   const preSalePriceStr = useMemo(
@@ -182,11 +166,16 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
               <Text>Sale Price</Text>
               <Text>{remainderStr}</Text>
             </Flex>
-            <Flex justify="space-between">
-              <Text fontWeight={FontWeightEnum.Medium}>
-                1 ELF = {`${preSalePriceStr} ${crowdFundingIssueToken?.symbol || ''}`}
-              </Text>
-              <Text>{remainderTimeStr}</Text>
+            <Flex justify="space-between" gap={'5%'}>
+              <Flex gap={3} flex={1} style={{ maxWidth: '68%' }}>
+                <Text fontWeight={FontWeightEnum.Medium} style={{ flex: 'none' }}>
+                  1 ELF =
+                </Text>
+                <Text className="flex-1" ellipsis>{`${preSalePriceStr} ${crowdFundingIssueToken?.symbol || ''}`}</Text>
+              </Flex>
+              <Flex flex="none">
+                <Text>{remainderTimeStr}</Text>
+              </Flex>
             </Flex>
           </Flex>
           <CommonProjectProgress
@@ -195,7 +184,7 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
             progressPercent={progressPercent}
             projectStatus={status}
             currentRaisedAmount={currentRaisedAmountStr}
-            toRaisedAmount={toRaisedAmountStr}
+            targetRaisedAmount={targetRaisedAmountStr}
             toRaiseTokenSymbol={toRaiseToken?.symbol}
           />
         </Flex>

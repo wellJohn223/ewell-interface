@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react';
+import { ComponentProps, useMemo } from 'react';
 import { Flex } from 'antd';
 import { Progress, Typography } from 'aelf-design';
 import { ProjectStatus } from 'types/project';
@@ -11,7 +11,7 @@ interface ICommonProjectProgressProps {
   progressPercent: number;
   projectStatus?: ProjectStatus;
   currentRaisedAmount: string;
-  toRaisedAmount: string;
+  targetRaisedAmount: string;
   toRaiseTokenSymbol?: string;
 }
 
@@ -21,9 +21,14 @@ export default function CommonProjectProgress({
   progressPercent,
   projectStatus,
   currentRaisedAmount,
-  toRaisedAmount,
+  targetRaisedAmount,
   toRaiseTokenSymbol,
 }: ICommonProjectProgressProps) {
+  const progressPercentStr = useMemo(
+    () => (Infinity == progressPercent ? '--' : `${progressPercent.toFixed(0)}%`),
+    [progressPercent],
+  );
+
   return (
     <Flex vertical gap={wrapFlexGap ?? 8}>
       <Progress
@@ -33,9 +38,9 @@ export default function CommonProjectProgress({
         trailColor="#F5F5F6"
       />
       <Flex gap={16} align="center" justify="space-between">
-        <Text {...textProps}>{progressPercent.toFixed(0)}%</Text>
+        <Text {...textProps}>{progressPercentStr}</Text>
         <Text {...textProps}>
-          {currentRaisedAmount}/{toRaisedAmount} {toRaiseTokenSymbol || '--'}
+          {currentRaisedAmount}/{targetRaisedAmount} {toRaiseTokenSymbol || '--'}
         </Text>
       </Flex>
     </Flex>

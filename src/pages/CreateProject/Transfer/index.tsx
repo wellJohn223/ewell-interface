@@ -55,7 +55,7 @@ const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
       whitelistInfo: {
         url: whitelistUrl,
       },
-      toRaisedAmount: timesDecimals(
+      targetRaisedAmount: timesDecimals(
         new BigNumber(data.crowdFundingIssueAmount).div(data.preSalePrice),
         AELF_TOKEN_INFO.decimals,
       ).toString(),
@@ -65,6 +65,11 @@ const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
   const onTransfer = useCallback(async () => {
     try {
       setOpenConfirmModal(false);
+      const isBefore = isStartTimeBeforeNow(idoInfo?.startTime);
+      if (isBefore) {
+        message.error('The sale start time has already passed. Please revise the sale information in step 3.');
+        return;
+      }
       emitLoading(true, { text: 'Synchronising data on the blockchain...' });
       const isSync = await checkManagerSyncState();
       if (!isSync) {
@@ -84,20 +89,15 @@ const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
     } finally {
       emitLoading(false);
     }
-  }, [additional, checkManagerSyncState, idoInfo, register, tradingPair]);
+  }, [additional, checkManagerSyncState, idoInfo, isStartTimeBeforeNow, register, tradingPair]);
 
   const gotoDetail = useCallback(() => {
     navigate(`/project/${successInfo?.projectId}`, { replace: true });
   }, [navigate, successInfo?.projectId]);
 
   const onNext = useCallback(() => {
-    const isBefore = isStartTimeBeforeNow(idoInfo?.startTime);
-    if (isBefore) {
-      message.error('The sale start time has already passed. Please revise the sale information in step 3.');
-      return;
-    }
     setOpenConfirmModal(true);
-  }, [idoInfo?.startTime, isStartTimeBeforeNow]);
+  }, []);
 
   const getContractAddress = useCallback(async () => {
     try {
