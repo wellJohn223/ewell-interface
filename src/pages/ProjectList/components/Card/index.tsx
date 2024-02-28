@@ -118,7 +118,7 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
   }, [data?.endTime, data?.startTime, data?.tokenReleaseTime, status]);
 
   const currentRaisedAmountStr = useMemo(
-    () => divDecimalsStr(currentRaisedAmount, toRaiseToken?.decimals),
+    () => divDecimalsStr(currentRaisedAmount, toRaiseToken?.decimals, '0'),
     [currentRaisedAmount, toRaiseToken?.decimals],
   );
 
