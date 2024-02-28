@@ -43,11 +43,6 @@ export default function ProjectManagementCard({ projectInfo }: IProjectManagemen
     );
   }, [projectInfo?.status]);
 
-  // The claim operation of the creator is automatic
-  // const showCreatorClaimTokenButton = useMemo(() => {
-  //   return projectInfo?.status === ProjectStatus.ENDED && !projectInfo?.isWithdraw;
-  // }, [projectInfo?.status, projectInfo?.isWithdraw]);
-
   const handleWhitelistSwitchChange = async (checked: boolean) => {
     setIsWhitelistSwitchLoading(true);
     const isManagerSynced = await checkManagerSyncState();
@@ -178,8 +173,6 @@ export default function ProjectManagementCard({ projectInfo }: IProjectManagemen
             <Flex vertical gap={12}>
               <Text fontWeight={FontWeightEnum.Medium}>Project</Text>
               {showCancelProjectButton && <CancelProjectButton projectInfo={projectInfo} />}
-              {/* The claim operation of the creator is automatic */}
-              {/* {showCreatorClaimTokenButton && <CreatorClaimTokenButton projectInfo={projectInfo} />} */}
             </Flex>
           </>
         )}
