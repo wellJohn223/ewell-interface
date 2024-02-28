@@ -33,6 +33,7 @@ export const AELF_TOKEN_INFO: ITokenInfo = {
 };
 export const DEFAULT_TOKEN_INFO = AELF_TOKEN_INFO;
 export const DEFAULT_TOKEN_SYMBOL = DEFAULT_TOKEN_INFO.symbol;
+export const DEFAULT_TOKEN_DECIMALS = DEFAULT_TOKEN_INFO.decimals;
 
 export const USDT_TOKEN_INFO: ITokenInfo = {
   symbol: TokenType.USDT,

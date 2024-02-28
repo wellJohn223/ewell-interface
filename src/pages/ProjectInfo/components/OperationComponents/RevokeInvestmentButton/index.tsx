@@ -8,7 +8,7 @@ import SuccessModal from '../SuccessModal';
 import { useWallet } from 'contexts/useWallet/hooks';
 import { IProjectInfo } from 'types/project';
 import { divDecimalsStr, timesDecimals } from 'utils/calculate';
-import { DEFAULT_LIQUIDATED_DAMAGE_PROPORTION, DEFAULT_TOKEN_SYMBOL } from 'constants/misc';
+import { DEFAULT_LIQUIDATED_DAMAGE_PROPORTION, DEFAULT_TOKEN_DECIMALS, DEFAULT_TOKEN_SYMBOL } from 'constants/misc';
 import { emitLoading, emitSyncTipsModal } from 'utils/events';
 import { DEFAULT_CHAIN_ID, NETWORK_CONFIG } from 'constants/network';
 import { useTokenPrice, useTxFee } from 'contexts/useAssets/hooks';
@@ -30,7 +30,7 @@ export default function RevokeInvestmentButton({ projectInfo }: IRevokeInvestmen
   const { txFee } = useTxFee();
   const [messageApi, contextHolder] = message.useMessage();
   const { projectId } = useParams();
-  const { balance, updateBalance } = useBalance(projectInfo?.toRaiseToken?.symbol);
+  const { balance: defaultTokenBalance, updateBalance: updateDefaultTokenBalance } = useBalance(DEFAULT_TOKEN_SYMBOL);
 
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
@@ -39,13 +39,13 @@ export default function RevokeInvestmentButton({ projectInfo }: IRevokeInvestmen
 
   useEffect(() => {
     if (isSubmitModalOpen) {
-      updateBalance();
+      updateDefaultTokenBalance();
     }
-  }, [updateBalance, isSubmitModalOpen]);
+  }, [updateDefaultTokenBalance, isSubmitModalOpen]);
 
   const txFeeAmount = useMemo(() => {
-    return timesDecimals(txFee, projectInfo?.toRaiseToken?.decimals);
-  }, [txFee, projectInfo?.toRaiseToken?.decimals]);
+    return timesDecimals(txFee, DEFAULT_TOKEN_DECIMALS);
+  }, [txFee]);
 
   const revokeAmount = useMemo(() => {
     const liquidatedDamageProportion = projectInfo?.liquidatedDamageProportion || DEFAULT_LIQUIDATED_DAMAGE_PROPORTION;
@@ -54,8 +54,8 @@ export default function RevokeInvestmentButton({ projectInfo }: IRevokeInvestmen
   }, [projectInfo?.investAmount, projectInfo?.liquidatedDamageProportion]);
 
   const notEnoughTokens = useMemo(() => {
-    return new BigNumber(balance).lt(txFeeAmount);
-  }, [balance, txFeeAmount]);
+    return new BigNumber(defaultTokenBalance).lt(txFeeAmount);
+  }, [defaultTokenBalance, txFeeAmount]);
 
   const handleSubmit = async () => {
     setIsSubmitModalOpen(false);
@@ -202,9 +202,7 @@ export default function RevokeInvestmentButton({ projectInfo }: IRevokeInvestmen
           <Text
             className={clsx('error-text', 'text-center', { ['display-none']: !notEnoughTokens })}
             fontWeight={FontWeightEnum.Medium}>
-            {`Insufficient balance to cover the transaction fee. Please transfer some ${
-              projectInfo?.toRaiseToken?.symbol || DEFAULT_TOKEN_SYMBOL
-            } to this address before you try again.`}
+            {`Insufficient balance to cover the transaction fee. Please transfer some ${DEFAULT_TOKEN_SYMBOL} to this address before you try again.`}
           </Text>
           <Flex justify="center">
             <Button className="modal-single-button" type="primary" disabled={notEnoughTokens} onClick={handleSubmit}>
