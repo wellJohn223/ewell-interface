@@ -101,7 +101,6 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
       let formatValue = '';
       if (remainingTime <= 0) {
         setRemainderTimeStr('00:00:00');
-        console.log(timer, 'timer');
         clearInterval(timer);
         return;
       }

@@ -13,7 +13,7 @@ import RevokeInvestmentButton from '../OperationComponents/RevokeInvestmentButto
 import ClaimTokenButton from '../OperationComponents/ClaimTokenButton';
 import RevokeFineButton from '../OperationComponents/RevokeFineButton';
 import { IProjectInfo, ProjectStatus } from 'types/project';
-import { DEFAULT_TOKEN_SYMBOL, ZERO } from 'constants/misc';
+import { DEFAULT_TOKEN_SYMBOL, DEFAULT_TOKEN_DECIMALS, ZERO } from 'constants/misc';
 import { divDecimals, divDecimalsStr, timesDecimals } from 'utils/calculate';
 import { getHref, getPriceDecimal } from 'utils';
 import { parseInputNumberChange } from 'utils/input';
@@ -39,16 +39,19 @@ export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefres
   const [isPurchaseButtonDisabled, setIsPurchaseButtonDisabled] = useState(true);
 
   const txFeeAmount = useMemo(() => {
-    return timesDecimals(txFee, projectInfo?.toRaiseToken?.decimals).times(2);
-  }, [txFee, projectInfo?.toRaiseToken?.decimals]);
+    return timesDecimals(txFee, DEFAULT_TOKEN_DECIMALS).times(2);
+  }, [txFee]);
 
   const canPurchaseAmount = useMemo(() => {
-    let result = ZERO.plus(balance).minus(txFeeAmount);
+    let result = ZERO.plus(balance);
+    if (projectInfo?.toRaiseToken?.symbol === DEFAULT_TOKEN_SYMBOL) {
+      result.minus(txFeeAmount);
+    }
     if (result.lt(0)) {
       result = ZERO;
     }
     return result;
-  }, [balance, txFeeAmount]);
+  }, [balance, projectInfo?.toRaiseToken?.symbol, txFeeAmount]);
 
   const maxAllocation = useMemo(() => {
     const remainingTargetRaisedAmount = ZERO.plus(projectInfo?.targetRaisedAmount ?? 0).minus(

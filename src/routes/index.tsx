@@ -1,7 +1,7 @@
 import { useRoutes } from 'react-router-dom';
 import Home from 'pages/Home';
 import ProjectList from 'pages/ProjectList';
-import NewProjectInfo from 'pages/NewProjectInfo';
+import ProjectInfo from 'pages/ProjectInfo';
 import ParticipantList from 'pages/ParticipantList';
 import WhitelistUsers from 'pages/WhitelistUsers';
 import CreateProject from 'pages/CreateProject';
@@ -20,7 +20,7 @@ export const PageRouter = () =>
     },
     {
       path: '/project/:projectId',
-      element: <NewProjectInfo />,
+      element: <ProjectInfo />,
     },
     {
       path: '/participant-list/:projectId',

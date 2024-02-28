@@ -15,7 +15,7 @@ import { useTokenPrice, useTxFee } from 'contexts/useAssets/hooks';
 import { renderTokenPrice } from 'utils/project';
 import { useBalance } from 'hooks/useBalance';
 import { getExploreLink } from 'utils';
-import { DEFAULT_TOKEN_SYMBOL } from 'constants/misc';
+import { DEFAULT_TOKEN_SYMBOL, DEFAULT_TOKEN_DECIMALS } from 'constants/misc';
 
 const { Title, Text } = Typography;
 
@@ -30,7 +30,7 @@ export default function ClaimTokenButton({ projectInfo }: IClaimTokenButtonProps
   const { tokenPrice } = useTokenPrice(DEFAULT_TOKEN_SYMBOL);
   const { txFee } = useTxFee();
   const [messageApi, contextHolder] = message.useMessage();
-  const { balance, updateBalance } = useBalance(projectInfo?.toRaiseToken?.symbol);
+  const { balance: defaultTokenBalance, updateBalance: updateDefaultTokenBalance } = useBalance(DEFAULT_TOKEN_SYMBOL);
 
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
@@ -38,17 +38,17 @@ export default function ClaimTokenButton({ projectInfo }: IClaimTokenButtonProps
 
   useEffect(() => {
     if (isSubmitModalOpen) {
-      updateBalance();
+      updateDefaultTokenBalance();
     }
-  }, [updateBalance, isSubmitModalOpen]);
+  }, [updateDefaultTokenBalance, isSubmitModalOpen]);
 
   const txFeeAmount = useMemo(() => {
-    return timesDecimals(txFee, projectInfo?.toRaiseToken?.decimals);
-  }, [txFee, projectInfo?.toRaiseToken?.decimals]);
+    return timesDecimals(txFee, DEFAULT_TOKEN_DECIMALS);
+  }, [txFee]);
 
   const notEnoughTokens = useMemo(() => {
-    return new BigNumber(balance ?? 0).lt(txFeeAmount);
-  }, [balance, txFeeAmount]);
+    return new BigNumber(defaultTokenBalance ?? 0).lt(txFeeAmount);
+  }, [defaultTokenBalance, txFeeAmount]);
 
   const handleSubmit = async () => {
     setIsSubmitModalOpen(false);

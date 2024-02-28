@@ -18,7 +18,8 @@ import { renderTokenPrice } from 'utils/project';
 import { useBalance } from 'hooks/useBalance';
 import { useViewContract } from 'contexts/useViewContract/hooks';
 import './styles.less';
-import { DEFAULT_TOKEN_SYMBOL } from 'constants/misc';
+import { DEFAULT_TOKEN_DECIMALS, DEFAULT_TOKEN_SYMBOL } from 'constants/misc';
+import clsx from 'clsx';
 
 const { Title, Text } = Typography;
 
@@ -43,7 +44,10 @@ export default function PurchaseButton({
   const { tokenPrice: elfTokenPrice } = useTokenPrice(DEFAULT_TOKEN_SYMBOL);
   const { txFee } = useTxFee();
   const [messageApi, contextHolder] = message.useMessage();
-  const { balance, updateBalance } = useBalance(projectInfo?.toRaiseToken?.symbol);
+  const { balance: toRaiseTokenBalance, updateBalance: updateToRaiseTokenBalance } = useBalance(
+    projectInfo?.toRaiseToken?.symbol,
+  );
+  const { balance: defaultTokenBalance, updateBalance: updateDefaultTokenBalance } = useBalance(DEFAULT_TOKEN_SYMBOL);
 
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
@@ -51,9 +55,10 @@ export default function PurchaseButton({
 
   useEffect(() => {
     if (isSubmitModalOpen) {
-      updateBalance();
+      updateToRaiseTokenBalance();
+      updateDefaultTokenBalance();
     }
-  }, [updateBalance, isSubmitModalOpen]);
+  }, [updateToRaiseTokenBalance, updateDefaultTokenBalance, isSubmitModalOpen]);
 
   const allocationAmount = useMemo(() => {
     return timesDecimals(purchaseAmount, projectInfo?.toRaiseToken?.decimals);
@@ -66,6 +71,11 @@ export default function PurchaseButton({
   const totalTxFee = useMemo(() => {
     return new BigNumber(txFee || 0).times(2);
   }, [txFee]);
+
+  const notEnoughTokens = useMemo(() => {
+    const totalTxFeeAmount = timesDecimals(totalTxFee, DEFAULT_TOKEN_DECIMALS);
+    return new BigNumber(defaultTokenBalance ?? 0).lt(totalTxFeeAmount);
+  }, [defaultTokenBalance, totalTxFee]);
 
   const handleSubmit = async () => {
     setIsSubmitModalOpen(false);
@@ -221,7 +231,7 @@ export default function PurchaseButton({
               <Text fontWeight={FontWeightEnum.Medium}>Balance</Text>
             </Flex>
             <Text fontWeight={FontWeightEnum.Medium}>
-              {divDecimalsStr(balance, projectInfo?.toRaiseToken?.decimals ?? 8)}{' '}
+              {divDecimalsStr(toRaiseTokenBalance, projectInfo?.toRaiseToken?.decimals ?? 8)}{' '}
               {projectInfo?.toRaiseToken?.symbol ?? '--'}
             </Text>
           </Flex>
@@ -260,8 +270,13 @@ export default function PurchaseButton({
               </Flex>
             </Flex>
           </Flex>
+          <Text
+            className={clsx('error-text', 'text-center', { ['display-none']: !notEnoughTokens })}
+            fontWeight={FontWeightEnum.Medium}>
+            Not enough token in the wallet
+          </Text>
           <Flex justify="center">
-            <Button className="modal-single-button" type="primary" onClick={handleSubmit}>
+            <Button className="modal-single-button" type="primary" disabled={notEnoughTokens} onClick={handleSubmit}>
               Confirm
             </Button>
           </Flex>

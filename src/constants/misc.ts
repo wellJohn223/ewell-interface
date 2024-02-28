@@ -1,6 +1,7 @@
 import BigNumber from 'bignumber.js';
 import { DEFAULT_CHAIN_ID, NETWORK_CONFIG } from './network';
 import { ITokenInfo } from 'types/assets';
+import { timesDecimals } from 'utils/calculate';
 
 export enum REQ_CODE {
   UserDenied = -1,
@@ -33,6 +34,7 @@ export const AELF_TOKEN_INFO: ITokenInfo = {
 };
 export const DEFAULT_TOKEN_INFO = AELF_TOKEN_INFO;
 export const DEFAULT_TOKEN_SYMBOL = DEFAULT_TOKEN_INFO.symbol;
+export const DEFAULT_TOKEN_DECIMALS = DEFAULT_TOKEN_INFO.decimals;
 
 export const USDT_TOKEN_INFO: ITokenInfo = {
   symbol: TokenType.USDT,
@@ -51,5 +53,6 @@ export const TOKEN_MAP: Record<string, ITokenInfo> = TOKEN_LIST.reduce((acc, ite
 
 export const PriceDecimal = 8;
 export const InstallmentDecimal = 8;
+export const LiquidatedDamageProportionDecimal = 6;
 
-export const DEFAULT_LIQUIDATED_DAMAGE_PROPORTION = 10;
+export const DEFAULT_LIQUIDATED_DAMAGE_PROPORTION = timesDecimals(10, LiquidatedDamageProportionDecimal);

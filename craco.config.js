@@ -41,22 +41,6 @@ module.exports = {
   devServer: {
     port: 3003,
     proxy: {
-      '/webLoginRequest/api': {
-        target: activeApi.webLoginApi,
-        changeOrigin: true,
-        secure: true,
-        pathRewrite: {
-          '^/webLoginRequest': '',
-        },
-      },
-      '/webLoginConnect': {
-        target: activeApi.webLoginConnectApi,
-        changeOrigin: true,
-        secure: true,
-        pathRewrite: {
-          '^/webLoginConnect': '',
-        },
-      },
       '/api': {
         target: activeApi.api,
         changeOrigin: true,
@@ -64,11 +48,6 @@ module.exports = {
       },
       '/connect': {
         target: activeApi.connectTokenApi,
-        changeOrigin: true,
-        secure: true,
-      },
-      '/AElfIndexer_DApp': {
-        target: activeApi.webLoginGraphql,
         changeOrigin: true,
         secure: true,
       },
