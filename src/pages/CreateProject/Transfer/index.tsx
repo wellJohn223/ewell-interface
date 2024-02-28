@@ -9,7 +9,7 @@ import { useTransfer } from './useTransfer';
 import { emitLoading, emitSyncTipsModal } from 'utils/events';
 import { message, Flex } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import NewProjectInfo from 'pages/NewProjectInfo';
+import ProjectInfo from 'pages/ProjectInfo';
 import { getInfo } from '../utils';
 import { TokenType } from 'constants/misc';
 import { Typography, FontWeightEnum } from 'aelf-design';
@@ -133,7 +133,7 @@ const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
         Please review the sale details to ensure the accuracy of information. If everything is correct, you can finish
         the launch by clicking "Transfer" to send your tokens to an address.
       </Title>
-      <NewProjectInfo
+      <ProjectInfo
         previewData={previewData}
         style={{
           minHeight: newProjectInfoMinHeight,
