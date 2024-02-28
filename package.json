@@ -25,7 +25,7 @@
     "@testing-library/user-event": "^12.1.10",
     "aelf-design": "^0.1.70-alpha.0",
     "aelf-sdk": "^3.2.45-beta.0",
-    "aelf-web-login": "^2.0.0-beta.29",
+    "aelf-web-login": "^2.0.1-beta.0",
     "antd": "^5.13.1",
     "antd-style": "^3.6.1",
     "axios": "^0.24.0",
