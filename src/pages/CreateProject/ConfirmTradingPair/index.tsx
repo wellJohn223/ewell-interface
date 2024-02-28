@@ -12,10 +12,50 @@ import { WebLoginState } from 'aelf-web-login';
 import myEvents from 'utils/myEvent';
 import { emitLoading } from 'utils/events';
 import { checkIsAuthorized } from 'api/utils';
-import { Select } from 'antd';
+import { Flex, Select } from 'antd';
 import { arrow } from 'assets/images';
 import { TokenType } from 'constants/misc';
 import { currencyOptions } from '../constants';
+import { infoCircle } from 'assets/images/icon';
+import { FontWeightEnum, Typography } from 'aelf-design';
+import { walletCard } from 'assets/images/icon';
+import { useMobile } from 'contexts/useStore/hooks';
+import clsx from 'clsx';
+
+const { Title, Text } = Typography;
+
+const TokenNote: React.FC = React.memo(() => {
+  return (
+    <Flex gap={4}>
+      <img src={infoCircle} style={{ width: 12, height: 12, marginTop: 3 }} />
+      <Text size="small">
+        You can only select tokens for which you are the issuer. You can create a token using SEED which is acquirable
+        through{' '}
+        <span className="link-text" onClick={() => window.open(NETWORK_CONFIG.symbolMarketUrl)}>
+          Symbol Market
+        </span>
+        .
+      </Text>
+    </Flex>
+  );
+});
+
+const TokenEmpty: React.FC = React.memo(() => {
+  const isMobile = useMobile();
+  const height = useMemo(() => {
+    return isMobile ? 'calc(100vh - 64px - 120px - 386px)' : 'calc(100vh - 64px - 72px - 386px)';
+  }, [isMobile]);
+
+  return (
+    <Flex vertical gap={24}>
+      <Flex vertical justify="center" align="center" gap={16} style={{ height, maxHeight: 310, minHeight: 118 }}>
+        <img src={walletCard} style={{ width: 80, height: 80 }} alt="logo" />
+        <Text>No token found in your wallet.</Text>
+      </Flex>
+      <TokenNote />
+    </Flex>
+  );
+});
 
 const ConfirmTradingPair: React.FC<CreateStepProps> = ({ onNext }) => {
   const [tradingPair, setTradingPair] = useLocalStorage<ITradingParCard>(storages.ConfirmTradingPair);
@@ -26,6 +66,8 @@ const ConfirmTradingPair: React.FC<CreateStepProps> = ({ onNext }) => {
 
   const [tokenList, setTokenList] = useState<ITradingParCard[]>([]);
   const [disabledBtn, setDisabledBtn] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   const { loginState } = useWallet();
   const isBtnDisabled = useMemo(
@@ -71,12 +113,13 @@ const ConfirmTradingPair: React.FC<CreateStepProps> = ({ onNext }) => {
       console.log('error', error);
     } finally {
       emitLoading(false);
+      setLoading(false);
     }
   }, []);
 
   useEffect(() => {
     const isAuthorized = checkIsAuthorized();
-    isAuthorized && getTokenList();
+    isAuthorized ? getTokenList() : setLoading(false);
 
     const { remove } = myEvents.AuthToken.addListener(getTokenList);
     return () => {
@@ -84,38 +127,50 @@ const ConfirmTradingPair: React.FC<CreateStepProps> = ({ onNext }) => {
     };
   }, [getTokenList]);
 
-  const onSelectCurrency = useCallback((val) => setCurrency(val), [setCurrency]);
+  const onSelectCurrency = useCallback(
+    (val) => {
+      console.log('onSelect');
+      setCurrency(val);
+    },
+    [setCurrency],
+  );
+  const onDropdownVisibleChange = useCallback((open) => setShowDropdown(open), []);
 
   return (
-    <div className="trading-page">
-      <div className="trading-title">Raise funds for your project in ewell</div>
-      <div className="trading-sub-title">
-        Select the token you want to sell. Currently only ELF can be used to purchase your token.
-      </div>
-      <TradingPairList list={tokenList} current={select} onChange={onSelect} />
-      <div className="trading-footer">
-        <div className="footer-text">
-          {tokenList.length <= 0 && <span>No token found in your wallet.</span>}
-          Note: You can only select tokens for which you are the issuer. You can create a token using SEED which is
-          acquirable through{' '}
-          <span className="link-text" onClick={() => window.open(NETWORK_CONFIG.symbolMarketUrl)}>
-            Symbol Market
-          </span>
-          .
-        </div>
-      </div>
-      <div className="trading-footer">
-        <div className="trading-sub-title">2. Choose a currency that can be used to purchase your tokens.</div>
-        <Select
-          suffixIcon={<img src={arrow} />}
-          defaultValue={currency || TokenType.ELF}
-          options={currencyOptions}
-          style={{ width: '100%' }}
-          onSelect={onSelectCurrency}
-        />
-      </div>
-      <ButtonGroup onNext={onClick} disabledNext={isBtnDisabled} />
-    </div>
+    <>
+      {!loading && (
+        <Flex className="trading-page" vertical gap={48} flex={1}>
+          {tokenList.length ? (
+            <Flex vertical gap={24}>
+              <Title level={6} style={{ marginBottom: 0 }} fontWeight={FontWeightEnum.Medium}>
+                Raise funds for your project in ewell
+              </Title>
+              <Flex vertical gap={8}>
+                <Text>1. Select the token you want to sell.</Text>
+                <TradingPairList list={tokenList} current={select} onChange={onSelect} />
+                <TokenNote />
+              </Flex>
+              <Flex vertical gap={8}>
+                <Text>2. Choose a currency that can be used to purchase your tokens.</Text>
+                <Select
+                  suffixIcon={
+                    <img src={arrow} className={clsx(showDropdown ? 'select-arrow-up' : 'select-arrow-down')} />
+                  }
+                  defaultValue={currency || TokenType.ELF}
+                  options={currencyOptions}
+                  style={{ width: '100%' }}
+                  onSelect={onSelectCurrency}
+                  onDropdownVisibleChange={onDropdownVisibleChange}
+                />
+              </Flex>
+            </Flex>
+          ) : (
+            <TokenEmpty />
+          )}
+          <ButtonGroup onNext={onClick} disabledNext={isBtnDisabled} />
+        </Flex>
+      )}
+    </>
   );
 };
 export default ConfirmTradingPair;

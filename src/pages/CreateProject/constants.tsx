@@ -254,8 +254,7 @@ export const getIDOFormJson = (
     {
       type: 'inlineField',
       label: 'Sale Price:',
-      tooltip:
-        'The token price relative to ELF. This defines the exchange rate, indicating the amount of ELF needed to buy a token.',
+      tooltip: `The token price relative to ${currency}. This defines the exchange rate, indicating the amount of ${currency} needed to buy a token.`,
       required: true,
       inlineFieldList: [
         {

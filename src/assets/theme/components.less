@@ -1,3 +1,5 @@
+@import '../theme/color.less';
+
 /* button */
 .@{app-prefix}-btn-dangerous.@{app-prefix}-btn-link span {
   text-decoration: underline;
@@ -166,6 +168,17 @@ div.@{app-prefix}-pageNumber-container {
   }
 }
 
+/** select dropdown **/
+.@{app-prefix}-select-dropdown {
+  padding: 0;
+  border-radius: 6px;
+  border: 1px solid @font-1;
+  box-shadow: none;
+}
+.@{app-prefix}-select-dropdown .@{app-prefix}-select-item-option-active:not(.@{app-prefix}-select-itemoption-disabled) {
+  background-color: @bg-10;
+}
+
 /** mobile datePicker **/
 .adm-picker {
   border-radius: 8px 8px 0 0;
@@ -175,3 +188,4 @@ div.@{app-prefix}-pageNumber-container {
   font-size: 16px;
   font-weight: 500;
 }
+
