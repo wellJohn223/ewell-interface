@@ -50,6 +50,7 @@ const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
       ...data,
       startTime,
       endTime,
+      toRaiseToken,
       contractAddress,
       tokenReleaseTime,
       additionalInfo: additionalInfo.data,
