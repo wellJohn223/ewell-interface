@@ -8,13 +8,13 @@ import SuccessModal from '../SuccessModal';
 import { useWallet } from 'contexts/useWallet/hooks';
 import { IProjectInfo } from 'types/project';
 import { divDecimalsStr, timesDecimals } from 'utils/calculate';
-import { DEFAULT_LIQUIDATED_DAMAGE_PROPORTION, DEFAULT_TOKEN_DECIMALS, DEFAULT_TOKEN_SYMBOL } from 'constants/misc';
+import { DEFAULT_TOKEN_DECIMALS, DEFAULT_TOKEN_SYMBOL } from 'constants/misc';
 import { emitLoading, emitSyncTipsModal } from 'utils/events';
 import { DEFAULT_CHAIN_ID, NETWORK_CONFIG } from 'constants/network';
 import { useTokenPrice, useTxFee } from 'contexts/useAssets/hooks';
 import { renderTokenPrice } from 'utils/project';
 import { useBalance } from 'hooks/useBalance';
-import { getExploreLink } from 'utils';
+import { getExploreLink, getLiquidatedDamageProportion } from 'utils';
 import './styles.less';
 
 const { Text } = Typography;
@@ -47,11 +47,14 @@ export default function RevokeInvestmentButton({ projectInfo }: IRevokeInvestmen
     return timesDecimals(txFee, DEFAULT_TOKEN_DECIMALS);
   }, [txFee]);
 
+  const liquidatedDamageProportion = useMemo(() => {
+    return getLiquidatedDamageProportion(projectInfo?.liquidatedDamageProportion);
+  }, [projectInfo?.liquidatedDamageProportion]);
+
   const revokeAmount = useMemo(() => {
-    const liquidatedDamageProportion = projectInfo?.liquidatedDamageProportion || DEFAULT_LIQUIDATED_DAMAGE_PROPORTION;
     const ratio = (100 - liquidatedDamageProportion) / 100;
     return new BigNumber(projectInfo?.investAmount ?? 0).times(ratio);
-  }, [projectInfo?.investAmount, projectInfo?.liquidatedDamageProportion]);
+  }, [liquidatedDamageProportion, projectInfo?.investAmount]);
 
   const notEnoughTokens = useMemo(() => {
     return new BigNumber(defaultTokenBalance).lt(txFeeAmount);
@@ -108,12 +111,10 @@ export default function RevokeInvestmentButton({ projectInfo }: IRevokeInvestmen
         }}>
         <Flex vertical gap={24}>
           <Text>
-            {`Are you sure you want to cancel your investment? Upon cancellation, a penalty of ${
-              projectInfo?.liquidatedDamageProportion || DEFAULT_LIQUIDATED_DAMAGE_PROPORTION
-            }% of the ${
+            {`Are you sure you want to cancel your investment? Upon cancellation, a penalty of ${liquidatedDamageProportion}% of the ${
               projectInfo?.toRaiseToken?.symbol || DEFAULT_TOKEN_SYMBOL
             } you invested will be deducted, and the remaining ${
-              100 - (projectInfo?.liquidatedDamageProportion || DEFAULT_LIQUIDATED_DAMAGE_PROPORTION)
+              100 - liquidatedDamageProportion
             }% will be returned to you.`}
           </Text>
           <Flex className="mobile-flex-vertical-reverse" gap={16}>

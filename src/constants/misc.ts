@@ -1,6 +1,7 @@
 import BigNumber from 'bignumber.js';
 import { DEFAULT_CHAIN_ID, NETWORK_CONFIG } from './network';
 import { ITokenInfo } from 'types/assets';
+import { timesDecimals } from 'utils/calculate';
 
 export enum REQ_CODE {
   UserDenied = -1,
@@ -52,5 +53,6 @@ export const TOKEN_MAP: Record<string, ITokenInfo> = TOKEN_LIST.reduce((acc, ite
 
 export const PriceDecimal = 8;
 export const InstallmentDecimal = 8;
+export const LiquidatedDamageProportionDecimal = 6;
 
-export const DEFAULT_LIQUIDATED_DAMAGE_PROPORTION = 10;
+export const DEFAULT_LIQUIDATED_DAMAGE_PROPORTION = timesDecimals(10, LiquidatedDamageProportionDecimal);
