@@ -30,3 +30,22 @@ export function getLocalStorage(key: string) {
     return undefined;
   }
 }
+
+export function convertToBytes(sizeWithUnit: string) {
+  const reg = /^\d+[KM]?$/;
+  if (!reg.test(sizeWithUnit)) return 0;
+
+  console.log('convertToBytes:', sizeWithUnit);
+  const unit_K = 1 * 1024;
+  const unit_M = unit_K * 1024;
+
+  if (sizeWithUnit.includes('M')) {
+    return +sizeWithUnit.replace('M', '') * unit_M;
+  }
+
+  if (sizeWithUnit.includes('K')) {
+    return +sizeWithUnit.replace('K', '') * unit_K;
+  }
+
+  return 10 * unit_M;
+}

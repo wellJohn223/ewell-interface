@@ -10,10 +10,10 @@ import CustomMark from 'pages/CreateProject/components/CustomMark';
 import { urlString2FileList } from 'utils/format';
 import { useUpdateAddition } from './useApi';
 import { parseAdditionalInfo } from 'utils/project';
-import './styles.less';
 import { emitLoading } from 'utils/events';
 import { ProjectListType } from 'types/project';
 import { useMobile } from 'contexts/useStore/hooks';
+import './styles.less';
 
 const { Title } = Typography;
 

@@ -3,7 +3,7 @@ import { Upload, IUploadProps } from 'aelf-design';
 import { GetProp, UploadFile, message } from 'antd';
 import { emitLoading } from 'utils/events';
 import { useAWSUploadService } from 'hooks/useAWSUploadService';
-import './styles.less';
+import { convertToBytes } from 'utils/format';
 
 export type FileType = Parameters<GetProp<IUploadProps, 'beforeUpload'>>[0];
 
@@ -13,20 +13,6 @@ export interface IFUploadProps extends IUploadProps {
   fileList?: UploadFile[];
 }
 
-const handleLimit = (limit: string) => {
-  const unit_K = 1 * 1024;
-  const unit_M = unit_K * 1024;
-
-  if (limit.includes('M')) {
-    return +limit.replace('M', '') * unit_M;
-  }
-
-  if (limit.includes('K')) {
-    return +limit.replace('K', '') * unit_K;
-  }
-
-  return 10 * unit_M;
-};
 const FUpload: React.FC<IFUploadProps> = ({ fileList, maxFileCount, fileLimit = '10M', onChange, ...props }) => {
   const [showUploadBtn, setShowUploadBtn] = useState<boolean>(false);
   const [inFileList, setFileList] = useState<UploadFile[]>([]);
@@ -59,7 +45,7 @@ const FUpload: React.FC<IFUploadProps> = ({ fileList, maxFileCount, fileLimit = 
   };
 
   const onBeforeUpload = (file: FileType) => {
-    const isLteLimit = file.size <= handleLimit(fileLimit);
+    const isLteLimit = file.size <= convertToBytes(fileLimit);
 
     if (!isLteLimit) {
       message.error(`Image must smaller than ${fileLimit}B!`);
