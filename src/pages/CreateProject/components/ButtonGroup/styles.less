@@ -1,0 +1,44 @@
+.create-btn-group {
+  font-size: 16px;
+  .group-btn {
+    flex:1;
+    max-width: 206px;
+    
+    &.disabled {
+      background-color: #EBEBEE;
+      border-color: #EBEBEE;
+      color: #C1C2C9;
+
+      &:hover {
+        border-color: #EBEBEE;
+        color: #C1C2C9 !important;
+      }
+    }
+
+    .arrow-icon {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .pre-btn {
+    .arrow-icon {
+      transform: rotate(90deg);
+      margin-right: 8px;
+    }
+  }
+
+  .next-btn {
+    color: #FFF;
+    margin-left: 24px;
+    background-color: #070A26;
+
+    &:hover {
+      color: #FFF !important;
+    }
+
+    .arrow-icon {
+      margin-left: 8px;
+    }
+  }
+}
