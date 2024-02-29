@@ -1,3 +1,5 @@
+@import '@assets/theme/color.less';
+
 .update-whitelist-users {
   .download-template {
     margin-left: 8px;
@@ -5,7 +7,7 @@
   .update-way-radio-wrapper {
     height: 40px;
     padding: 1px;
-    border: 1px solid #070a26;
+    border: 1px solid @border-1;
     border-radius: 8px;
     .radio-item {
       flex: 1;
@@ -16,9 +18,9 @@
         border-radius: 0 6px 6px 0;
       }
       &.radio-item-active {
-        background-color: #070a26;
+        background-color: @bg-1;
         .@{app-prefix}-typography {
-          color: #fff;
+          color: @font-4;
         }
       }
     }
