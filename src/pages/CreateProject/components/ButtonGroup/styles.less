@@ -1,3 +1,5 @@
+@import '@assets/theme/color.less';
+
 .create-btn-group {
   font-size: 16px;
   .group-btn {
@@ -5,13 +7,13 @@
     max-width: 206px;
     
     &.disabled {
-      background-color: #EBEBEE;
-      border-color: #EBEBEE;
-      color: #C1C2C9;
+      background-color: @bg-11;
+      border-color: @border-8;
+      color: @font-8;
 
       &:hover {
-        border-color: #EBEBEE;
-        color: #C1C2C9 !important;
+        border-color: @border-8;
+        color: @font-8 !important;
       }
     }
 
@@ -29,11 +31,11 @@
   }
 
   .next-btn {
-    color: #FFF;
-    background-color: #070A26;
+    color: @font-4;
+    background-color: @bg-1;
 
     &:hover {
-      color: #FFF !important;
+      color: @font-4 !important;
     }
 
     .arrow-icon {
