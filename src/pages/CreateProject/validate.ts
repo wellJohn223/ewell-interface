@@ -67,9 +67,12 @@ export const crowdFundingIssueAmountValidator: ValidatorFun = async (form: any, 
 };
 
 export const minSubscriptionValidator: ValidatorFun = async (form, v) => {
-  console.log('validate min');
-  if (!v) return Promise.reject('please enter the min allocation.');
-  const bigV = ZERO.plus(v);
+  console.log('validate min', v);
+  const realValue = form.getFieldValue('minSubscription');
+  console.log('minSubscription-realValue', realValue);
+  const bigV = ZERO.plus(realValue);
+
+  if (bigV.isNaN()) return Promise.reject('please enter the min allocation.');
 
   await subscriptionGteTotal(form, bigV);
   const maxSubscription = form.getFieldValue('maxSubscription');
@@ -82,9 +85,12 @@ export const minSubscriptionValidator: ValidatorFun = async (form, v) => {
 };
 
 export const maxSubscriptionValidator: ValidatorFun = async (form, v) => {
-  console.log('validate max');
-  if (!v) return Promise.reject('please enter the max allocation.');
-  const bigV = ZERO.plus(v);
+  console.log('validate max', v);
+  const realValue = form.getFieldValue('maxSubscription');
+  console.log('maxSubscription-realValue', realValue);
+  const bigV = ZERO.plus(realValue);
+
+  if (bigV.isNaN()) return Promise.reject('please enter the max allocation.');
 
   await subscriptionGteTotal(form, bigV);
   const minSubscription = form.getFieldValue('minSubscription');
