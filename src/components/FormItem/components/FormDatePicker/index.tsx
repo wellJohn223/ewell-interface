@@ -21,7 +21,7 @@ interface BaseDatePickerProps {
   onChange?: (current: Dayjs) => void;
 }
 
-type IDatePickerMobileProps = BaseDatePickerProps & {
+type TDatePickerMobileProps = BaseDatePickerProps & {
   min?: TDateMobile;
   max?: TDateMobile;
   format?: string;
@@ -37,7 +37,7 @@ const adjustToDate = (date?: TDateMobile) => {
   return undefined;
 };
 
-export const DatePickerMobile: React.FC<IDatePickerMobileProps> = ({
+export const DatePickerMobile: React.FC<TDatePickerMobileProps> = ({
   value,
   onChange,
   format,
@@ -113,7 +113,7 @@ export const DatePikerPC: React.FC<IDatePickerPCProps> = ({ value, disabled, onC
 export interface IFormDatePickerProps extends BaseDatePickerProps {
   pcProps?: Omit<TDatePickerPropsForPC, 'onChange' | 'value' | 'disabled'> & any;
   // pcProps?: TDatePickerPropsForPC;
-  mobileProps?: IDatePickerMobileProps;
+  mobileProps?: TDatePickerMobileProps;
 }
 
 const FormDatePicker = ({ pcProps, mobileProps, ...baseProps }: IFormDatePickerProps) => {
