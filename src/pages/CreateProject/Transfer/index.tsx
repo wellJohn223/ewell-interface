@@ -11,12 +11,12 @@ import { message, Flex } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import ProjectInfo from 'pages/ProjectInfo';
 import { getInfo } from '../utils';
-import { TokenType } from 'constants/misc';
+import { PriceDecimal, TokenType } from 'constants/misc';
 import { Typography, FontWeightEnum } from 'aelf-design';
 import BigNumber from 'bignumber.js';
 import { IProjectInfo, ProjectStatus } from 'types/project';
 import { resetCreateProjectInfo } from '../utils';
-import { timesDecimals } from 'utils/calculate';
+import { divDecimals } from 'utils/calculate';
 import { useMobile } from 'contexts/useStore/hooks';
 import { getTokenInfo } from 'utils/assets';
 import { TConfirmInfo } from './components/Modal';
@@ -60,10 +60,9 @@ const Transfer: React.FC<CreateStepProps> = ({ onPre }) => {
       whitelistInfo: {
         url: whitelistUrl,
       },
-      targetRaisedAmount: timesDecimals(
-        new BigNumber(data.crowdFundingIssueAmount).div(data.preSalePrice),
-        toRaiseToken.decimals,
-      ).toString(),
+      targetRaisedAmount: new BigNumber(data.crowdFundingIssueAmount)
+        .div(divDecimals(data.preSalePrice, PriceDecimal))
+        .toFixed(),
     } as TConfirmInfo;
   }, [additional, contractAddress, idoInfo, toRaiseToken, tradingPair]);
 

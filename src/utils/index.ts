@@ -119,3 +119,19 @@ export const getLiquidatedDamageProportion = (value?: number) => {
   const liquidatedDamageProportion = value ?? DEFAULT_LIQUIDATED_DAMAGE_PROPORTION;
   return divDecimals(liquidatedDamageProportion, LiquidatedDamageProportionDecimal).toNumber();
 };
+
+export const getPreSalePriceAmount = ({
+  preSalePrice,
+  crowdFundingIssueToken,
+  toRaiseToken,
+  isFormat = false,
+}: {
+  preSalePrice?: string;
+  crowdFundingIssueToken?: { decimals: number };
+  toRaiseToken?: { decimals: number };
+  isFormat?: boolean;
+}) => {
+  if (!preSalePrice || !crowdFundingIssueToken || !toRaiseToken) return '0';
+  const result = divDecimals(preSalePrice, getPriceDecimal(crowdFundingIssueToken, toRaiseToken));
+  return isFormat ? result.toFormat() : result.toFixed();
+};
