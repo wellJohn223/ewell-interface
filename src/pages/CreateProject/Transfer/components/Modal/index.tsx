@@ -10,7 +10,7 @@ import { IProjectInfo } from 'types/project';
 import { divDecimals, timesDecimals } from 'utils/calculate';
 import { useTokenPrice, useTxFee } from 'contexts/useAssets/hooks';
 import { useBalance } from 'hooks/useBalance';
-import { ZERO } from 'constants/misc';
+import { TokenType, ZERO } from 'constants/misc';
 import { getExploreLink } from 'utils';
 import { ExplorerLinkType } from 'types/aelf';
 import { infoCircle, question } from 'assets/images/icon/index';
@@ -29,7 +29,7 @@ interface ITransferModalProps {
 export function ConfirmModal({ open, info, onCancel, onOk }: ITransferModalProps) {
   const { txFee } = useTxFee();
   const { tokenPrice } = useTokenPrice();
-  const { balance: ELFBalance } = useBalance(info?.toRaiseToken?.symbol);
+  const { balance: ELFBalance } = useBalance(TokenType.ELF);
   const { balance: tokenBalance } = useBalance(info?.crowdFundingIssueToken?.symbol);
   const isMobile = useMobile();
 
