@@ -34,8 +34,8 @@ export function intervalTip(l: string | number, r: string | number) {
 
 export function getInfo(confirmTradingPair: any, projectPanel: any, additionalInfo: any, toRaiseToken: ITokenInfo) {
   const priceDecimal = getPriceDecimal(confirmTradingPair, toRaiseToken);
-  const preSalePrice = timesDecimals(projectPanel.preSalePrice, priceDecimal.toFixed()).toFixed(0);
-  const publicSalePrice = ZERO.plus(preSalePrice).div(1.05).toFixed(0);
+  const preSalePriceAmount = timesDecimals(projectPanel.preSalePrice, priceDecimal.toFixed()).toFixed(0);
+  const publicSalePrice = ZERO.plus(preSalePriceAmount).div(1.05).toFixed(0);
   const crowdFundingIssueAmount = timesDecimals(
     projectPanel.crowdFundingIssueAmount,
     confirmTradingPair.decimals,
@@ -53,7 +53,7 @@ export function getInfo(confirmTradingPair: any, projectPanel: any, additionalIn
 
   return {
     ...projectPanel,
-    preSalePrice,
+    preSalePrice: preSalePriceAmount,
     totalPeriod: 1, // fixed
     periodDuration: 0,
     maxSubscription,
