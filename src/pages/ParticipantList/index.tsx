@@ -182,7 +182,7 @@ export default function ParticipantList() {
         dataIndex: 'address',
         key: 'address',
         className: 'address-column',
-        width: '44%',
+        width: '52%',
         render: (address) => (
           <HashAddress
             ignorePrefixSuffix={true}
@@ -210,7 +210,7 @@ export default function ParticipantList() {
         dataIndex: 'time',
         key: 'time',
         className: 'time-column',
-        width: '24%',
+        width: '16%',
       },
     ],
     [isScreenLteLarge, symbol],
