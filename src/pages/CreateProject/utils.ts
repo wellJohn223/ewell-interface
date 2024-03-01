@@ -6,9 +6,8 @@ import dayjs, { Dayjs } from 'dayjs';
 import { ITokenInfo } from 'types/assets';
 
 export function resetCreateProjectInfo() {
-  localStorage.removeItem(storages.ConfirmTradingPair);
-  localStorage.removeItem(storages.AdditionalInformation);
-  localStorage.removeItem(storages.IDOInfo);
+  const infoKeys = [storages.ConfirmTradingPair, storages.Currency, storages.AdditionalInformation, storages.IDOInfo];
+  infoKeys.forEach((key) => localStorage.removeItem(key));
 }
 
 export function getInstallments(v: any) {
