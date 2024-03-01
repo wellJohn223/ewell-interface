@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { Flex } from 'antd';
 import { Button, Typography, FontWeightEnum, Modal, HashAddress, Tooltip } from 'aelf-design';
-import { InfoCircleOutlined } from '@ant-design/icons';
 import { wallet } from 'assets/images';
 import { NumberFormat } from 'utils/format';
 import { success } from 'assets/images';
@@ -10,7 +9,7 @@ import { IProjectInfo } from 'types/project';
 import { divDecimals, timesDecimals } from 'utils/calculate';
 import { useTokenPrice, useTxFee } from 'contexts/useAssets/hooks';
 import { useBalance } from 'hooks/useBalance';
-import { TokenType, ZERO } from 'constants/misc';
+import { DEFAULT_TOKEN_DECIMALS, DEFAULT_TOKEN_SYMBOL, ZERO } from 'constants/misc';
 import { getExploreLink } from 'utils';
 import { ExplorerLinkType } from 'types/aelf';
 import { infoCircle, question } from 'assets/images/icon/index';
@@ -29,7 +28,7 @@ interface ITransferModalProps {
 export function ConfirmModal({ open, info, onCancel, onOk }: ITransferModalProps) {
   const { txFee } = useTxFee();
   const { tokenPrice } = useTokenPrice();
-  const { balance: ELFBalance } = useBalance(TokenType.ELF);
+  const { balance: ELFBalance } = useBalance(DEFAULT_TOKEN_SYMBOL);
   const { balance: tokenBalance } = useBalance(info?.crowdFundingIssueToken?.symbol);
   const isMobile = useMobile();
 
@@ -50,9 +49,9 @@ export function ConfirmModal({ open, info, onCancel, onOk }: ITransferModalProps
 
   const isGasEnough = useMemo(() => {
     console.log('efl-balance', ELFBalance);
-    console.log('payGasELF', payGasELF.toNumber());
+    console.log('payGasELF', timesDecimals(payGasELF, DEFAULT_TOKEN_DECIMALS).toFormat());
     const walletELF = ZERO.plus(ELFBalance ?? 0);
-    return walletELF.gte(timesDecimals(payGasELF, TokenType.ELF));
+    return walletELF.gte(timesDecimals(payGasELF, DEFAULT_TOKEN_DECIMALS));
   }, [ELFBalance, payGasELF]);
 
   const isDisabledSubmit = useMemo(() => !isGasEnough || !isTokenEnough, [isGasEnough, isTokenEnough]);
