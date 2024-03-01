@@ -6,16 +6,16 @@ import CommonCommunityLogoList, { COMMUNITY_LOGO_LIST } from 'components/CommonC
 import CommonProjectStatusTag from 'components/CommonProjectStatusTag';
 import CommonProjectProgress from 'components/CommonProjectProgress';
 import { IProjectInfo } from './types';
-import { TokenType, ZERO } from 'constants/misc';
-import { divDecimals, divDecimalsStr } from 'utils/calculate';
+import { ZERO } from 'constants/misc';
+import { divDecimalsStr } from 'utils/calculate';
 import { ProjectStatus } from 'types/project';
 import { useNavigate, useParams } from 'react-router-dom';
 import { stringifyUrl } from 'query-string';
 import { parseAdditionalInfo } from 'utils/project';
 import dayjs from 'dayjs';
 import { timeDuration } from 'utils/time';
+import { getPreSalePriceAmount, pick } from 'utils';
 import './styles.less';
-import { pick } from 'utils';
 
 const ONE_DAY_IN_MS = 24 * 60 * 60 * 1000;
 
@@ -127,8 +127,14 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
   );
 
   const preSalePriceStr = useMemo(
-    () => divDecimals(preSalePrice, crowdFundingIssueToken?.decimals).toFixed(),
-    [crowdFundingIssueToken?.decimals, preSalePrice],
+    () =>
+      getPreSalePriceAmount({
+        preSalePrice,
+        crowdFundingIssueToken,
+        toRaiseToken,
+        isFormat: true,
+      }),
+    [crowdFundingIssueToken, preSalePrice, toRaiseToken],
   );
 
   const projectImageUrl = useMemo(
