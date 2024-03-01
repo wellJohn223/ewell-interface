@@ -45,7 +45,7 @@ export default function JoinCard({ projectInfo, isPreview, isLogin, handleRefres
   const canPurchaseAmount = useMemo(() => {
     let result = ZERO.plus(balance);
     if (projectInfo?.toRaiseToken?.symbol === DEFAULT_TOKEN_SYMBOL) {
-      result.minus(txFeeAmount);
+      result = result.minus(txFeeAmount);
     }
     if (result.lt(0)) {
       result = ZERO;
