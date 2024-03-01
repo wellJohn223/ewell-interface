@@ -9,7 +9,7 @@ import { wallet as walletIcon } from 'assets/images';
 import { IProjectInfo } from 'types/project';
 import { DEFAULT_CHAIN_ID, NETWORK_CONFIG } from 'constants/network';
 import { divDecimals, divDecimalsStr } from 'utils/calculate';
-import { getExploreLink, getPriceDecimal } from 'utils';
+import { getExploreLink, getPreSalePriceAmount } from 'utils';
 import { useWallet } from 'contexts/useWallet/hooks';
 import { emitLoading, emitSyncTipsModal } from 'utils/events';
 import { timesDecimals } from 'utils/calculate';
@@ -215,10 +215,11 @@ export default function PurchaseButton({
               <Text>
                 {divDecimals(totalAllocationAmount, projectInfo?.toRaiseToken?.decimals)
                   .times(
-                    divDecimals(
-                      projectInfo?.preSalePrice ?? 0,
-                      getPriceDecimal(projectInfo?.crowdFundingIssueToken, projectInfo?.toRaiseToken),
-                    ),
+                    getPreSalePriceAmount({
+                      preSalePrice: projectInfo?.preSalePrice,
+                      crowdFundingIssueToken: projectInfo?.crowdFundingIssueToken,
+                      toRaiseToken: projectInfo?.toRaiseToken,
+                    }),
                   )
                   .toFormat()}{' '}
                 {projectInfo?.crowdFundingIssueToken?.symbol ?? '--'}

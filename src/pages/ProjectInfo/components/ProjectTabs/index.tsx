@@ -5,7 +5,7 @@ import { Typography, FontWeightEnum } from 'aelf-design';
 import CommonCard from 'components/CommonCard';
 import CommonWrapText, { CommonWrapTextAlignType } from 'components/CommonWrapText';
 import { IProjectInfo } from 'types/project';
-import { getPriceDecimal } from 'utils';
+import { getPreSalePriceAmount } from 'utils';
 import { divDecimalsStr } from 'utils/calculate';
 import './styles.less';
 
@@ -83,10 +83,12 @@ export default function ProjectTabs({ projectInfo }: IProjectTabsProps) {
               textProps={{ fontWeight: FontWeightEnum.Medium }}
               rowTextList={[
                 `1 ${projectInfo?.toRaiseToken?.symbol ?? '--'} =`,
-                `${divDecimalsStr(
-                  projectInfo?.preSalePrice ?? 0,
-                  getPriceDecimal(projectInfo?.crowdFundingIssueToken, projectInfo?.toRaiseToken),
-                )} ${projectInfo?.crowdFundingIssueToken?.symbol ?? '--'}`,
+                `${getPreSalePriceAmount({
+                  preSalePrice: projectInfo?.preSalePrice,
+                  crowdFundingIssueToken: projectInfo?.crowdFundingIssueToken,
+                  toRaiseToken: projectInfo?.toRaiseToken,
+                  isFormat: true,
+                })} ${projectInfo?.crowdFundingIssueToken?.symbol ?? '--'}`,
               ]}
             />
           ) : (
