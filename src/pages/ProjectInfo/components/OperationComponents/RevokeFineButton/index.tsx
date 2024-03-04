@@ -1,17 +1,20 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import BigNumber from 'bignumber.js';
+import clsx from 'clsx';
 import { Flex, message } from 'antd';
 import { Button, Typography, FontWeightEnum, Modal, HashAddress } from 'aelf-design';
 import SuccessModal from '../SuccessModal';
 import { IProjectInfo } from 'types/project';
-import { divDecimalsStr } from 'utils/calculate';
+import { divDecimalsStr, timesDecimals } from 'utils/calculate';
 import { useWallet } from 'contexts/useWallet/hooks';
 import { emitLoading, emitSyncTipsModal } from 'utils/events';
 import { DEFAULT_CHAIN_ID, NETWORK_CONFIG } from 'constants/network';
 import { useTokenPrice, useTxFee } from 'contexts/useAssets/hooks';
 import { renderTokenPrice } from 'utils/project';
 import { getExploreLink } from 'utils';
-import { DEFAULT_TOKEN_SYMBOL } from 'constants/misc';
+import { DEFAULT_TOKEN_DECIMALS, DEFAULT_TOKEN_SYMBOL } from 'constants/misc';
+import { useBalance } from 'hooks/useBalance';
 
 const { Text, Title } = Typography;
 
@@ -24,12 +27,24 @@ export default function RevokeFineButton({ projectInfo }: IClaimTokenButtonProps
   const { wallet, checkManagerSyncState } = useWallet();
   const { tokenPrice } = useTokenPrice(DEFAULT_TOKEN_SYMBOL);
   const { txFee } = useTxFee();
+  const { balance: defaultTokenBalance, updateBalance: updateDefaultTokenBalance } = useBalance(DEFAULT_TOKEN_SYMBOL);
   const [messageApi, contextHolder] = message.useMessage();
 
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [transactionId, setTransactionId] = useState('');
+
+  useEffect(() => {
+    if (isSubmitModalOpen) {
+      updateDefaultTokenBalance();
+    }
+  }, [updateDefaultTokenBalance, isSubmitModalOpen]);
+
+  const notEnoughTokens = useMemo(() => {
+    const txFeeAmount = timesDecimals(txFee, DEFAULT_TOKEN_DECIMALS);
+    return new BigNumber(defaultTokenBalance ?? 0).lt(txFeeAmount);
+  }, [defaultTokenBalance, txFee]);
 
   const handleSubmit = async () => {
     setIsSubmitModalOpen(false);
@@ -150,8 +165,13 @@ export default function RevokeFineButton({ projectInfo }: IClaimTokenButtonProps
               </Flex>
             </Flex>
           </Flex>
+          <Text
+            className={clsx('error-text', 'text-center', { ['display-none']: !notEnoughTokens })}
+            fontWeight={FontWeightEnum.Medium}>
+            {`Insufficient balance to cover the transaction fee. Please transfer some ${DEFAULT_TOKEN_SYMBOL} to this address before you try again.`}
+          </Text>
           <Flex justify="center">
-            <Button className="modal-single-button" type="primary" onClick={handleSubmit}>
+            <Button className="modal-single-button" type="primary" disabled={notEnoughTokens} onClick={handleSubmit}>
               Confirm
             </Button>
           </Flex>

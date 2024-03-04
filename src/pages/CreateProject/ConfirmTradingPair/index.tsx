@@ -144,7 +144,7 @@ const ConfirmTradingPair: React.FC<CreateStepProps> = ({ onNext }) => {
                 <TokenNote />
               </Flex>
               <Flex vertical gap={8}>
-                <Text>2. Choose a currency that can be used to purchase your tokens.</Text>
+                <Text>2. Select the token that can be used to purchase your tokens.</Text>
                 <Select
                   suffixIcon={
                     <img src={arrow} className={clsx(showDropdown ? 'select-arrow-up' : 'select-arrow-down')} />
