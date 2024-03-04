@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import TradingPairList, { ITradingParCard } from '../components/TradingPairList';
-import './styles.less';
 import { CreateStepProps } from '../types';
 import { useLocalStorage } from 'react-use';
 import storages from '../storages';
@@ -21,6 +20,7 @@ import { FontWeightEnum, Typography } from 'aelf-design';
 import { walletCard } from 'assets/images/icon';
 import { useMobile } from 'contexts/useStore/hooks';
 import clsx from 'clsx';
+import './styles.less';
 
 const { Title, Text } = Typography;
 
@@ -42,14 +42,16 @@ const TokenNote: React.FC = React.memo(() => {
 
 const TokenEmpty: React.FC = React.memo(() => {
   const isMobile = useMobile();
-  const height = useMemo(() => {
-    return isMobile ? 'calc(100vh - 64px - 120px - 386px)' : 'calc(100vh - 64px - 72px - 386px)';
-  }, [isMobile]);
 
   return (
-    <Flex vertical gap={24}>
-      <Flex vertical justify="center" align="center" gap={16} style={{ height, maxHeight: 310, minHeight: 118 }}>
-        <img src={walletCard} style={{ width: 80, height: 80 }} alt="logo" />
+    <Flex vertical gap={24} className="token-empty">
+      <Flex
+        className={clsx('empty-wrapper', isMobile ? 'wrapper-height-mobile' : 'wrapper-height-pc')}
+        vertical
+        justify="center"
+        align="center"
+        gap={16}>
+        <img src={walletCard} className="empty-icon" alt="logo" />
         <Text>No token found in your wallet.</Text>
       </Flex>
       <TokenNote />
@@ -127,15 +129,6 @@ const ConfirmTradingPair: React.FC<CreateStepProps> = ({ onNext }) => {
     };
   }, [getTokenList]);
 
-  const onSelectCurrency = useCallback(
-    (val) => {
-      console.log('onSelect');
-      setCurrency(val);
-    },
-    [setCurrency],
-  );
-  const onDropdownVisibleChange = useCallback((open) => setShowDropdown(open), []);
-
   return (
     <>
       {!loading && (
@@ -159,8 +152,8 @@ const ConfirmTradingPair: React.FC<CreateStepProps> = ({ onNext }) => {
                   defaultValue={currency}
                   options={currencyOptions}
                   style={{ width: '100%' }}
-                  onSelect={onSelectCurrency}
-                  onDropdownVisibleChange={onDropdownVisibleChange}
+                  onSelect={setCurrency}
+                  onDropdownVisibleChange={setShowDropdown}
                 />
               </Flex>
             </Flex>
