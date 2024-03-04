@@ -274,7 +274,7 @@ export default function PurchaseButton({
           <Text
             className={clsx('error-text', 'text-center', { ['display-none']: !notEnoughTokens })}
             fontWeight={FontWeightEnum.Medium}>
-            Not enough token in the wallet
+            {`Insufficient balance to cover the transaction fee. Please transfer some ${DEFAULT_TOKEN_SYMBOL} to this address before you try again.`}
           </Text>
           <Flex justify="center">
             <Button className="modal-single-button" type="primary" disabled={notEnoughTokens} onClick={handleSubmit}>

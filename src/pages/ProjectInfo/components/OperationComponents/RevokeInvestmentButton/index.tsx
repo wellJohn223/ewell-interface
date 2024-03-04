@@ -60,6 +60,18 @@ export default function RevokeInvestmentButton({ projectInfo }: IRevokeInvestmen
     return new BigNumber(defaultTokenBalance).lt(txFeeAmount);
   }, [defaultTokenBalance, txFeeAmount]);
 
+  const confirmModalText = useMemo(() => {
+    if (liquidatedDamageProportion === 0) {
+      return 'Are you sure you want to cancel your investment?\nUpon cancellation, you will receive your entire investment back.';
+    } else if (liquidatedDamageProportion === 100) {
+      return 'Are you sure you want to cancel your investment?\nThe penalty for cancelling your investment is the loss of your entire investment. Therefore, if you cancel, you will not receive any funds back.';
+    } else {
+      return `Are you sure you want to cancel your investment?\nUpon cancellation, a penalty of ${liquidatedDamageProportion}% of your investment will be deducted, and the remaining ${
+        100 - liquidatedDamageProportion
+      }% will be returned to you.`;
+    }
+  }, [liquidatedDamageProportion]);
+
   const handleSubmit = async () => {
     setIsSubmitModalOpen(false);
     emitLoading(true, { text: 'Synchronising data on the blockchain...' });
@@ -110,13 +122,7 @@ export default function RevokeInvestmentButton({ projectInfo }: IRevokeInvestmen
           setIsConfirmModalOpen(false);
         }}>
         <Flex vertical gap={24}>
-          <Text>
-            {`Are you sure you want to cancel your investment? Upon cancellation, a penalty of ${liquidatedDamageProportion}% of the ${
-              projectInfo?.toRaiseToken?.symbol || DEFAULT_TOKEN_SYMBOL
-            } you invested will be deducted, and the remaining ${
-              100 - liquidatedDamageProportion
-            }% will be returned to you.`}
-          </Text>
+          <Text className="white-space-pre-wrap">{confirmModalText}</Text>
           <Flex className="mobile-flex-vertical-reverse" gap={16}>
             <Button className="flex-1" onClick={() => setIsConfirmModalOpen(false)}>
               Back
