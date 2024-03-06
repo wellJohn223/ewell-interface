@@ -162,6 +162,7 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
               gap={8}
               imgClassName="project-community-img"
               communityLink={pick(_additionalInfo || {}, COMMUNITY_LOGO_LIST)}
+              disable={true}
             />
           </div>
         </Flex>

@@ -30,6 +30,7 @@ export const WelcomeModal = () => {
 
     const address = wallet.walletInfo.address;
     const key = `ELF_${address}_${NETWORK_CONFIG.sideChainId}`;
+    let originChainId: string = NETWORK_CONFIG.sideChainId;
     if (wallet.walletType === WalletType.discover) {
       try {
         const res = await PortkeyDid.did.services.getHolderInfoByManager({
@@ -37,6 +38,7 @@ export const WelcomeModal = () => {
         } as unknown as GetCAHolderByManagerParams);
         const caInfo = res[0];
         caHash = caInfo?.caHash || '';
+        originChainId = caInfo?.chainId || NETWORK_CONFIG.sideChainId;
         console.log('caHash', caHash);
       } catch (error) {
         return;
@@ -45,6 +47,7 @@ export const WelcomeModal = () => {
 
     if (wallet.walletType === WalletType.portkey) {
       caHash = wallet.walletInfo.portkeyInfo?.caInfo?.caHash || '';
+      originChainId = wallet.walletInfo.portkeyInfo?.chainId || NETWORK_CONFIG.sideChainId;
     }
 
     try {
@@ -76,7 +79,7 @@ export const WelcomeModal = () => {
         signature,
         plain_text: plainText,
         ca_hash: caHash,
-        chain_id: NETWORK_CONFIG.sideChainId,
+        chain_id: originChainId,
       };
 
       const res = await axios.post<any>(`${NETWORK_CONFIG.ewellConnectUrl}/connect/token`, stringify(apiData), {
