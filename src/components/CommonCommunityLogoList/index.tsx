@@ -19,6 +19,7 @@ interface ICommonCommunityLogoListProps {
   flexProps?: FlexProps;
   imgClassName?: string;
   communityLink: { [key in CommunityLogoType]?: string };
+  disable?: boolean;
 }
 
 export const COMMUNITY_LOGO_LIST = [
@@ -37,12 +38,14 @@ export default function CommonCommunityLogoList({
   flexProps,
   imgClassName,
   communityLink,
+  disable = false,
 }: ICommonCommunityLogoListProps) {
   const communityLogoList = COMMUNITY_LOGO_LIST.map((type) => ({
     type,
     logo: communityLogo[type],
     link: communityLink[type],
   }));
+
   return (
     <Flex gap={gap || 12} align="center" {...flexProps}>
       {communityLogoList
@@ -55,7 +58,7 @@ export default function CommonCommunityLogoList({
               src={item.logo}
               alt="community"
               onClick={() => {
-                if (item.link) {
+                if (item.link && !disable) {
                   window.open(getHref(item.link), '_blank');
                 }
               }}
