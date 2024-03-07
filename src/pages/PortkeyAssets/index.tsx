@@ -30,6 +30,11 @@ export default function PortkeyAssets() {
       <PortkeyDid.Asset
         className="portkey-assets"
         backIcon={<img className="assets-back-wrap" src={assetsBackImg} alt="" />}
+        overrideAchConfig={{
+          appId: 'H41s4ysiPX57fj31',
+          baseUrl: 'https://ramp.alchemypay.org',
+          updateAchOrder: '/api/app/thirdPart/order/alchemy',
+        }}
         onLifeCycleChange={(lifeCycle) => {
           console.log(lifeCycle, 'onLifeCycleChange');
         }}
