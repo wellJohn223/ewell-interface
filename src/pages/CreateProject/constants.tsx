@@ -10,6 +10,10 @@ import { TIdoInfo } from './IDOInfo';
 import { Rule } from 'antd/es/form';
 import { LogoUploadTips, FeaturedUploadTips } from './components/uploadTips';
 import React from 'react';
+import { TokenType } from 'constants/misc';
+import { elf, usdt } from 'assets/images/tokens';
+import { Space } from 'antd';
+import type { SelectProps } from 'antd';
 
 export const stepTitle = ['Select Token', 'Describe Project', 'Customise Sale', 'Review & Transfer'];
 
@@ -25,6 +29,31 @@ export const stepsItems: StepProps[] = [
   },
   {
     title: stepTitle[TSteps.FOUR],
+  },
+];
+
+export const currencyOptions: SelectProps['options'] = [
+  {
+    label: (
+      <>
+        <Space>
+          <img src={elf} alt="" />
+          {TokenType.ELF}
+        </Space>
+      </>
+    ),
+    value: TokenType.ELF,
+  },
+  {
+    label: (
+      <>
+        <Space>
+          <img src={usdt} alt="" />
+          {TokenType.USDT}
+        </Space>
+      </>
+    ),
+    value: TokenType.USDT,
   },
 ];
 
@@ -94,7 +123,7 @@ export const getProjectInfoFromJson = (isMobile: boolean): FormItemProps[] => {
         tips: <LogoUploadTips />,
         maxFileCount: 1,
         fileLimit: '10M',
-        accept: '.jpg,.jpeg.,.png',
+        accept: '.jpg,.jpeg,.png',
       },
     },
     {
@@ -110,7 +139,7 @@ export const getProjectInfoFromJson = (isMobile: boolean): FormItemProps[] => {
         tips: <FeaturedUploadTips />,
         maxFileCount: 5,
         fileLimit: '10M',
-        accept: '.jpg,.jpeg.,.png',
+        accept: '.jpg,.jpeg,.png',
       },
     },
     getInputOptions({
@@ -188,7 +217,11 @@ export const formWhitelist: FormItemProps[] = [
   }),
 ];
 
-export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo): FormItemProps[] => {
+export const getIDOFormJson = (
+  tradingCard?: ITradingParCard,
+  idoInfo?: TIdoInfo,
+  currency?: TokenType,
+): FormItemProps[] => {
   return [
     {
       type: 'select',
@@ -221,8 +254,7 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
     {
       type: 'inlineField',
       label: 'Sale Price:',
-      tooltip:
-        'The token price relative to ELF. This defines the exchange rate, indicating the amount of ELF needed to buy a token.',
+      tooltip: `The token price relative to ${currency}. This defines the exchange rate, indicating the amount of ${currency} needed to buy a token.`,
       required: true,
       inlineFieldList: [
         {
@@ -246,7 +278,7 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
           type: 'pureText',
           childrenProps: {
             className: 'margin-left-8',
-            text: tradingCard?.symbol ? `${tradingCard?.symbol} = 1 ELF` : '',
+            text: tradingCard?.symbol ? `${tradingCard?.symbol} = 1 ${currency}` : '',
           },
         },
       ],
@@ -313,7 +345,7 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
         {
           type: 'pureText',
           childrenProps: {
-            text: 'ELF To ',
+            text: `${currency} To `,
             style: {
               flex: 'none',
               margin: '0 8px',
@@ -342,7 +374,7 @@ export const getIDOFormJson = (tradingCard?: ITradingParCard, idoInfo?: TIdoInfo
         {
           type: 'pureText',
           childrenProps: {
-            text: 'ELF',
+            text: currency,
             style: {
               flex: 'none',
               marginLeft: 8,

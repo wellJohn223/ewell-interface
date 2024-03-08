@@ -1,3 +1,5 @@
+@import '../theme/color.less';
+
 /* button */
 .@{app-prefix}-btn-dangerous.@{app-prefix}-btn-link span {
   text-decoration: underline;
@@ -6,7 +8,7 @@
 /* modal */
 .@{app-prefix}-modal-content {
   .@{app-prefix}-modal-close:hover svg path {
-    fill: #070a26 !important;
+    fill: @font-1 !important;
   }
   .@{app-prefix}-modal-header {
     margin-bottom: 24px !important;
@@ -17,7 +19,7 @@
   }
   .modal-box-data-wrapper {
     padding: 16px;
-    border: 1px solid #070a26;
+    border: 1px solid @border-1;
     border-radius: 6px;
   }
   .modal-single-button {
@@ -73,27 +75,27 @@
   &:hover:not(:has(> .@{app-prefix}-input-number-disabled)) {
     .@{app-prefix}-input-number,
     .@{app-prefix}-input-number-group-addon {
-      border-color: #9b5eff;
+      border-color: @border-4;
     }
   }
   &:hover:has(> .@{app-prefix}-input-number-status-error) {
     .@{app-prefix}-input-number,
     .@{app-prefix}-input-number-group-addon {
-      border-color: #f53f3f;
+      border-color: @border-2;
     }
   }
   .@{app-prefix}-input-number {
-    caret-color: #863dff;
+    caret-color: @font-2;
   }
   .@{app-prefix}-input-number-focused {
-    border-color: #863dff;
+    border-color: @border-5;
     & + .@{app-prefix}-input-number-group-addon {
-      border-color: #863dff;
+      border-color: @border-5;
     }
     &.@{app-prefix}-input-number-status-error {
-      border-color: #f53f3f;
+      border-color: @border-2;
       & + .@{app-prefix}-input-number-group-addon {
-        border-color: #f53f3f;
+        border-color: @border-2;
       }
     }
   }
@@ -102,7 +104,7 @@
 /** input **/
 .@{app-prefix}-input-clear-icon {
   svg path {
-    fill: #22253e !important;
+    fill: @font-7 !important;
   }
 }
 
@@ -135,7 +137,7 @@
 
 .@{app-prefix}-form-item .@{app-prefix}-form-item-label > label .@{app-prefix}-form-item-tooltip {
   order: 2;
-  color: #070a26;
+  color: @font-1;
 }
 .@{app-prefix}-form-vertical .@{app-prefix}-form-item-label > label::after {
   display: none;
@@ -150,13 +152,13 @@ div.@{app-prefix}-pageNumber-container {
 }
 button.@{app-prefix}-pagination-button {
   &[disabled] {
-    color: #c1c2c9;
-    background-color: #ebebee;
+    color: @font-8;
+    background-color: @bg-11;
     border: none;
   }
 }
 div.@{app-prefix}-pageNumber-container {
-  background-color: #f5f5f6;
+  background-color: @bg-10;
 }
 
 /** breadcrumb **/
@@ -166,12 +168,30 @@ div.@{app-prefix}-pageNumber-container {
   }
 }
 
+/** select dropdown **/
+.@{app-prefix}-select-dropdown {
+  padding: 0;
+  border-radius: 6px;
+  border: 1px solid @border-1;
+  box-shadow: none;
+}
+.@{app-prefix}-select-dropdown .@{app-prefix}-select-item-option-active:not(.@{app-prefix}-select-itemoption-disabled) {
+  background-color: @bg-10;
+}
+
 /** mobile datePicker **/
 .adm-picker {
   border-radius: 8px 8px 0 0;
 }
 .adm-picker-header-button {
-  color: #863dff !important;
+  color: @font-2 !important;
   font-size: 16px;
   font-weight: 500;
+}
+
+/** pc datePicker **/
+.@{app-prefix}-picker {
+  .@{app-prefix}-picker-suffix {
+    color: @font-1;
+  }
 }

@@ -27,7 +27,7 @@ const ButtonGroup: React.FC<IButtonGroup> = ({
   className,
 }) => {
   return (
-    <Flex className={clsx('create-btn-group', className)} justify="center" style={style}>
+    <Flex className={clsx('create-btn-group', className)} justify="center" style={style} gap={24}>
       {onPre && (
         <Button
           ghost

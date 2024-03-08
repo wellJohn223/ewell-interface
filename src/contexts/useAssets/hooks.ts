@@ -2,25 +2,27 @@ import { useCallback, useMemo } from 'react';
 import { SET_TOKEN_PRICE, SET_TX_FEE, useAssetsContext } from '.';
 import { getTokenPriceApi, getTxFeeApi } from './utils';
 import { handleLoopFetch } from 'utils';
-import { DEFAULT_TX_FEE } from 'constants/assets';
+import { DEFAULT_TX_FEE, PRICE_QUOTE_COIN } from 'constants/assets';
+import { DEFAULT_TOKEN_SYMBOL, TOKEN_LIST } from 'constants/misc';
 
 export function useAssets() {
   const [{ txFee, tokenPrice }, dispatch] = useAssetsContext();
 
-  const getTokenPrice = useCallback(async () => {
-    const baseCoin = 'ELF';
-    const quoteCoin = 'USD';
-    const { price } = await getTokenPriceApi(baseCoin, quoteCoin);
-    dispatch({
-      type: SET_TOKEN_PRICE,
-      payload: {
-        tokenPrice: {
-          [`${baseCoin}_${quoteCoin}`]: price,
+  const getTokenPrice = useCallback(
+    async (symbol = DEFAULT_TOKEN_SYMBOL) => {
+      const { price } = await getTokenPriceApi(symbol, PRICE_QUOTE_COIN);
+      dispatch({
+        type: SET_TOKEN_PRICE,
+        payload: {
+          tokenPrice: {
+            [`${symbol}_${PRICE_QUOTE_COIN}`]: price,
+          },
         },
-      },
-    });
-    return price;
-  }, [dispatch]);
+      });
+      return price;
+    },
+    [dispatch],
+  );
 
   const getTxFee = useCallback(async () => {
     const { transactionFee } = await getTxFeeApi();
@@ -43,35 +45,34 @@ export function useAssets() {
         },
         times: 5,
         interval: 1000,
-        checkIsContinue: (result) => {
-          return !result;
-        },
+        checkIsContinue: (result) => !result,
       });
     } catch (error) {
       console.log('Init txFee', error);
     }
   }, [getTxFee]);
 
-  const initTokenPrice = useCallback(async () => {
-    try {
-      await handleLoopFetch({
-        fetch: () => {
-          return getTokenPrice();
-        },
-        times: 5,
-        interval: 1000,
-        checkIsContinue: (result) => {
-          return !result;
-        },
-      });
-    } catch (error) {
-      console.log('Init tokenPrice', error);
-    }
-  }, [getTokenPrice]);
+  const initTokenPrice = useCallback(
+    async (symbol = DEFAULT_TOKEN_SYMBOL) => {
+      try {
+        await handleLoopFetch({
+          fetch: () => {
+            return getTokenPrice(symbol);
+          },
+          times: 5,
+          interval: 1000,
+          checkIsContinue: (result) => !result,
+        });
+      } catch (error) {
+        console.log('Init tokenPrice', error);
+      }
+    },
+    [getTokenPrice],
+  );
 
   const init = useCallback(() => {
     initTxFee();
-    initTokenPrice();
+    TOKEN_LIST.forEach((item) => initTokenPrice(item.symbol));
   }, [initTokenPrice, initTxFee]);
 
   return {
@@ -85,15 +86,26 @@ export function useAssets() {
   };
 }
 
-export function useTokenPrice() {
+export function useTokenPrice(symbol = DEFAULT_TOKEN_SYMBOL) {
   const { tokenPrice, getTokenPrice } = useAssets();
 
-  const _tokenPrice = useMemo(() => tokenPrice?.['ELF_USD'], [tokenPrice]);
+  const _tokenPrice = useMemo(() => tokenPrice?.[`${symbol}_USD`], [symbol, tokenPrice]);
 
   return {
     tokenPrice: _tokenPrice,
     getTokenPrice,
   };
+}
+
+export function useGetTokenPrice() {
+  const { tokenPrice } = useAssets();
+
+  return useCallback(
+    (symbol = DEFAULT_TOKEN_SYMBOL) => {
+      return tokenPrice?.[`${symbol}_USD`];
+    },
+    [tokenPrice],
+  );
 }
 
 export function useTxFee() {

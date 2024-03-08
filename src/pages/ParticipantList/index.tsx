@@ -17,6 +17,7 @@ import { ScreenSize } from 'constants/theme';
 import clsx from 'clsx';
 import { ProjectListType } from 'types/project';
 import { getExploreLink } from 'utils';
+import { DEFAULT_TOKEN_INFO, DEFAULT_TOKEN_SYMBOL } from 'constants/misc';
 
 const { Title, Text } = Typography;
 
@@ -24,7 +25,7 @@ type TParticipantItem = {
   key: string;
   order: string;
   address: string;
-  elfCount: string;
+  investCount: string;
   time: string;
 };
 
@@ -61,6 +62,7 @@ export default function ParticipantList() {
   const [virtualAddress, setVirtualAddress] = useState<string>('');
 
   const { projectName = 'Project' } = useQuery();
+  const [symbol, setSymbol] = useState<string>('');
 
   const fetchTimeRef = useRef<number>();
   const getWhitelistInfo = useCallback(
@@ -84,15 +86,20 @@ export default function ParticipantList() {
         isSearchRef.current = !!address;
         setVirtualAddress(data?.virtualAddress || '');
         setIsSearch(!!address);
+
+        const symbol = data?.toRaiseToken?.symbol || DEFAULT_TOKEN_SYMBOL;
+        setSymbol(symbol);
+        const decimals = data?.toRaiseToken?.decimals || DEFAULT_TOKEN_INFO.decimals;
+
         const _list = data?.users?.map((item, idx) => ({
           key: `${skipCount + idx + 1}`,
           order: `${skipCount + idx + 1}`,
           address: item.address,
-          elfCount: divDecimalsStr(item.investAmount, item.decimals || 8),
+          investCount: divDecimalsStr(item.investAmount, decimals),
           time: dayjs(item.createTime ?? 0).format('HH:mm:ss DD/MM/YYYY'),
         }));
         setList(_list);
-        setTotalAmount(divDecimalsStr(data?.totalAmount || ''));
+        setTotalAmount(divDecimalsStr(data?.totalAmount || '', decimals));
         setTotalUserCount(data?.totalUser || 0);
         setPager({
           page,
@@ -175,7 +182,7 @@ export default function ParticipantList() {
         dataIndex: 'address',
         key: 'address',
         className: 'address-column',
-        width: '44%',
+        width: '52%',
         render: (address) => (
           <HashAddress
             ignorePrefixSuffix={true}
@@ -192,10 +199,10 @@ export default function ParticipantList() {
         ),
       },
       {
-        title: 'ELF Raised',
-        dataIndex: 'elfCount',
-        key: 'elfCount',
-        className: 'elf-count-column',
+        title: `${symbol} Raised`,
+        dataIndex: 'investCount',
+        key: 'investCount',
+        className: 'invest-count-column',
         width: '24%',
       },
       {
@@ -203,10 +210,10 @@ export default function ParticipantList() {
         dataIndex: 'time',
         key: 'time',
         className: 'time-column',
-        width: '24%',
+        width: '16%',
       },
     ],
-    [isScreenLteLarge],
+    [isScreenLteLarge, symbol],
   );
 
   return (
@@ -264,12 +271,14 @@ export default function ParticipantList() {
               {totalUserCount}
             </Text>
           </Text>
-          <Text size="small">
-            Total amount of ELF raised:{' '}
-            <Text size="small" fontWeight={FontWeightEnum.Medium}>
-              {totalAmount}
+          {symbol && (
+            <Text size="small">
+              Total amount of {symbol} raised:{' '}
+              <Text size="small" fontWeight={FontWeightEnum.Medium}>
+                {totalAmount}
+              </Text>
             </Text>
-          </Text>
+          )}
         </Flex>
         {!isSearch && (
           <Pagination

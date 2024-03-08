@@ -3,4 +3,5 @@ export default {
   IDOInfo: 'project-ido-info',
   AdditionalInformation: 'additional-information',
   TokenBalance: 'token-balance',
+  Currency: 'currency',
 };

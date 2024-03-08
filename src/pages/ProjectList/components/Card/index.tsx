@@ -7,15 +7,15 @@ import CommonProjectStatusTag from 'components/CommonProjectStatusTag';
 import CommonProjectProgress from 'components/CommonProjectProgress';
 import { IProjectInfo } from './types';
 import { ZERO } from 'constants/misc';
-import { divDecimals, divDecimalsStr } from 'utils/calculate';
+import { divDecimalsStr } from 'utils/calculate';
 import { ProjectStatus } from 'types/project';
 import { useNavigate, useParams } from 'react-router-dom';
 import { stringifyUrl } from 'query-string';
 import { parseAdditionalInfo } from 'utils/project';
 import dayjs from 'dayjs';
 import { timeDuration } from 'utils/time';
+import { getPreSalePriceAmount, pick } from 'utils';
 import './styles.less';
-import { pick } from 'utils';
 
 const ONE_DAY_IN_MS = 24 * 60 * 60 * 1000;
 
@@ -101,7 +101,6 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
       let formatValue = '';
       if (remainingTime <= 0) {
         setRemainderTimeStr('00:00:00');
-        console.log(timer, 'timer');
         clearInterval(timer);
         return;
       }
@@ -128,8 +127,14 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
   );
 
   const preSalePriceStr = useMemo(
-    () => divDecimals(preSalePrice, crowdFundingIssueToken?.decimals).toFixed(),
-    [crowdFundingIssueToken?.decimals, preSalePrice],
+    () =>
+      getPreSalePriceAmount({
+        preSalePrice,
+        crowdFundingIssueToken,
+        toRaiseToken,
+        isFormat: true,
+      }),
+    [crowdFundingIssueToken, preSalePrice, toRaiseToken],
   );
 
   const projectImageUrl = useMemo(
@@ -157,6 +162,7 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
               gap={8}
               imgClassName="project-community-img"
               communityLink={pick(_additionalInfo || {}, COMMUNITY_LOGO_LIST)}
+              disable={true}
             />
           </div>
         </Flex>
@@ -169,7 +175,7 @@ const Card: React.FC<ProjectCardProps> = ({ data }) => {
             <Flex justify="space-between" gap={'5%'}>
               <Flex gap={3} flex={1} style={{ maxWidth: '68%' }}>
                 <Text fontWeight={FontWeightEnum.Medium} style={{ flex: 'none' }}>
-                  1 ELF =
+                  1 {toRaiseToken?.symbol} =
                 </Text>
                 <Text className="flex-1" ellipsis>{`${preSalePriceStr} ${crowdFundingIssueToken?.symbol || ''}`}</Text>
               </Flex>

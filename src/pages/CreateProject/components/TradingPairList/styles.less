@@ -1,4 +1,4 @@
-@primary-text: #070a26;
+@import '@assets/theme/color.less';
 
 .trading-card {
   display: flex;
@@ -8,7 +8,7 @@
   padding: 12px 16px;
   border-radius: 8px;
   box-sizing: border-box;
-  border: 1px solid @primary-text;
+  border: 1px solid @font-1;
   margin-bottom: 24px;
   cursor: pointer;
 
@@ -27,8 +27,8 @@
       margin-right: 8px;
     }
     .token-img-bg {
-      color: #fff;
-      background-color: #070a26;
+      color: @font-4;
+      background-color: @bg-1;
       text-align: center;
       line-height: 48px;
       font-size: 28px;
@@ -46,23 +46,23 @@
   }
 
   &.active {
-    background-color: #070a26;
-    color: #fff;
+    background-color: @bg-1;
+    color: @font-4;
     .card-left {
       .token-img-bg {
-        color: #070a26;
-        background-color: #fff;
+        color: @font-1;
+        background-color: @bg-9;
       }
     }
   }
 
   &:hover {
-    color: #FFF;
-    background-color: #22253E;
+    color: @font-4;
+    background-color: @bg-12;
     .card-left {
       .token-img-bg {
-        color: #070a26;
-        background-color: #fff;
+        color: @font-1;
+        background-color: @bg-9;
       }
     }
   }

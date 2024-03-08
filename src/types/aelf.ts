@@ -47,3 +47,5 @@ export enum ExplorerLinkType {
   ADDRESS = 'address',
   BLOCK = 'block',
 }
+
+export type ChainId = 'AELF' | 'tDVV' | 'tDVW';
