@@ -1,34 +1,43 @@
-@primary-text: #070a26;
+@import '@assets/theme/color.less';
+@import '@assets/theme/constants.less';
+
 .trading-page {
-  color: @primary-text;
   max-width: 438px;
   margin: 48px auto 0;
-  
-  .trading-title {
-    font-size: 20px;
-    line-height: 28px;
-    font-weight: 500px;
-  }
-  .trading-sub-title {
-    font-size: 14px;
-    line-height: 22px;
-    margin-top: 8px;
-    margin-bottom: 24px;
+
+  .link-text {
+    font-weight: 500;
+    color: @font-2;
+    cursor: pointer;
   }
 
-  .trading-footer {
-    width: 100%;
-    margin: 24px 0;
-    
-    .footer-text {
-      font-size: 14px;
-      line-height: 22px;
+  .select-arrow-up {
+    transform: rotate(180deg);
+    transition: transform .3s;
+  }
 
-      .link-text {
-        font-weight: 500;
-        color: #863dff;
-        cursor: pointer;
-      }
+  .select-arrow-down {
+    transition: transform .3s;
+  }
+
+  .token-empty {
+
+    .empty-wrapper {
+      max-height: 310px;
+      min-height: 118px;
+    }
+
+    .wrapper-height-mobile {
+      height: calc(100vh - @header-height - @mobile-footer-height - 386px);
+    }
+
+    .wrapper-height-pc {
+      height: calc(100vh - @header-height - @footer-height - 386px);
+    }
+
+    .empty-icon {
+      height: 80px;
+      width: 80px;
     }
   }
 }

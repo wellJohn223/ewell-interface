@@ -120,6 +120,9 @@ export const ANTD_THEME_CONFIG: ThemeConfig = {
     Message: {
       zIndexPopup: 20000,
     },
+    Select: {
+      controlOutline: '#FFF',
+    },
   },
 };
 

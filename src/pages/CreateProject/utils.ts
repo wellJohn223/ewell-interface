@@ -3,12 +3,11 @@ import { getPriceDecimal, getProtobufTime } from 'utils';
 import { formatInputNumberString, timesDecimals } from 'utils/calculate';
 import storages from './storages';
 import dayjs, { Dayjs } from 'dayjs';
-import { AELF_TOKEN_INFO } from 'constants/misc';
+import { ITokenInfo } from 'types/assets';
 
 export function resetCreateProjectInfo() {
-  localStorage.removeItem(storages.ConfirmTradingPair);
-  localStorage.removeItem(storages.AdditionalInformation);
-  localStorage.removeItem(storages.IDOInfo);
+  const infoKeys = [storages.ConfirmTradingPair, storages.Currency, storages.AdditionalInformation, storages.IDOInfo];
+  infoKeys.forEach((key) => localStorage.removeItem(key));
 }
 
 export function getInstallments(v: any) {
@@ -32,11 +31,10 @@ export function intervalTip(l: string | number, r: string | number) {
   return `Please enter a number between ${l} and ${r}!`;
 }
 
-export function getInfo(confirmTradingPair: any, projectPanel: any, additionalInfo: any) {
-  const toRaiseToken = AELF_TOKEN_INFO;
+export function getInfo(confirmTradingPair: any, projectPanel: any, additionalInfo: any, toRaiseToken: ITokenInfo) {
   const priceDecimal = getPriceDecimal(confirmTradingPair, toRaiseToken);
-  const preSalePrice = timesDecimals(projectPanel.preSalePrice, priceDecimal.toFixed()).toFixed(0);
-  const publicSalePrice = ZERO.plus(preSalePrice).div(1.05).toFixed(0);
+  const preSalePriceAmount = timesDecimals(projectPanel.preSalePrice, priceDecimal.toFixed()).toFixed(0);
+  const publicSalePrice = ZERO.plus(preSalePriceAmount).div(1.05).toFixed(0);
   const crowdFundingIssueAmount = timesDecimals(
     projectPanel.crowdFundingIssueAmount,
     confirmTradingPair.decimals,
@@ -54,7 +52,7 @@ export function getInfo(confirmTradingPair: any, projectPanel: any, additionalIn
 
   return {
     ...projectPanel,
-    preSalePrice,
+    preSalePrice: preSalePriceAmount,
     totalPeriod: 1, // fixed
     periodDuration: 0,
     maxSubscription,
@@ -65,7 +63,7 @@ export function getInfo(confirmTradingPair: any, projectPanel: any, additionalIn
     restPeriodDistributeProportion: 0,
     additionalInfo: _additionalInfo,
     firstDistributeProportion: '100000000',
-    acceptedSymbol: AELF_TOKEN_INFO.symbol,
+    acceptedSymbol: toRaiseToken.symbol,
     projectSymbol: confirmTradingPair.symbol,
     crowdFundingType: projectPanel.crowdFundingType,
     startTime: getProtobufTime(projectPanel.startTime),

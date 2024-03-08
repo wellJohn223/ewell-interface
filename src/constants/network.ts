@@ -90,32 +90,32 @@ const NETWORK_CONFIG_LIST: Record<string, TNetworkConfig> = {
       tokenContractAddress: 'ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx',
     },
   },
-  test3: {
+  dev: {
     networkType: 'TESTNET',
     mainChainId: 'AELF',
-    sideChainId: 'tDVV',
+    sideChainId: 'tDVW',
     ewellRequestUrl: '',
     ewellConnectUrl: '',
     webLoginNetworkType: 'TESTNET',
-    webLoginGraphqlUrl: '/AElfIndexer_DApp/PortKeyIndexerCASchema/graphql',
-    webLoginRequestDefaultsUrl: '/webLoginRequest',
-    webLoginConnectUrl: '/webLoginConnect',
-    ewellContractAddress: EWELL_CONTRACT_ADDRESS || 'mhgUyGhd27YaoG8wgXTbwtbAiYx7E59n5GXEkmkTFKKQTvGnB',
-    whitelistContractAddress: WHITELIST_CONTRACT_ADDRESS || 'x4CTSuM8typUbpdfxRZDTqYVa42RdxrwwPkXX7WUJHeRmzE6k',
-    symbolMarketUrl: 'http://192.168.67.124:3001/symbolmarket',
+    webLoginGraphqlUrl: 'https://dapp-aa-portkey-test.portkey.finance/Portkey_V2_DID/PortKeyIndexerCASchema/graphql',
+    webLoginRequestDefaultsUrl: 'https://aa-portkey-test.portkey.finance',
+    webLoginConnectUrl: 'https://auth-aa-portkey-test.portkey.finance',
+    ewellContractAddress: '2EbbUpZLds58keVZPJDLPRbPpxzUYCcjooq6LBiBoRXVTFZTiQ',
+    whitelistContractAddress: '25VDxYFNxujPnPzqzkHxveegoV9wYm5zY72Hv6L7utD1kKu2jZ',
+    symbolMarketUrl: 'https://test.eforest.finance/symbolmarket',
     mainChainInfo: {
       chainId: 'AELF',
-      exploreUrl: 'http://192.168.66.3:8000/',
-      endPoint: 'http://192.168.66.3:8000',
-      caContractAddress: '2RpNgskXSDgzp3v9VVuciudQQo6ZxSgsXftot3TzN5ncKxs73k',
+      exploreUrl: 'https://explorer-test.aelf.io/',
+      endPoint: 'https://aelf-test-node.aelf.io',
+      caContractAddress: '238X6iw1j8YKcHvkDYVtYVbuYk2gJnK8UoNpVCtssynSpVC8hb',
       tokenContractAddress: 'JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE',
     },
     sideChainInfo: {
-      chainId: 'tDVV',
-      exploreUrl: 'http://192.168.66.241:8000/',
-      endPoint: 'http://192.168.66.241:8000',
-      caContractAddress: '2RpNgskXSDgzp3v9VVuciudQQo6ZxSgsXftot3TzN5ncKxs73k',
-      tokenContractAddress: '7RzVGiuVWkvL4VfVHdZfQF2Tri3sgLe9U991bohHFfSRZXuGX',
+      chainId: 'tDVW',
+      exploreUrl: 'https://explorer-test-side02.aelf.io/',
+      endPoint: 'https://tdvw-test-node.aelf.io',
+      caContractAddress: '238X6iw1j8YKcHvkDYVtYVbuYk2gJnK8UoNpVCtssynSpVC8hb',
+      tokenContractAddress: 'ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx',
     },
   },
 };
@@ -124,4 +124,8 @@ export const NETWORK_CONFIG = NETWORK_CONFIG_LIST[process.env.REACT_APP_NETWORK_
 
 export const DEFAULT_CHAIN_ID = NETWORK_CONFIG_LIST[process.env.REACT_APP_NETWORK_KEY || ''].sideChainId;
 
-export const IS_OFFLINE_NETWORK = process.env.REACT_APP_NETWORK_KEY === 'test3';
+export const IS_OFFLINE_NETWORK = process.env.REACT_APP_NETWORK_KEY === 'dev';
+
+export const IS_MAINNET_PRODUCTION = process.env.REACT_APP_NETWORK_KEY === 'mainnet';
+
+export const SENTRY_DSN = process.env.REACT_APP_SENTRY_DSN;

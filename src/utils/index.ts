@@ -1,7 +1,13 @@
 import EventEmitter from 'events';
-import { PriceDecimal, ZERO } from 'constants/misc';
+import {
+  DEFAULT_LIQUIDATED_DAMAGE_PROPORTION,
+  LiquidatedDamageProportionDecimal,
+  PriceDecimal,
+  ZERO,
+} from 'constants/misc';
 import { NETWORK_CONFIG } from 'constants/network';
 import { ExplorerLinkType } from 'types/aelf';
+import { divDecimals } from './calculate';
 
 export const eventBus = new EventEmitter();
 
@@ -107,4 +113,25 @@ export const pick = <T extends Record<string, any>, K extends string>(obj: T, ke
     result[key] = obj[key];
   });
   return result;
+};
+
+export const getLiquidatedDamageProportion = (value?: number) => {
+  const liquidatedDamageProportion = value ?? DEFAULT_LIQUIDATED_DAMAGE_PROPORTION;
+  return divDecimals(liquidatedDamageProportion, LiquidatedDamageProportionDecimal).toNumber();
+};
+
+export const getPreSalePriceAmount = ({
+  preSalePrice,
+  crowdFundingIssueToken,
+  toRaiseToken,
+  isFormat = false,
+}: {
+  preSalePrice?: string;
+  crowdFundingIssueToken?: { decimals: number };
+  toRaiseToken?: { decimals: number };
+  isFormat?: boolean;
+}) => {
+  if (!preSalePrice || !crowdFundingIssueToken || !toRaiseToken) return '0';
+  const result = divDecimals(preSalePrice, getPriceDecimal(crowdFundingIssueToken, toRaiseToken));
+  return isFormat ? result.toFormat() : result.toFixed();
 };
