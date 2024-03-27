@@ -14,7 +14,9 @@ export default function PortkeyAssets() {
 
   useEffectOnce(() => {
     if (!isLogin) {
-      navigate('/', { replace: true });
+      setTimeout(() => {
+        navigate('/', { replace: true });
+      }, 500);
     }
   });
 
