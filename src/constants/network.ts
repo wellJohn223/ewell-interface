@@ -118,6 +118,34 @@ const NETWORK_CONFIG_LIST: Record<string, TNetworkConfig> = {
       tokenContractAddress: '7RzVGiuVWkvL4VfVHdZfQF2Tri3sgLe9U991bohHFfSRZXuGX',
     },
   },
+  test2: {
+    networkType: 'TESTNET',
+    mainChainId: 'AELF',
+    sideChainId: 'tDVV',
+    ewellRequestUrl: '192.168.67.54:6010',
+    ewellConnectUrl: '192.168.67.54:6010',
+    webLoginNetworkType: 'TESTNET',
+    webLoginGraphqlUrl: 'http://192.168.67.250:8105/Portkey_V2_DID/PortKeyIndexerCASchema/graphql',
+    webLoginRequestDefaultsUrl: 'http://192.168.67.250:8105',
+    webLoginConnectUrl: 'https://auth-aa-portkey-test.portkey.finance',
+    ewellContractAddress: '2j6mjWwNgnX7zygPNT3UNwsizPb6bqa3JWk6PcQ5sd1Gbc37MJ',
+    whitelistContractAddress: '2LhQEonazAugHnS6VDZmGjcnsGcgD8RgSF9WKxYUvAgQTB8oSS',
+    symbolMarketUrl: 'http://192.168.67.51:3004/symbolmarket',
+    mainChainInfo: {
+      chainId: 'AELF',
+      exploreUrl: 'https://explorer-test.aelf.io/',
+      endPoint: 'http://192.168.67.90:8000',
+      caContractAddress: '2LUmicHyH4RXrMjG4beDwuDsiWJESyLkgkwPdGTR8kahRzq5XS',
+      tokenContractAddress: 'JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE',
+    },
+    sideChainInfo: {
+      chainId: 'tDVV',
+      exploreUrl: 'https://explorer-test-side02.aelf.io/',
+      endPoint: 'http://192.168.67.69:8000',
+      caContractAddress: 'RXcxgSXuagn8RrvhQAV81Z652EEYSwR6JLnqHYJ5UVpEptW8Y',
+      tokenContractAddress: '7RzVGiuVWkvL4VfVHdZfQF2Tri3sgLe9U991bohHFfSRZXuGX',
+    },
+  },
 };
 
 export const NETWORK_CONFIG = NETWORK_CONFIG_LIST[process.env.REACT_APP_NETWORK_KEY || ''];
