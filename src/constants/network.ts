@@ -122,10 +122,10 @@ const NETWORK_CONFIG_LIST: Record<string, TNetworkConfig> = {
     networkType: 'TESTNET',
     mainChainId: 'AELF',
     sideChainId: 'tDVV',
-    ewellRequestUrl: '192.168.67.54:6010',
-    ewellConnectUrl: '192.168.67.54:6010',
+    ewellRequestUrl: '',
+    ewellConnectUrl: '',
     webLoginNetworkType: 'TESTNET',
-    webLoginGraphqlUrl: 'http://192.168.67.250:8105/Portkey_V2_DID/PortKeyIndexerCASchema/graphql',
+    webLoginGraphqlUrl: '/Portkey_V2_DID/PortKeyIndexerCASchema/graphql',
     webLoginRequestDefaultsUrl: 'http://192.168.67.250:8105',
     webLoginConnectUrl: 'https://auth-aa-portkey-test.portkey.finance',
     ewellContractAddress: '2j6mjWwNgnX7zygPNT3UNwsizPb6bqa3JWk6PcQ5sd1Gbc37MJ',
@@ -148,12 +148,14 @@ const NETWORK_CONFIG_LIST: Record<string, TNetworkConfig> = {
   },
 };
 
-export const NETWORK_CONFIG = NETWORK_CONFIG_LIST[process.env.REACT_APP_NETWORK_KEY || ''];
+const networkKey = 'test2';
 
-export const DEFAULT_CHAIN_ID = NETWORK_CONFIG_LIST[process.env.REACT_APP_NETWORK_KEY || ''].sideChainId;
+export const NETWORK_CONFIG = NETWORK_CONFIG_LIST[networkKey];
 
-export const IS_OFFLINE_NETWORK = process.env.REACT_APP_NETWORK_KEY === 'dev';
+export const DEFAULT_CHAIN_ID = NETWORK_CONFIG_LIST[networkKey].sideChainId;
 
-export const IS_MAINNET_PRODUCTION = process.env.REACT_APP_NETWORK_KEY === 'mainnet';
+export const IS_OFFLINE_NETWORK = true;
+
+export const IS_MAINNET_PRODUCTION = false;
 
 export const SENTRY_DSN = process.env.REACT_APP_SENTRY_DSN;
