@@ -118,10 +118,38 @@ const NETWORK_CONFIG_LIST: Record<string, TNetworkConfig> = {
       tokenContractAddress: '7RzVGiuVWkvL4VfVHdZfQF2Tri3sgLe9U991bohHFfSRZXuGX',
     },
   },
+  test2: {
+    networkType: 'TESTNET',
+    mainChainId: 'AELF',
+    sideChainId: 'tDVV',
+    ewellRequestUrl: '',
+    ewellConnectUrl: '',
+    webLoginNetworkType: 'TESTNET',
+    webLoginGraphqlUrl: '/AElfIndexer_DApp/PortKeyIndexerCASchema/graphql',
+    webLoginRequestDefaultsUrl: '/webLoginRequest',
+    webLoginConnectUrl: '/webLoginConnect',
+    ewellContractAddress: EWELL_CONTRACT_ADDRESS || '2j6mjWwNgnX7zygPNT3UNwsizPb6bqa3JWk6PcQ5sd1Gbc37MJ',
+    whitelistContractAddress: WHITELIST_CONTRACT_ADDRESS || '2LhQEonazAugHnS6VDZmGjcnsGcgD8RgSF9WKxYUvAgQTB8oSS',
+    symbolMarketUrl: 'http://192.168.67.124:3001/symbolmarket',
+    mainChainInfo: {
+      chainId: 'AELF',
+      exploreUrl: 'http://192.168.67.90:8000/',
+      endPoint: 'http://192.168.67.90:8000',
+      caContractAddress: '2LUmicHyH4RXrMjG4beDwuDsiWJESyLkgkwPdGTR8kahRzq5XS',
+      tokenContractAddress: 'JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE',
+    },
+    sideChainInfo: {
+      chainId: 'tDVV',
+      exploreUrl: 'http://192.168.67.69:8000/',
+      endPoint: 'http://192.168.67.69:8000',
+      caContractAddress: 'RXcxgSXuagn8RrvhQAV81Z652EEYSwR6JLnqHYJ5UVpEptW8Y',
+      tokenContractAddress: '7RzVGiuVWkvL4VfVHdZfQF2Tri3sgLe9U991bohHFfSRZXuGX',
+    },
+  },
 };
 
 export const NETWORK_CONFIG = NETWORK_CONFIG_LIST[process.env.REACT_APP_NETWORK_KEY || ''];
 
 export const DEFAULT_CHAIN_ID = NETWORK_CONFIG_LIST[process.env.REACT_APP_NETWORK_KEY || ''].sideChainId;
 
-export const IS_OFFLINE_NETWORK = process.env.REACT_APP_NETWORK_KEY === 'test3';
+export const IS_OFFLINE_NETWORK = process.env.REACT_APP_NETWORK_KEY === 'test2';
