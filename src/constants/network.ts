@@ -90,37 +90,37 @@ const NETWORK_CONFIG_LIST: Record<string, TNetworkConfig> = {
       tokenContractAddress: 'ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx',
     },
   },
-  test2: {
+  test4: {
     networkType: 'TESTNET',
     mainChainId: 'AELF',
     sideChainId: 'tDVV',
     ewellRequestUrl: '',
     ewellConnectUrl: '',
     webLoginNetworkType: 'TESTNET',
-    webLoginGraphqlUrl: '/Portkey_V2_DID/PortKeyIndexerCASchema/graphql',
-    webLoginRequestDefaultsUrl: 'http://192.168.67.250:8105',
-    webLoginConnectUrl: 'https://auth-aa-portkey-test.portkey.finance',
-    ewellContractAddress: '2j6mjWwNgnX7zygPNT3UNwsizPb6bqa3JWk6PcQ5sd1Gbc37MJ',
-    whitelistContractAddress: '2LhQEonazAugHnS6VDZmGjcnsGcgD8RgSF9WKxYUvAgQTB8oSS',
+    webLoginGraphqlUrl: 'http://192.168.66.117:5577/Portkey_V2_DID/PortKeyIndexerCASchema/graphql',
+    webLoginRequestDefaultsUrl: 'http://192.168.66.117:5577',
+    webLoginConnectUrl: 'http://192.168.66.117:8080',
+    ewellContractAddress: '2cGT3RZZy6UJJ3eJPZdWMmuoH2TZBihvMtAtKvLJUaBnvskK2x',
+    whitelistContractAddress: '22tVtWLFwGxFu5Xk5rQgCdQnmsNA7PpTzZbkpGr1REgt5GEaN5',
     symbolMarketUrl: 'http://192.168.67.51:3004/symbolmarket',
     mainChainInfo: {
       chainId: 'AELF',
       exploreUrl: 'https://explorer-test.aelf.io/',
-      endPoint: 'http://192.168.67.90:8000',
+      endPoint: 'http://192.168.66.123:8000',
       caContractAddress: '2LUmicHyH4RXrMjG4beDwuDsiWJESyLkgkwPdGTR8kahRzq5XS',
       tokenContractAddress: 'JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE',
     },
     sideChainInfo: {
       chainId: 'tDVV',
       exploreUrl: 'https://explorer-test-side02.aelf.io/',
-      endPoint: 'http://192.168.67.69:8000',
-      caContractAddress: 'RXcxgSXuagn8RrvhQAV81Z652EEYSwR6JLnqHYJ5UVpEptW8Y',
+      endPoint: 'http://192.168.66.60:8000',
+      caContractAddress: '2j6mjWwNgnX7zygPNT3UNwsizPb6bqa3JWk6PcQ5sd1Gbc37MJ',
       tokenContractAddress: '7RzVGiuVWkvL4VfVHdZfQF2Tri3sgLe9U991bohHFfSRZXuGX',
     },
   },
 };
 
-const networkKey = 'test2';
+const networkKey = 'test4';
 
 export const NETWORK_CONFIG = NETWORK_CONFIG_LIST[networkKey];
 
