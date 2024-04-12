@@ -97,7 +97,7 @@ const NETWORK_CONFIG_LIST: Record<string, TNetworkConfig> = {
     ewellRequestUrl: '',
     ewellConnectUrl: '',
     webLoginNetworkType: 'TESTNET',
-    webLoginGraphqlUrl: 'http://192.168.67.214:8083/Portkey_V2_DID/PortKeyIndexerCASchema/graphql',
+    webLoginGraphqlUrl: 'http://192.168.67.214:8084/AElfIndexer_DApp_V2/PortKeyIndexerCASchema/graphql',
     webLoginRequestDefaultsUrl: 'http://192.168.66.117:5577',
     webLoginConnectUrl: 'http://192.168.66.117:8080',
     ewellContractAddress: '2cGT3RZZy6UJJ3eJPZdWMmuoH2TZBihvMtAtKvLJUaBnvskK2x',
